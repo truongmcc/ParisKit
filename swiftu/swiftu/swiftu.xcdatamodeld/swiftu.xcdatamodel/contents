@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17B1003" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Arbres" representedClassName=".Arbres" syncable="YES" codeGenerationType="class">
+        <attribute name="adresse" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="arrondisse" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="circonferenceencm" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="dateplantation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="domanialite" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="espece" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="famille" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="genre" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hauteurenm" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="libellefrancais" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nom_ev" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="objectid" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="AutoLib" representedClassName="AutoLib" syncable="YES" codeGenerationType="class">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cars" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postal_code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="public_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="slots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="Belibs" representedClassName="Belibs" syncable="YES" codeGenerationType="class">
+        <attribute name="aggregated_nbplugs" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="geolocation_postalcode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="geolocation_route" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="geolocation_streetnumber" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="static_nbparkingspots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="static_nbstations" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="static_opening_247" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status_available" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Cafes" representedClassName="Cafes" syncable="YES" codeGenerationType="class">
+        <attribute name="adresse" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="arrondissement" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="nom_du_cafe" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="prix_comptoir" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="prix_salle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="prix_terasse" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Capotes" representedClassName="Capotes" syncable="YES" codeGenerationType="class">
+        <attribute name="acces" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="adresse" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="coordinateX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="horairesEte" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="horairesHiver" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="horairesNormales" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="site" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Fontaines" representedClassName="Fontaines" syncable="YES" codeGenerationType="class">
+        <attribute name="adresse" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="classee" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="coordinateX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="en_service" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localisation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="modele" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ouv_hiver" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Sanisettes" representedClassName="Sanisettes" syncable="YES" codeGenerationType="class">
+        <attribute name="arrondissement" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="coordinateX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="horaires_ouverture" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nom_voie" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numero_voie" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="StaticBelibs" representedClassName="StaticBelibs" syncable="YES" codeGenerationType="class">
+        <attribute name="abon_erdf_kw" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="acces_lieu" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="acces_reseau" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="adresse" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="autentification_borne" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="communication_supervision" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="comptage_energie" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="coordinateX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordinateY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="etat_station" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id_station" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="nbre_places" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="nom_station" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="paiement" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="puissance_pdc_kw" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tel_sav_sodetrel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type_charge" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type_connecteur" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type_courant" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Taxis" representedClassName=".Taxis" syncable="YES" codeGenerationType="class">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="coordX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="coordY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="station_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="zip_code" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Velib" representedClassName=".Velib" syncable="YES" codeGenerationType="class">
+        <attribute name="adress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="number" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Arbres" positionX="0" positionY="-216" width="128" height="285"/>
+        <element name="AutoLib" positionX="0" positionY="-135" width="128" height="165"/>
+        <element name="Belibs" positionX="0" positionY="-135" width="128" height="210"/>
+        <element name="Cafes" positionX="9" positionY="-126" width="128" height="180"/>
+        <element name="Capotes" positionX="0" positionY="-135" width="128" height="180"/>
+        <element name="Fontaines" positionX="0" positionY="-135" width="128" height="180"/>
+        <element name="Sanisettes" positionX="0" positionY="-135" width="128" height="135"/>
+        <element name="StaticBelibs" positionX="0" positionY="-135" width="128" height="345"/>
+        <element name="Taxis" positionX="9" positionY="-207" width="128" height="120"/>
+        <element name="Velib" positionX="-11" positionY="-288" width="128" height="120"/>
+    </elements>
+</model>

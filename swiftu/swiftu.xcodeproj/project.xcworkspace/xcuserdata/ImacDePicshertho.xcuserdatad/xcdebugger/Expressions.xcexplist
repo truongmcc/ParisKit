@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "ParseJson.dynamicParse(data : Data, type : String) -&gt; String:ParseJson.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ParseJson.(cafesJsonManager([AnyObject]) -&gt; ()).(closure #1):ParseJson.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "castedManagedObject.recordid">
+            </PersistentString>
+            <PersistentString
+               value = "castedManagedObject.prix_comptoir">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

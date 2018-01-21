@@ -1,0 +1,60 @@
+bug affichage info arbres ok
+
+autolib : via api opendata ok
+
+crash sur selection du userlocation OK
+
+crash autolib https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/Concurrency.html !!! OK
+
+autolib : gestion dynamique sur disponibilités OK
+
+factorisation du parsage des données en dynamique OK
+
+velib : virer le disclosure et suivre meme principe que pour autolib OK
+
+bug : disponibilités foireuses : pb dataTask pas synchrone => soluce : utilisation semaphore OK
+
+creer une fonction updateAnnotationWithCoord OK
+
+crash sur click back button : crash sur parsing json arbres solution : faire un dismiss plutot qu'un push OK
+
+arbres : ajouter le disclosure pour ajouter plus d'informations sur l'arbre OK
+
+arbre : ne plus afficher l'alerte avec les infos de l'arbre sur la carte mais directement afficher toutes les infos sur fond transparent OK
+
+transformer le detailarbreviewcontroller en detailviewcontroller global OK
+
+ajout fontaines potables OK
+
+afficher le MKUserTrackingBarButtonItem OK
+
+nom de l'application swiftu : Paris Kit OK
+
+bouton back de optionViewController : "retour" OK
+
+ajout belib OK
+
+virer arbre et sanisettes de la tabar
+
+ajout café à 1 euro OK
+
+factoriser le code... !!! 
+
+faire un git du projet
+
+revoir la méthode de suppression des tables
+
+gerer les cellules hidden dans detailViewController...
+
+icone menu
+
+icone appli : tour eiffel minimaliste ?
+
+ajout spot wifi paris
+
+les marchés...
+
+refaire velib : jcdecaux api dead
+
+redeclarer proprement les singleton (voir dataprovider)
+
