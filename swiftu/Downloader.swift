@@ -12,7 +12,7 @@ class Downloader {
     
     var data = Data()
    
-//    func dataFromUrl(url:String,type:String) {
+//    func dataFromUrl(url:String, type:String) {
 //        
 //        let urlString = URL(string: url)
 //        if let url = urlString {
@@ -32,7 +32,7 @@ class Downloader {
     
     
     // Using a semaphore for synchronous request
-    func dataFromUrl(url:String,type:String)  {
+    func dataFromUrl(url:String, type:String)  {
         let myURL = URL(string:url)!
         var dataStringOrNil: String?
         let semaphore = DispatchSemaphore(value: 0)
@@ -53,7 +53,7 @@ class Downloader {
     }
     
     // Using a semaphore for synchronous request
-    func dynamiciDataFromUrl(url:String,type:String) {
+    func dynamiciDataFromUrl(url:String, type:String) {
         let myURL = URL(string:url)!
         var dataStringOrNil: String?
         let semaphore = DispatchSemaphore(value: 0)

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol mapKitDelegate {
+protocol mapKitDelegate : class {
     func changerTypeMap(type:Int)
     func afficherArbres()
     func afficherVelib()
@@ -24,7 +24,7 @@ protocol mapKitDelegate {
 class OptionsViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
     
     //MARK:delegate
-    var delegate:mapKitDelegate?
+    weak var delegate:mapKitDelegate?
     
     @IBAction func backToMap(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)

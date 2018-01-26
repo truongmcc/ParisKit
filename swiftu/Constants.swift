@@ -57,95 +57,95 @@ struct Constants {
     
     static let tabDetailFontaine = [
         [
-            "title" : "Localisation",
-            "property" : "localisation",
+            "title": "Localisation",
+            "property": "localisation",
             ],
         [
-            "title" : "Modèle",
-            "property" : "modele",
+            "title": "Modèle",
+            "property": "modele",
             ],
         [
-            "title" : "Classée",
-            "property" : "classee",
+            "title": "Classée",
+            "property": "classee",
             ],
         [
-            "title" : "En service",
-            "property" : "en_service",
+            "title": "En service",
+            "property": "en_service",
             ],
         [
-            "title" : "Ouvert l'hiver",
-            "property" : "ouv_hiver",
+            "title": "Ouvert l'hiver",
+            "property": "ouv_hiver",
             ]
     ]
     
     static let  tabDetailArbre = [
         [
-            "title" : "Nom commun",
-            "property" : "libellefrancais",
+            "title": "Nom commun",
+            "property": "libellefrancais",
             ],
         [
-            "title" : "Genre",
-            "property" : "genre",
+            "title": "Genre",
+            "property": "genre",
             ],
         [
-            "title" : "Espèce",
-            "property" : "espece",
+            "title": "Espèce",
+            "property": "espece",
             ],
         [
-            "title" : "Hauteur",
-            "property" : "hauteurenm",
+            "title": "Hauteur",
+            "property": "hauteurenm",
             "unit":" m"
         ],
         [
-            "title" : "Circonférence",
-            "property" : "circonferenceencm",
+            "title": "Circonférence",
+            "property": "circonferenceencm",
             "unit":" cm"
         ],
         [
-            "title" : "Date de plantation",
-            "property" : "dateplantation",
+            "title": "Date de plantation",
+            "property": "dateplantation",
             ],
         [
-            "title" : "Domanialité",
-            "property" : "domanialite",
+            "title": "Domanialité",
+            "property": "domanialite",
             ],
         ]
     
     static let  tabDetailCapote = [
         [
-            "title" : "Site",
-            "property" : "site",
+            "title": "Site",
+            "property": "site",
             ],
         [
-            "title" : "Accès",
-            "property" : "acces",
+            "title": "Accès",
+            "property": "acces",
             ],
         [
-            "title" : "Horaires",
-            "property" : "horairesNormales",
+            "title": "Horaires",
+            "property": "horairesNormales",
             ],
         [
-            "title" : "Horaires d'été",
-            "property" : "horairesEte",
+            "title": "Horaires d'été",
+            "property": "horairesEte",
             ],
         [
-            "title" : "Horaires d'hiver",
-            "property" : "horairesHiver",
+            "title": "Horaires d'hiver",
+            "property": "horairesHiver",
             ]
     ]
     
 //    static let  tabDetailCafe = [
 //        [
-//            "title" : "Prix en terasse",
-//            "property" : "prix_terasse",
+//            "title": "Prix en terasse",
+//            "property": "prix_terasse",
 //            ],
 //        [
-//            "title" : "Prix en salle",
-//            "property" : "prix_salle",
+//            "title": "Prix en salle",
+//            "property": "prix_salle",
 //            ],
 //        [
-//            "title" : "Prix au comptoir",
-//            "property" : "prix_comptoir",
+//            "title": "Prix au comptoir",
+//            "property": "prix_comptoir",
 //            ]
 //    ]
 

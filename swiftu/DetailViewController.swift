@@ -8,10 +8,10 @@
 
 import UIKit
 
-class DetailViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate {
+class DetailViewController: UIViewController, UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate {
 
-    var service:AnyObject? = nil
-    var tabService:Array<AnyObject>?
+    var service:AnyObject?
+    var tabService:[AnyObject]?
     var gesture = UIGestureRecognizer()
     var adresse:String?
 
@@ -44,7 +44,6 @@ class DetailViewController: UIViewController,UITableViewDataSource,UITableViewDe
     @objc func tapOnScreen(_ sender: UITapGestureRecognizer) {
         self.removeAnimate()
     }
-    
     func showAnimate() {
         self.view.transform = CGAffineTransform.init(scaleX: 2, y: 2)
         self.view.alpha = 0.0
@@ -53,13 +52,12 @@ class DetailViewController: UIViewController,UITableViewDataSource,UITableViewDe
             self.view.transform = CGAffineTransform.init(scaleX: 1.0, y: 1.0)
         })
     }
-    
     func removeAnimate() {
         UIView.animate(withDuration: 0.20, animations: {
             self.view.transform = CGAffineTransform.init(scaleX: 2, y: 2)
             self.view.alpha = 0.0
         }, completion: {(finished : Bool) in
-            if (finished) {
+            if finished {
                 self.view.removeFromSuperview()
             }
         })
@@ -75,15 +73,15 @@ class DetailViewController: UIViewController,UITableViewDataSource,UITableViewDe
         cell.detailTextLabel?.textColor = setServiceColor()
         cell.textLabel?.text = self.tabService?[indexPath.row]["title"] as? String
         let property = self.tabService?[indexPath.row]["property"] as? String
-        let value:AnyObject = service?.value(forKey: property!) as AnyObject
-        if (value is Float) {
+        let value:AnyObject = service?.value(forKey:property!) as AnyObject
+        if value is Float {
             let floatToString = String(describing: value)
             if let unit = Constants.tabDetailArbre[indexPath.row]["unit"] {
                 cell.detailTextLabel?.text = floatToString + unit
             } else {
                 cell.detailTextLabel?.text = floatToString
             }
-        } else if (value is String) {
+        } else if value is String {
             cell.detailTextLabel?.text = service?.value(forKey: property!) as? String
         } else {
             cell.isHidden = true
@@ -92,11 +90,11 @@ class DetailViewController: UIViewController,UITableViewDataSource,UITableViewDe
     }
     
     func setServiceColor() -> UIColor {
-        if (service is Arbres?) {
+        if service is Arbres? {
             return UIColor.green
-        } else if (service is Capotes?) {
+        } else if service is Capotes? {
             return UIColor.red
-        } else if (service is Fontaines?) {
+        } else if service is Fontaines? {
             return UIColor.cyan
 //        } else if (service is Cafes?) {
 //            return UIColor.brown
