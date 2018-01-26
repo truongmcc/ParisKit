@@ -58,94 +58,92 @@ struct Constants {
     static let tabDetailFontaine = [
         [
             "title": "Localisation",
-            "property": "localisation",
+            "property": "localisation"
             ],
         [
             "title": "Modèle",
-            "property": "modele",
+            "property": "modele"
             ],
         [
             "title": "Classée",
-            "property": "classee",
+            "property": "classee"
             ],
         [
             "title": "En service",
-            "property": "en_service",
+            "property": "en_service"
             ],
         [
             "title": "Ouvert l'hiver",
-            "property": "ouv_hiver",
+            "property": "ouv_hiver"
             ]
     ]
     
     static let  tabDetailArbre = [
         [
             "title": "Nom commun",
-            "property": "libellefrancais",
+            "property": "libellefrancais"
             ],
         [
             "title": "Genre",
-            "property": "genre",
+            "property": "genre"
             ],
         [
             "title": "Espèce",
-            "property": "espece",
+            "property": "espece"
             ],
         [
             "title": "Hauteur",
             "property": "hauteurenm",
-            "unit":" m"
+            "unit": " m"
         ],
         [
             "title": "Circonférence",
             "property": "circonferenceencm",
-            "unit":" cm"
+            "unit": " cm"
         ],
         [
             "title": "Date de plantation",
-            "property": "dateplantation",
+            "property": "dateplantation"
             ],
         [
             "title": "Domanialité",
-            "property": "domanialite",
-            ],
+            "property": "domanialite"
+            ]
         ]
-    
     static let  tabDetailCapote = [
         [
             "title": "Site",
-            "property": "site",
+            "property": "site"
             ],
         [
             "title": "Accès",
-            "property": "acces",
+            "property": "acces"
             ],
         [
             "title": "Horaires",
-            "property": "horairesNormales",
+            "property": "horairesNormales"
             ],
         [
             "title": "Horaires d'été",
-            "property": "horairesEte",
+            "property": "horairesEte"
             ],
         [
             "title": "Horaires d'hiver",
-            "property": "horairesHiver",
+            "property": "horairesHiver"
             ]
     ]
-    
 //    static let  tabDetailCafe = [
 //        [
 //            "title": "Prix en terasse",
-//            "property": "prix_terasse",
+//            "property": "prix_terasse"
 //            ],
 //        [
 //            "title": "Prix en salle",
-//            "property": "prix_salle",
+//            "property": "prix_salle"
 //            ],
 //        [
 //            "title": "Prix au comptoir",
-//            "property": "prix_comptoir",
+//            "property": "prix_comptoir"
 //            ]
 //    ]
 

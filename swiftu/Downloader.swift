@@ -9,9 +9,7 @@
 import Foundation
 
 class Downloader {
-    
     var data = Data()
-   
 //    func dataFromUrl(url:String, type:String) {
 //        
 //        let urlString = URL(string: url)
@@ -29,8 +27,6 @@ class Downloader {
 //            task.resume()
 //        }
 //    }
-    
-    
     // Using a semaphore for synchronous request
     func dataFromUrl(url:String, type:String)  {
         let myURL = URL(string:url)!
@@ -51,7 +47,6 @@ class Downloader {
         task.resume()
         semaphore.wait()
     }
-    
     // Using a semaphore for synchronous request
     func dynamiciDataFromUrl(url:String, type:String) {
         let myURL = URL(string:url)!
@@ -73,5 +68,3 @@ class Downloader {
         semaphore.wait()
     }
 }
-
-

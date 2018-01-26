@@ -14,22 +14,18 @@ class DetailViewController: UIViewController, UITableViewDataSource,UITableViewD
     var tabService:[AnyObject]?
     var gesture = UIGestureRecognizer()
     var adresse:String?
-
     @IBOutlet weak var adressLabel: UILabel!
     @IBOutlet weak var tableViewController: UITableView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         //MARK:gesture
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapOnScreen(_:)))
         tapGesture.delegate = self
         self.view.addGestureRecognizer(tapGesture)
-        
         tableViewController.tableFooterView = UIView(frame: CGRect.zero)
         tableViewController.isScrollEnabled = false
         adressLabel.text = adresse
         adressLabel.textColor = setServiceColor()
-        
         //MARK:manage background colour
         //let color = UIColor.init(red: 0, green: 58, blue: 120, alpha: 0.7)
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
@@ -66,7 +62,6 @@ class DetailViewController: UIViewController, UITableViewDataSource,UITableViewD
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.tabService!.count
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier", for: indexPath)
         cell.textLabel?.textColor = setServiceColor()
@@ -88,7 +83,6 @@ class DetailViewController: UIViewController, UITableViewDataSource,UITableViewD
         }
         return cell
     }
-    
     func setServiceColor() -> UIColor {
         if service is Arbres? {
             return UIColor.green

@@ -32,14 +32,14 @@ class ParseJson: NSObject {
                         }
                         // <--
                         let typeFromDico = Constants.dicoType[type as String]!
-                        let typeForSelector = String(format: "%@JsonManager:",typeFromDico)
+                        let typeForSelector = String(format: "%@JsonManager:", typeFromDico)
                         let selector = NSSelectorFromString(typeForSelector)
                         if responds(to: selector) {
                             self.perform(selector, with:listeServices)
                         }
                     }
                 } else {
-                    updateArrayInterets(type:type as String,fetchResult:fetchResult!)
+                    updateArrayInterets(type:type as String, fetchResult:fetchResult!)
                 }
             }
         } catch {
@@ -48,7 +48,7 @@ class ParseJson: NSObject {
     }
     
     // Dynamic parse (disponibilités des véhicules...)
-    func dynamicParse(data:Data,type:String) -> String {
+    func dynamicParse(data:Data, type:String) -> String {
         var message = ""
         do {
             guard let json = try JSONSerialization.jsonObject(with:data, options: []) as? [String: AnyObject] else {
@@ -57,7 +57,7 @@ class ParseJson: NSObject {
             
             if (type == "Velib") {
                 let dico = json as NSDictionary
-                message = String.localizedStringWithFormat("Attaches disponibles : %@ ",dico.object(forKey:"available_bike_stands") as! CVarArg) as String
+                message = String.localizedStringWithFormat("Attaches disponibles : %@ ", dico.object(forKey:"available_bike_stands") as! CVarArg) as String
                 message = message.appending(String.localizedStringWithFormat("velibs disponibles : %@",
                                                                              dico.object(forKey: "available_bikes") as! CVarArg) as String)
             } else if (type == "AutoLib") {
@@ -111,14 +111,14 @@ class ParseJson: NSObject {
                                 Constants.MANAGED_OBJECT_CONTEXT.delete(object as! NSManagedObject)
                             }
                             let typeFromDico = Constants.dicoType[type as String]!
-                            let typeForSelector = String(format: "%@JsonManager:",typeFromDico)
+                            let typeForSelector = String(format: "%@JsonManager:", typeFromDico)
                             let selector = NSSelectorFromString(typeForSelector)
                             if responds(to: selector) {
                                 self.perform(selector, with:jsonObj)
                             }
                         }
                     } else {
-                        updateArrayInterets(type:type as String,fetchResult:fetchResult!)
+                        updateArrayInterets(type:type as String, fetchResult:fetchResult!)
                     }
                 }
             } catch {
@@ -146,7 +146,7 @@ class ParseJson: NSObject {
                         castedManagedObject.prix_salle = dicoField["prix_salle"] as! String?
                         castedManagedObject.nom_du_cafe = dicoField["nom_du_cafe"] as! String?
                         castedManagedObject.adresse = dicoField["adresse"] as! String?
-                        if let dicoGeometry = dic["geometry"] as? Dictionary<String,Any> {
+                        if let dicoGeometry = dic["geometry"] as? Dictionary<String, Any> {
                             let coordo:NSArray = dicoGeometry["coordinates"] as! NSArray
                             castedManagedObject.coordinateX = coordo[1] as! Float
                             castedManagedObject.coordinateY = coordo[0] as! Float
@@ -169,7 +169,7 @@ class ParseJson: NSObject {
         container.performBackgroundTask() { (context) in
             for dic  in tabBelibs  {
                 let recordid = dic["recordid"] as! String
-                var dicoField = dic["fields"] as! Dictionary<String,Any>
+                var dicoField = dic["fields"] as! Dictionary<String, Any>
                 let myManagedObject:NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Belibs" as String, into:context )
                 if (myManagedObject?.entity.name == "Belibs") {
                     if let castedManagedObject = myManagedObject as? Belibs {
@@ -182,7 +182,7 @@ class ParseJson: NSObject {
                         castedManagedObject.static_nbstations = dicoField["static_nbstations"] as! Int16
                         castedManagedObject.static_opening_247 = dicoField["static_opening_247"] as! String?
                         castedManagedObject.status_available = dicoField["status_available"] as! String?
-                        if let dicoGeometry = dic["geometry"] as? Dictionary<String,Any> {
+                        if let dicoGeometry = dic["geometry"] as? Dictionary<String, Any> {
                             let coordo:NSArray = dicoGeometry["coordinates"] as! NSArray
                             castedManagedObject.coordinateX = coordo[1] as! Float
                             castedManagedObject.coordinateY = coordo[0] as! Float
@@ -205,7 +205,7 @@ class ParseJson: NSObject {
         container.performBackgroundTask() { (context) in
             for dic  in tabFontaines  {
                 let recordid = dic["recordid"] as! String
-                var dicoField = dic["fields"] as! Dictionary<String,Any>
+                var dicoField = dic["fields"] as! Dictionary<String, Any>
                 let myManagedObject:NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Fontaines" as String, into:context )
                 if (myManagedObject?.entity.name == "Fontaines") {
                     if let castedManagedObject = myManagedObject as? Fontaines {
@@ -216,7 +216,7 @@ class ParseJson: NSObject {
                         castedManagedObject.modele = dicoField["modele"] as! String?
                         castedManagedObject.en_service = dicoField["en_service"] as! String?
                         castedManagedObject.ouv_hiver = dicoField["ouv_hiver"] as! String?
-                        let dicoGeometry = dic["geometry"] as! Dictionary<String,Any>
+                        let dicoGeometry = dic["geometry"] as! Dictionary<String, Any>
                         let coordo:NSArray = dicoGeometry["coordinates"] as! NSArray
                         castedManagedObject.coordinateX = coordo[1] as! Float
                         castedManagedObject.coordinateY = coordo[0] as! Float
@@ -238,7 +238,7 @@ class ParseJson: NSObject {
         container.performBackgroundTask() { (context) in
             for dic  in tabCapotes  {
                 let recordid = dic["recordid"] as! String
-                var dicoField = dic["fields"] as! Dictionary<String,Any>
+                var dicoField = dic["fields"] as! Dictionary<String, Any>
                 let myManagedObject:NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Capotes" as String, into:context )
                 if (myManagedObject?.entity.name == "Capotes") {
                     if let castedManagedObject = myManagedObject as? Capotes {
@@ -249,7 +249,7 @@ class ParseJson: NSObject {
                         castedManagedObject.horairesHiver = dicoField["horaires_vacances_hiver"] as! String?
                         castedManagedObject.horairesNormales = dicoField["horaires_normal"] as! String?
                         castedManagedObject.site = dicoField["site"] as! String?
-                        let dicoGeometry = dic["geometry"] as! Dictionary<String,Any>
+                        let dicoGeometry = dic["geometry"] as! Dictionary<String, Any>
                         let coordo:NSArray = dicoGeometry["coordinates"] as! NSArray
                         castedManagedObject.coordinateX = coordo[1] as! Float
                         castedManagedObject.coordinateY = coordo[0] as! Float
@@ -304,7 +304,7 @@ class ParseJson: NSObject {
         container.performBackgroundTask() { (context) in
             
             for dic  in tabSanisettes  {
-                var dicoField = dic["fields"] as! Dictionary<String,Any>
+                var dicoField = dic["fields"] as! Dictionary<String, Any>
                 let myManagedObject:NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Sanisettes" as String, into:context )
                 if (myManagedObject?.entity.name == "Sanisettes") {
                     if let castedManagedObject = myManagedObject as? Sanisettes {
@@ -312,7 +312,7 @@ class ParseJson: NSObject {
                         castedManagedObject.horaires_ouverture =  dicoField["horaires_ouverture"] as! String?
                         castedManagedObject.numero_voie =  dicoField["numero_voie"] as! String?
                         castedManagedObject.arrondissement = dicoField["arrondissement"]      as! String?
-                        let dicoGeometry = dic["geometry"] as! Dictionary<String,Any>
+                        let dicoGeometry = dic["geometry"] as! Dictionary<String, Any>
                         let coordo:NSArray = dicoGeometry["coordinates"] as! NSArray
                         castedManagedObject.coordinateX = coordo[1] as! Float
                         castedManagedObject.coordinateY = coordo[0] as! Float
@@ -386,7 +386,7 @@ class ParseJson: NSObject {
                         castedManagedObject.hauteurenm = dicoField["hauteurenm"] as! Float
                         castedManagedObject.circonferenceencm = dicoField["circonferenceencm"] as! Float
                         
-                        let dicoGeometry = dic["geometry"] as! Dictionary<String,Any>
+                        let dicoGeometry = dic["geometry"] as! Dictionary<String, Any>
                         castedManagedObject.type = dicoGeometry["type"] as? String
                         let coordo:NSArray = dicoGeometry["coordinates"] as! NSArray
                         castedManagedObject.coordinateX = coordo[1] as! Float
@@ -490,7 +490,7 @@ class ParseJson: NSObject {
     }
     
     //MARK:type manager
-    func updateArrayInterets(type:String , fetchResult:NSArray) {
+    func updateArrayInterets(type:String, fetchResult:NSArray) {
         switch type {
         case "Velib":
             Constants.MANAGER_DATA.tableauVelib = NSMutableArray(array:fetchResult)
@@ -515,7 +515,7 @@ class ParseJson: NSObject {
     }
     
     func idKeySort(type:String) -> NSDictionary {
-        let dico:Dictionary<String,Any>
+        let dico:Dictionary<String, Any>
         switch type {
         case "Velib":
             dico = ["idKey" : "number", "sort" : true]
