@@ -12,8 +12,8 @@ import UIKit
 struct Constants {
 
     //MARK:Singletons
-    static let MANAGER_DATA = DataProvider()
-    static let MANAGED_OBJECT_CONTEXT = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    static let MANAGERDATA = DataProvider()
+    static let MANAGEDOBJECTCONTEXT = (UIApplication.shared.delegate as? AppDelegate).persistentContainer.viewContext
     
     //MARK:URLs
     static let urlArbres = "https://opendata.paris.fr/api/records/1.0/search/?dataset=arbresremarquablesparis2011&rows=500&facet=genre&facet=espece"
@@ -77,7 +77,6 @@ struct Constants {
             "property": "ouv_hiver"
             ]
     ]
-    
     static let  tabDetailArbre = [
         [
             "title": "Nom commun",
