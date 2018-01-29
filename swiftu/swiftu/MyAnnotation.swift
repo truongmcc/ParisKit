@@ -28,11 +28,11 @@ class MyAnnotation : NSObject, MKAnnotation {
         self.coordinate = coord
         self.tag = Constants.INTERETS.VELIB
         self.number = String(format:"%d",velib.number)
-        var title = velib.name!
+        let title = velib.name!
         let index2 = title.range(of: "-")?.lowerBound
-        title = title.substring(from: index2!)
-        title.remove(at: title.startIndex)
-        self.title = title;
+        var subString = title[index2!...]
+        subString.remove(at: subString.startIndex)
+        self.title = String(subString)
         super.init()
     }
     
@@ -124,60 +124,64 @@ class MyAnnotation : NSObject, MKAnnotation {
     }
     
     //MARK: méthode de classe
-    class func addAnntotation(tag:Int, tableau:NSMutableArray,laMap:MKMapView) {
+    class func addAnntotation(tag:Int, tableau:[AnyObject],laMap:MKMapView) {
         var annotation:MyAnnotation
         if tag == Constants.INTERETS.VELIB {
-            for velib in tableau {
-                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees((velib as? Velib)!.latitude),CLLocationDegrees((velib as? Velib).longitude));
-                annotation = MyAnnotation(location: coord, velib:(velib as? Velib)!)
-                laMap.addAnnotation(annotation)
+            for velib:Velib in tableau as! [Velib] {
+                let coord:CLLocationCoordinate2D? = CLLocationCoordinate2DMake (CLLocationDegrees(velib.latitude), CLLocationDegrees(velib.longitude))
+                if coord != nil {
+                    annotation = MyAnnotation(location: coord!, velib:velib)
+                    laMap.addAnnotation(annotation)
+                }
             }
         } else if tag == Constants.INTERETS.AUTOLIB {
-            for autolib in tableau {
-                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees((autolib as? AutoLib).coordinateX),CLLocationDegrees((autolib as? AutoLib).coordinateY))
-                annotation = MyAnnotation(location:coord, autolib:(autolib as? AutoLib)!)
-                laMap.addAnnotation(annotation)
+            for autolib: AutoLib in tableau as! [AutoLib]{
+                let coord:CLLocationCoordinate2D? = CLLocationCoordinate2DMake (CLLocationDegrees(autolib.coordinateX), CLLocationDegrees(autolib.coordinateY))
+                if coord != nil {
+                    annotation = MyAnnotation(location:coord!, autolib:autolib)
+                    laMap.addAnnotation(annotation)
+                }
             }
         } else if tag == Constants.INTERETS.ARBRE {
-            for arbre in tableau {
-                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees((arbre as? Arbres)!.coordinateX),CLLocationDegrees((arbre as? Arbres).coordinateY));
-                annotation = MyAnnotation(location:coord, arbre:arbre as? Arbres)
+            for arbre: Arbres in tableau as! [Arbres] {
+                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees((arbre).coordinateX),CLLocationDegrees((arbre).coordinateY));
+                annotation = MyAnnotation(location:coord, arbre:arbre)
                 laMap.addAnnotation(annotation)
             }
         } else if tag == Constants.INTERETS.SANISETTES {
-            for sanisette in tableau {
-                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees((sanisette as? Sanisettes).coordinateX),CLLocationDegrees((sanisette as? Sanisettes).coordinateY))
-                annotation = MyAnnotation(location:coord, sanisette:sanisette as? Sanisettes)
+            for sanisette: Sanisettes in tableau as! [Sanisettes] {
+                let coord: CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees(sanisette.coordinateX), CLLocationDegrees(sanisette.coordinateY))
+                annotation = MyAnnotation(location:coord, sanisette:sanisette)
                 laMap.addAnnotation(annotation)
             }
         } else if tag == Constants.INTERETS.TAXIS {
-            for taxi in tableau {
-                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees((taxi as? Taxis).coordX),CLLocationDegrees((taxi as? Taxis).coordY));
-                annotation = MyAnnotation(location:coord, taxi:taxi as? Taxis)
+            for taxi:Taxis in tableau as! [Taxis] {
+                let coord: CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees(taxi.coordX), CLLocationDegrees(taxi.coordY))
+                annotation = MyAnnotation(location:coord, taxi:taxi)
                 laMap.addAnnotation(annotation)
             }
         } else if tag == Constants.INTERETS.CAPOTES {
-            for capote in tableau {
-                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees((capote as? Capotes).coordinateX),CLLocationDegrees((capote as? Capotes).coordinateY));
-                annotation = MyAnnotation(location:coord, capote:capote as? Capotes)
+            for capote: Capotes in tableau as! [Capotes] {
+                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees(capote.coordinateX),CLLocationDegrees(capote.coordinateY))
+                annotation = MyAnnotation(location:coord, capote:capote)
                 laMap.addAnnotation(annotation)
             }
         } else if tag == Constants.INTERETS.FONTAINE {
-            for fontaine in tableau {
-                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees((fontaine as? Fontaines).coordinateX),CLLocationDegrees((fontaine as? Fontaines).coordinateY));
-                annotation = MyAnnotation(location:coord, fontaine:fontaine as? Fontaines)
+            for fontaine:Fontaines in tableau as! [Fontaines]{
+                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees(fontaine.coordinateX),CLLocationDegrees(fontaine.coordinateY))
+                annotation = MyAnnotation(location:coord, fontaine:fontaine)
                 laMap.addAnnotation(annotation)
             }
         } else if tag == Constants.INTERETS.BELIB {
-            for belib in tableau {
-                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees((belib as? Belibs).coordinateX),CLLocationDegrees((belib as? Belibs).coordinateY));
-                annotation = MyAnnotation(location:coord, belib:belib as? Belibs)
+            for belib: Belibs in tableau as! [Belibs] {
+                let coord: CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees(belib.coordinateX), CLLocationDegrees(belib.coordinateY))
+                annotation = MyAnnotation(location: coord, belib: belib)
                 laMap.addAnnotation(annotation)
             }
         } else if tag == Constants.INTERETS.CAFE {
-            for cafe in tableau {
-                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees((cafe as? Cafes).coordinateX),CLLocationDegrees((cafe as? Cafes).coordinateY));
-                annotation = MyAnnotation(location:coord, cafe:cafe as? Cafes)
+            for cafe: Cafes in tableau as! [Cafes] {
+                let coord:CLLocationCoordinate2D = CLLocationCoordinate2DMake (CLLocationDegrees(cafe.coordinateX), CLLocationDegrees(cafe.coordinateY))
+                annotation = MyAnnotation(location: coord, cafe:cafe)
                 laMap.addAnnotation(annotation)
             }
         }

@@ -16,7 +16,7 @@ class ParseJson: NSObject {
         NSLog("parse file data %@",type)
         var fetchResult:NSArray?
         let dicoSort:NSDictionary = idKeySort(type: type as String)
-        fetchResult = Constants.MANAGER_DATA.resultFromSelectWithEntity(nomEntity: type as String, idKey: dicoSort["idKey"] as? String, bSort:dicoSort["sort"] as? Bool, bSave: false)
+        fetchResult = Constants.MANAGERDATA.resultFromSelectWithEntity(nomEntity: type as String, idKey: (dicoSort["idKey"] as? String)!, bSort:(dicoSort["sort"] as? Bool)!, bSave: false)
         do {
             
             let dicoJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
@@ -24,10 +24,10 @@ class ParseJson: NSObject {
             {
                 if ((fetchResult?.count)! < listeServices.count){
                     let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: type as String)
-                    if let result = try? Constants.MANAGED_OBJECT_CONTEXT.fetch(fetchRequest) {
+                    if let result = try? Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest) {
                         // --> suppression de la table s'il y a plus de data dans le json que dans la table
-                        for object in result {
-                            Constants.MANAGED_OBJECT_CONTEXT.delete(object as? NSManagedObject)
+                        for object in result! {
+                            Constants.MANAGEDOBJECTCONTEXT?.delete((object as? NSManagedObject)!)
                         }
                         // <--
                         let typeFromDico = Constants.dicoType[type as String]!
@@ -38,7 +38,7 @@ class ParseJson: NSObject {
                         }
                     }
                 } else {
-                    updateArrayInterets(type:type as String, fetchResult:fetchResult!)
+                    updateArrayInterets(type:type as String, fetchResult:fetchResult! as Array<AnyObject>)
                 }
             }
         } catch {
@@ -55,9 +55,9 @@ class ParseJson: NSObject {
             
             if (type == "Velib") {
                 let dico = json as NSDictionary
-                message = String.localizedStringWithFormat("Attaches disponibles: %@ ", dico.object(forKey:"available_bike_stands") as? CVarArg) as String
+                message = String.localizedStringWithFormat("Attaches disponibles: %@ ", (dico.object(forKey:"available_bike_stands") as? CVarArg)!) as String
                 message = message.appending(String.localizedStringWithFormat("velibs disponibles: %@",
-                                                                             dico.object(forKey: "available_bikes") as? CVarArg) as String)
+                                                                             (dico.object(forKey: "available_bikes") as? CVarArg)!) as String)
             } else if (type == "AutoLib") {
                 if let listeDisponibilites = json["records"] as? [[String:AnyObject]]
                 {
@@ -65,7 +65,7 @@ class ParseJson: NSObject {
                     let fields = dicoFields["fields"]
                     let slots = (fields?["slots"] as? Int16?)!
                     let cars = (fields?["cars"] as? Int16?)!
-                    message = String.init(format: "%d voiture(s) restante(s) et %d place(s) libre(s)", cars, slots)
+                    message = String.init(format: "%d voiture(s) restante(s) et %d place(s) libre(s)", cars!, slots!)
                 }
             } else if (type == "Belibs") {
                 if let datas = json["records"] as? [[String:AnyObject]]
@@ -93,7 +93,7 @@ class ParseJson: NSObject {
     func parseFileWithType(type:String) {
         let fetchResult:NSArray?
         let dicoSort:NSDictionary = idKeySort(type: type as String)
-        fetchResult = Constants.MANAGER_DATA.resultFromSelectWithEntity(nomEntity: type as String, idKey: dicoSort["idKey"] as? String, bSort:dicoSort["sort"] as? Bool, bSave: false)
+        fetchResult = Constants.MANAGERDATA.resultFromSelectWithEntity(nomEntity: type as String, idKey: dicoSort["idKey"] as? String, bSort:(dicoSort["sort"] as? Bool)!, bSave: false)
         let filePath = self.filePath(type: type as String)
         if let dataJson = try? Data(contentsOf:URL(fileURLWithPath:filePath)) {
             do {
@@ -103,9 +103,9 @@ class ParseJson: NSObject {
                     // voir s'il faut remettre à jour la table
                     if ((fetchResult?.count)! < jsonObj.count){
                         let fetchRequest:NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: type as String)
-                        if let result = try? Constants.MANAGED_OBJECT_CONTEXT.fetch(fetchRequest) {
-                            for object in result {
-                                Constants.MANAGED_OBJECT_CONTEXT.delete(object as? NSManagedObject)
+                        if let result = try? Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest) {
+                            for object in result! {
+                                Constants.MANAGEDOBJECTCONTEXT.delete(object as? NSManagedObject)
                             }
                             let typeFromDico = Constants.dicoType[type as String]!
                             let typeForSelector = String(format: "%@JsonManager:", typeFromDico)
@@ -152,7 +152,7 @@ class ParseJson: NSObject {
             }
             do {
                 try context.save()
-                Constants.MANAGER_DATA.tableauCafes = Constants.MANAGER_DATA.updateArrayEntity(nomEntity:"Cafes" as String)
+                Constants.MANAGERDATA.tableauCafes = Constants.MANAGERDATA.updateArrayEntity(nomEntity:"Cafes" as String)
                 
             } catch _ {
                 fatalError("Failure to save context")
@@ -187,7 +187,7 @@ class ParseJson: NSObject {
             }
             do {
                 try context.save()
-                Constants.MANAGER_DATA.tableauBelibs = Constants.MANAGER_DATA.updateArrayEntity(nomEntity:"Belibs" as String)
+                Constants.MANAGERDATA.tableauBelibs = Constants.MANAGERDATA.updateArrayEntity(nomEntity:"Belibs" as String)
             } catch _ {
                 fatalError("Failure to save context")
             }
@@ -218,7 +218,7 @@ class ParseJson: NSObject {
             }
             do {
                 try context.save()
-                Constants.MANAGER_DATA.tableauFontaines = Constants.MANAGER_DATA.updateArrayEntity(nomEntity:"Fontaines" as String)
+                Constants.MANAGERDATA.tableauFontaines = Constants.MANAGERDATA.updateArrayEntity(nomEntity:"Fontaines" as String)
                 
             } catch _ {
                 fatalError("Failure to save context")
@@ -251,7 +251,7 @@ class ParseJson: NSObject {
             }
             do {
                 try context.save()
-                Constants.MANAGER_DATA.tableauCapotes = Constants.MANAGER_DATA.updateArrayEntity(nomEntity:"Capotes" as String)
+                Constants.MANAGERDATA.tableauCapotes = Constants.MANAGERDATA.updateArrayEntity(nomEntity:"Capotes" as String)
                 
             } catch _ {
                 fatalError("Failure to save context")
@@ -314,7 +314,7 @@ class ParseJson: NSObject {
             }
             do {
                 try context.save()
-                Constants.MANAGER_DATA.tableauSanisettes = Constants.MANAGER_DATA.updateArrayEntity(nomEntity:"Sanisettes" as String)
+                Constants.MANAGERDATA.tableauSanisettes = Constants.MANAGERDATA.updateArrayEntity(nomEntity:"Sanisettes" as String)
                 
             } catch _ {
                 fatalError("Failure to save context")
@@ -356,8 +356,8 @@ class ParseJson: NSObject {
      //             }
      //             */
     func arbresJsonManager(_ tabArbres:[AnyObject]) {
-        let container = (UIApplication.shared.delegate as? AppDelegate).persistentContainer
-        container.performBackgroundTask() { (context) in
+        let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+        container?.performBackgroundTask() { (context) in
             
             for dic in tabArbres  {
                 let recordid = dic["recordid"] as? String
@@ -365,10 +365,10 @@ class ParseJson: NSObject {
                 let myManagedObject:NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Arbres" as String, into:context )
                 if (myManagedObject?.entity.name == "Arbres") {
                     if let castedManagedObject = myManagedObject as? Arbres {
-                        castedManagedObject.dateplantation =  dicoField["dateplantation"] as? String?
+                        castedManagedObject.dateplantation =  (dicoField!["dateplantation"] as? String?)!
                
                         castedManagedObject.recordid = recordid
-                        castedManagedObject.adresse = dicoField["adresse"]      as? String?
+                        castedManagedObject.adresse = dicoField!["adresse"]      as? String?
                         castedManagedObject.espece = dicoField["espece"]        as? String?
                         castedManagedObject.arrondisse = dicoField["arrondisse"] as? String?
                         castedManagedObject.famille = dicoField["famille"] as? String?
@@ -381,15 +381,16 @@ class ParseJson: NSObject {
                         
                         let dicoGeometry = dic["geometry"] as? Dictionary<String, Any>
                         castedManagedObject.type = dicoGeometry["type"] as? String
-                        let coordo:NSArray = dicoGeometry["coordinates"] as? NSArray
-                        castedManagedObject.coordinateX = coordo[1] as? Float
-                        castedManagedObject.coordinateY = coordo[0] as? Float
+                        if let coord:[Float] = dicoGeometry?["coordinates"] as? [Float] {
+                            castedManagedObject.coordinateY = coord[0]
+                            castedManagedObject.coordinateX = coord[1]
+                        }
                     }
                 }
             }
             do {
                 try context.save()
-                Constants.MANAGER_DATA.tableauArbres = Constants.MANAGER_DATA.updateArrayEntity(nomEntity:"Arbres" as String)
+                Constants.MANAGERDATA.tableauArbres = Constants.MANAGERDATA.updateArrayEntity(nomEntity:"Arbres" as String)
                 
             } catch _ {
                 fatalError("Failure to save context")
@@ -399,7 +400,7 @@ class ParseJson: NSObject {
     
     func velibJsonManager(_ jsonObj:[[String:AnyObject]]) {
         for dataDict in jsonObj {
-            let myManageObject:NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Velib" as String, into:Constants.MANAGED_OBJECT_CONTEXT )
+            let myManageObject:NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Velib" as String, into:Constants.MANAGEDOBJECTCONTEXT )
             if (myManageObject?.entity.name == "Velib") {
                 if let castedManageObject = myManageObject as? Velib {
                     castedManageObject.name = dataDict["name"] as? String?
@@ -409,7 +410,7 @@ class ParseJson: NSObject {
                     castedManageObject.longitude = (dataDict["longitude"] as? Float?)!
                     do {
                         try castedManageObject.managedObjectContext?.save()
-                        Constants.MANAGER_DATA.tableauVelib = Constants.MANAGER_DATA.updateArrayEntity(nomEntity:"Velib" as String)
+                        Constants.MANAGERDATA.tableauVelib = Constants.MANAGERDATA.updateArrayEntity(nomEntity:"Velib") as! [String] as [AnyObject]
                         
                     } catch _ {
                         fatalError("Failure to save context")
@@ -421,19 +422,20 @@ class ParseJson: NSObject {
     
     func autolibJsonManager(_ jsonObj:[[String:AnyObject]]) {
         let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        privateMOC.parent = Constants.MANAGED_OBJECT_CONTEXT
+        privateMOC.parent = Constants.MANAGEDOBJECTCONTEXT
         privateMOC.perform {
             for dataDict in jsonObj {
                 
                 let myManageObject:NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "AutoLib" as String, into:privateMOC )
                 if (myManageObject?.entity.name == "AutoLib") {
-                    if let castedManageObject = myManageObject as? AutoLib {
+                    if let castedManageObject:AutoLib = myManageObject as? AutoLib {
                         let dicoGeometry=dataDict["geometry"]
-                        let coord:NSArray = dicoGeometry?["coordinates"] as? NSArray
                         let dicoFields = dataDict["fields"]
                         castedManageObject.id = (dicoFields?["id"] as? String?)!
-                        castedManageObject.coordinateY = (coord[0] as? Float)
-                        castedManageObject.coordinateX = (coord[1] as? Float)
+                        if let coord:[Float] = dicoGeometry?["coordinates"] as? [Float] {
+                            castedManageObject.coordinateY = coord[0]
+                            castedManageObject.coordinateX = coord[1]
+                        }
                         castedManageObject.address = (dicoFields?["address"] as? String?)!
                         castedManageObject.postal_code = (dicoFields?["postal_code"] as? String?)!
                         castedManageObject.public_name = (dicoFields?["public_name"] as? String?)!
@@ -442,10 +444,10 @@ class ParseJson: NSObject {
             }
             do {
                 try privateMOC.save()
-                Constants.MANAGED_OBJECT_CONTEXT.performAndWait {
+                Constants.MANAGEDOBJECTCONTEXT?.performAndWait {
                     do {
-                        try Constants.MANAGED_OBJECT_CONTEXT.save()
-                        Constants.MANAGER_DATA.tableauAutolib = Constants.MANAGER_DATA.updateArrayEntity(nomEntity:"AutoLib" as String)
+                        try Constants.MANAGEDOBJECTCONTEXT.save()
+                        Constants.MANAGERDATA.tableauAutolib = Constants.MANAGERDATA.updateArrayEntity(nomEntity:"AutoLib" as String)
                     } catch {
                         fatalError("Failure to save context: \(error)")
                     }
@@ -458,22 +460,22 @@ class ParseJson: NSObject {
     
     func taxiJsonManager(_ jsonObj:[[String:AnyObject]]) {
         for dataDict in jsonObj {
-            let myManageObject:NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Taxis" as String, into:Constants.MANAGED_OBJECT_CONTEXT )
+            let myManageObject:NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Taxis" as String, into:(Constants.MANAGEDOBJECTCONTEXT)!)
             if (myManageObject?.entity.name == "Taxis") {
                 if let castedManageObject = myManageObject as? Taxis {
                     
                     let dicoGeometry=dataDict["geometry"]
-                    let coord:NSArray = dicoGeometry?["coordinates"] as? NSArray
-                    
                     let dicoFields = dataDict["fields"]
-                    castedManageObject.coordY = (coord[0] as? Float)
-                    castedManageObject.coordX = (coord[1] as? Float)
+                    if let coord:[Float] = dicoGeometry?["coordinates"] as? [Float] {
+                        castedManageObject.coordY = coord[0]
+                        castedManageObject.coordX = coord[1]
+                    }
                     castedManageObject.station_name = (dicoFields?["station_name"] as? String?)!
                     castedManageObject.address = (dicoFields?["address"] as? String?)!
                     castedManageObject.zip_code = (dicoFields?["zip_code"] as? String?)!
                     do {
                         try castedManageObject.managedObjectContext?.save()
-                        Constants.MANAGER_DATA.tableauTaxis = Constants.MANAGER_DATA.updateArrayEntity(nomEntity:"Taxis" as String)
+                        Constants.MANAGERDATA.tableauTaxis = Constants.MANAGERDATA.updateArrayEntity(nomEntity:"Taxis" as String) as [AnyObject]
                     } catch _ {
                         fatalError("Failure to save context")
                     }
@@ -483,26 +485,26 @@ class ParseJson: NSObject {
     }
     
     //MARK:type manager
-    func updateArrayInterets(type:String, fetchResult:NSArray) {
+    func updateArrayInterets(type:String, fetchResult:Array<AnyObject>) {
         switch type {
         case "Velib":
-            Constants.MANAGER_DATA.tableauVelib = NSMutableArray(array:fetchResult)
+            Constants.MANAGERDATA.tableauVelib = fetchResult as [AnyObject]
         case "AutoLib":
-            Constants.MANAGER_DATA.tableauAutolib = NSMutableArray(array:fetchResult)
+            Constants.MANAGERDATA.tableauAutolib = fetchResult as [AnyObject]
         case "Taxis":
-            Constants.MANAGER_DATA.tableauTaxis = NSMutableArray(array:fetchResult)
+            Constants.MANAGERDATA.tableauTaxis = fetchResult as [AnyObject]
         case "Arbres":
-            Constants.MANAGER_DATA.tableauArbres = NSMutableArray(array:fetchResult)
+            Constants.MANAGERDATA.tableauArbres = fetchResult as [AnyObject]
         case "Sanisettes":
-            Constants.MANAGER_DATA.tableauSanisettes = NSMutableArray(array:fetchResult)
+            Constants.MANAGERDATA.tableauSanisettes = fetchResult as [AnyObject]
         case "Capotes":
-            Constants.MANAGER_DATA.tableauCapotes = NSMutableArray(array:fetchResult)
+            Constants.MANAGERDATA.tableauCapotes = fetchResult as [AnyObject]
         case "Fontaines":
-            Constants.MANAGER_DATA.tableauFontaines = NSMutableArray(array:fetchResult)
+            Constants.MANAGERDATA.tableauFontaines = fetchResult as [AnyObject]
         case "Belibs":
-            Constants.MANAGER_DATA.tableauBelibs = NSMutableArray(array:fetchResult)
+            Constants.MANAGERDATA.tableauBelibs = fetchResult as [AnyObject]
         case "Cafes":
-            Constants.MANAGER_DATA.tableauCafes = NSMutableArray(array:fetchResult)
+            Constants.MANAGERDATA.tableauCafes = fetchResult as [AnyObject]
         default: break
         }
     }

@@ -54,8 +54,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         //<--
 
         // from bundle
-        Constants.MANAGER_DATA.parser?.parseFileWithType(type: "Velib")
-        Constants.MANAGER_DATA.parser?.parseFileWithType(type: "Taxis")
+        Constants.MANAGERDATA.parser?.parseFileWithType(type: "Velib")
+        Constants.MANAGERDATA.parser?.parseFileWithType(type: "Taxis")
         // from url
         self.monDownloader.dataFromUrl(url: Constants.urlAutolib, type: "AutoLib")
         self.monDownloader.dataFromUrl(url: Constants.urlArbres, type: "Arbres")
@@ -69,13 +69,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     @objc func parseFromNotif(notification: Notification) {
         if let type = notification.userInfo?["type"] {
             NSLog("parseFromNotif %@", type as? String)
-            Constants.MANAGER_DATA.parser?.parse(data: self.monDownloader.data, type: type as? String)
+            Constants.MANAGERDATA.parser?.parse(data: self.monDownloader.data, type: type as? String)
         }
     }
     @objc func dynamicParseFromNotif(notification: Notification) {
         if let type = notification.userInfo?["type"] {
             NSLog("dynamicParseFromNotif %@", type as? String)
-            self.dynamicMessage = Constants.MANAGER_DATA.parser?.dynamicParse(data: self.monDownloader.data, type: type as? String)
+            self.dynamicMessage = Constants.MANAGERDATA.parser?.dynamicParse(data: self.monDownloader.data, type: type as? String)
         }
     }
     // MARK: User Location
@@ -106,30 +106,47 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
-        let selectedButton: UIBarButtonItem = self.retournerBoutonService(sender: sender as? UIBarButtonItem)
-        if selectedButton.tintColor == UIColor.black {
-            selectedButton.tintColor = UIColor.blue
-            MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau!, laMap: self.laMap)
-        } else {
-            selectedButton.tintColor = UIColor.black
-        }
-        let allBarButtonItems = barItem.items
-        for buttonItem in allBarButtonItems! {
-            if buttonItem != selectedButton {
-                buttonItem.tintColor = UIColor.black
+        
+        if let selectedButton: UIBarButtonItem = self.retournerBoutonService(sender: (sender as? UIBarButtonItem)!) {
+            if selectedButton.tintColor == UIColor.black {
+                selectedButton.tintColor = UIColor.blue
+                MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau!, laMap: self.laMap)
+            } else {
+                selectedButton.tintColor = UIColor.black
+            }
+            let allBarButtonItems = barItem.items
+            for buttonItem in allBarButtonItems! {
+                if buttonItem != selectedButton {
+                    buttonItem.tintColor = UIColor.black
+                }
             }
         }
+        
+        
+//        let selectedButton: UIBarButtonItem = self.retournerBoutonService(sender: (sender as? UIBarButtonItem)!)
+//        if selectedButton.tintColor == UIColor.black {
+//            selectedButton.tintColor = UIColor.blue
+//            MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau!, laMap: self.laMap)
+//        } else {
+//            selectedButton.tintColor = UIColor.black
+//        }
+//        let allBarButtonItems = barItem.items
+//        for buttonItem in allBarButtonItems! {
+//            if buttonItem != selectedButton {
+//                buttonItem.tintColor = UIColor.black
+//            }
+//        }
     }
-    func retournerBoutonService(sender: UIBarButtonItem) -> UIBarButtonItem {
+    func retournerBoutonService(sender: UIBarButtonItem) -> UIBarButtonItem? {
         if sender == butVelib {
             tagAnno = Constants.INTERETS.VELIB
-            tableau = Constants.MANAGER_DATA.tableauVelib
+            tableau = Constants.MANAGERDATA.tableauVelib
         } else if sender == butAutolib {
             tagAnno = Constants.INTERETS.AUTOLIB
-            tableau = Constants.MANAGER_DATA.tableauAutolib!
+            tableau = Constants.MANAGERDATA.tableauAutolib!
         } else if sender == butTaxi {
             tagAnno = Constants.INTERETS.TAXIS
-            tableau = Constants.MANAGER_DATA.tableauTaxis!
+            tableau = Constants.MANAGERDATA.tableauTaxis!
         }
         return sender
     }
@@ -176,8 +193,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             return
         }
         // -> récupération du tag (utilisation du cast)
-        let annotationCustom = view.annotation as? MyAnnotation
-        annotationCustom.prepareForInterfaceBuilder()
+        let annotationCustom:MyAnnotation! = view.annotation as? MyAnnotation
+        annotationCustom?.prepareForInterfaceBuilder()
         let lcTag: Int = annotationCustom.tag!
        // let reuseId = "pin"
         if lcTag == Constants.INTERETS.VELIB {
@@ -216,7 +233,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let detailViewController = storyboard.instantiateViewController(withIdentifier : "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = Constants.MANAGER_DATA.selectRecordFromEntity(nomEntity: "Arbres", field: "recordid",value: annotationCustom.id!)
+            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Arbres", field: "recordid",value: annotationCustom.id!)
             let  arbre: Arbres = result.firstObject as? Arbres
             detailViewController.service = arbre
             detailViewController.adresse = arbre.adresse
@@ -230,7 +247,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let detailViewController = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = Constants.MANAGER_DATA.selectRecordFromEntity(nomEntity: "Capotes", field: "recordid",value: annotationCustom.id!)
+            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Capotes", field: "recordid",value: annotationCustom.id!)
             let  capote: Capotes = result.firstObject as? Capotes
             detailViewController.service = capote
             detailViewController.adresse = capote.adresse
@@ -244,7 +261,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let detailViewController = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = Constants.MANAGER_DATA.selectRecordFromEntity(nomEntity: "Fontaines", field: "recordid", value: annotationCustom.id!)
+            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Fontaines", field: "recordid", value: annotationCustom.id!)
             let  fontaine: Fontaines = result.firstObject as? Fontaines
             detailViewController.service = fontaine
             detailViewController.adresse = fontaine.adresse
@@ -264,7 +281,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let detailViewController = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = Constants.MANAGER_DATA.selectRecordFromEntity(nomEntity: "Cafes",field: "recordid",value: annotationCustom.id!)
+            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Cafes",field: "recordid",value: annotationCustom.id!)
             let  cafe: Cafes = result.firstObject as? Cafes
             detailViewController.service = cafe
             detailViewController.adresse = cafe.adresse
@@ -301,7 +318,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         }
     }
     func afficherVelib() {
-        ifbutVelib.tintColor == UIColor.black {
+        if butVelib.tintColor == UIColor.black {
             self.afficherService(butVelib)
         }
     }
@@ -312,7 +329,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     func afficherArbres() {
         tagAnno = Constants.INTERETS.ARBRE
-        tableau = Constants.MANAGER_DATA.tableauArbres
+        tableau = Constants.MANAGERDATA.tableauArbres
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -324,7 +341,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     func afficherSanisettes() {
         tagAnno = Constants.INTERETS.SANISETTES
-        tableau = Constants.MANAGER_DATA.tableauSanisettes
+        tableau = Constants.MANAGERDATA.tableauSanisettes
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -336,7 +353,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     func afficherCapotes() {
         tagAnno = Constants.INTERETS.CAPOTES
-        tableau = Constants.MANAGER_DATA.tableauCapotes
+        tableau = Constants.MANAGERDATA.tableauCapotes
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -348,7 +365,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     func afficherFontaines() {
         tagAnno = Constants.INTERETS.FONTAINE
-        tableau = Constants.MANAGER_DATA.tableauFontaines
+        tableau = Constants.MANAGERDATA.tableauFontaines
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -360,7 +377,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     func afficherBelibs() {
         tagAnno = Constants.INTERETS.BELIB
-        tableau = Constants.MANAGER_DATA.tableauBelibs
+        tableau = Constants.MANAGERDATA.tableauBelibs
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -372,7 +389,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     func afficherCafes() {
         tagAnno = Constants.INTERETS.CAFE
-        tableau = Constants.MANAGER_DATA.tableauCafes
+        tableau = Constants.MANAGERDATA.tableauCafes
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }

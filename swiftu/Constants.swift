@@ -13,7 +13,7 @@ struct Constants {
 
     //MARK:Singletons
     static let MANAGERDATA = DataProvider()
-    static let MANAGEDOBJECTCONTEXT = (UIApplication.shared.delegate as? AppDelegate).persistentContainer.viewContext
+    static let MANAGEDOBJECTCONTEXT = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     
     //MARK:URLs
     static let urlArbres = "https://opendata.paris.fr/api/records/1.0/search/?dataset=arbresremarquablesparis2011&rows=500&facet=genre&facet=espece"

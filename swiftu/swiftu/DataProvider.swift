@@ -20,17 +20,15 @@ class DataProvider {
         //static let instance = DataProvider()
 
     
-    var tableauVelib:NSMutableArray? = []
-    var tableauAutolib:NSMutableArray? = []
-    var tableauTaxis:NSMutableArray? = []
-    var tableauArbres:NSMutableArray? = []
-    var tableauSanisettes:NSMutableArray? = []
-    var tableauCapotes:NSMutableArray? = []
-    var tableauFontaines:NSMutableArray? = []
-    var tableauBelibs:NSMutableArray? = []
-    var tableauCafes:NSMutableArray? = []
-    
-    var dicCorrespondanceVelib:NSArray? = []
+    var tableauVelib:[AnyObject]? = []
+    var tableauAutolib:[AnyObject]? = []
+    var tableauTaxis:[AnyObject]? = []
+    var tableauArbres:[AnyObject]? = []
+    var tableauSanisettes:[AnyObject]? = []
+    var tableauCapotes:[AnyObject]? = []
+    var tableauFontaines:[AnyObject]? = []
+    var tableauBelibs:[AnyObject]? = []
+    var tableauCafes:[AnyObject]? = []
     var typeMapKit:Int?
     var parser:ParseJson? = ParseJson.init()
     
@@ -39,7 +37,7 @@ class DataProvider {
         let results:NSMutableArray?
         let resultFetch = NSFetchRequest<NSFetchRequestResult>(entityName: nomEntity)
         do {
-            results = try ((Constants.MANAGED_OBJECT_CONTEXT.execute(resultFetch) as AnyObject as? NSMutableArray))
+            results = try ((Constants.MANAGEDOBJECTCONTEXT?.execute(resultFetch) as AnyObject as? NSMutableArray))
         } catch {
             fatalError("Failed to fetch entities: \(error)")
         }
@@ -55,16 +53,16 @@ class DataProvider {
                 fetchRequest.sortDescriptors = sortDescriptors
             }
             do {
-                let objects = try Constants.MANAGED_OBJECT_CONTEXT.fetch(fetchRequest)
+                let objects = try Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest)
                 if(bSave){
                     do {
-                        try Constants.MANAGED_OBJECT_CONTEXT.save()
+                        try Constants.MANAGEDOBJECTCONTEXT?.save()
                         
                     } catch {
                         fatalError("Failure to save context: \(error)")
                     }
                 }
-                return objects as NSArray
+                return objects! as NSArray
                 
             }
             catch {
@@ -79,8 +77,8 @@ class DataProvider {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName:nomEntity)
             fetchRequest.predicate = NSPredicate(format: "%K == %@",field,value)
             do {
-                let objects = try Constants.MANAGED_OBJECT_CONTEXT.fetch(fetchRequest)
-                return objects as NSArray
+                let objects = try Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest)
+                return objects! as NSArray
             }
             catch {
                 fatalError("Failure to fetch request: \(error)")
@@ -90,11 +88,11 @@ class DataProvider {
     }
 
  
-    func updateArrayEntity(nomEntity: String)->NSMutableArray {
+    func updateArrayEntity(nomEntity: String) -> [AnyObject] {
         let entity = NSFetchRequest<NSFetchRequestResult>(entityName: nomEntity)
         do {
-            let myfetchResult = try Constants.MANAGED_OBJECT_CONTEXT.fetch(entity)
-            return NSMutableArray(array:myfetchResult)
+            let myfetchResult = try Constants.MANAGEDOBJECTCONTEXT?.fetch(entity)
+            return myfetchResult! as [AnyObject]
         } catch {
             fatalError("Failed to fetch \(nomEntity) : \(error)")
         }
