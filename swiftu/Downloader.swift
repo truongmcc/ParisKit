@@ -9,10 +9,8 @@
 import Foundation
 
 class Downloader {
-    
     var data = Data()
-   
-//    func dataFromUrl(url:String,type:String) {
+//    func dataFromUrl(url:String, type:String) {
 //        
 //        let urlString = URL(string: url)
 //        if let url = urlString {
@@ -29,14 +27,11 @@ class Downloader {
 //            task.resume()
 //        }
 //    }
-    
-    
     // Using a semaphore for synchronous request
-    func dataFromUrl(url:String,type:String)  {
-        let myURL = URL(string:url)!
+    func dataFromUrl(url: String, type: String) {
+        let myURL = URL(string: url)!
         var dataStringOrNil: String?
         let semaphore = DispatchSemaphore(value: 0)
-        
         let task = URLSession.shared.dataTask(with: myURL) { (data, response, error) in
             defer {
                 semaphore.signal()
@@ -46,18 +41,18 @@ class Downloader {
                 return
             }
             self.data = data
-            NotificationCenter.default.post(name: Notification.Name("dataContentReceivedNotification"), object: nil, userInfo: ["type":type])
+            NotificationCenter.default.post(name: Notification.Name("dataContentReceivedNotification"),
+                                            object: nil,
+                                            userInfo: ["type":type])
         }
         task.resume()
         semaphore.wait()
     }
-    
     // Using a semaphore for synchronous request
-    func dynamiciDataFromUrl(url:String,type:String) {
-        let myURL = URL(string:url)!
+    func dynamiciDataFromUrl(url: String, type: String) {
+        let myURL = URL(string: url)!
         var dataStringOrNil: String?
         let semaphore = DispatchSemaphore(value: 0)
-        
         let task = URLSession.shared.dataTask(with: myURL) { (data, response, error) in
             defer {
                 semaphore.signal()
@@ -67,11 +62,11 @@ class Downloader {
                 return
             }
             self.data = data
-            NotificationCenter.default.post(name: Notification.Name("dynamicDataContentReceivedNotification"), object: nil, userInfo: ["type":type])
+            NotificationCenter.default.post(name: Notification.Name("dynamicDataContentReceivedNotification"),
+                                            object: nil,
+                                            userInfo: ["type": type])
         }
         task.resume()
         semaphore.wait()
     }
 }
-
-

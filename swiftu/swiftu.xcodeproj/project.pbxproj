@@ -222,6 +222,7 @@
 				EB43BBE11D9FA41100B0E7DE /* Resources */,
 				84BC89D3C68E69F723618239 /* [CP] Embed Pods Frameworks */,
 				5CBA8380890682EC940884F9 /* [CP] Copy Pods Resources */,
+				D93C26E52017A445005E933A /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -286,7 +287,7 @@
 				TargetAttributes = {
 					EB43BBE21D9FA41100B0E7DE = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 8Y8B6GPYMV;
+						DevelopmentTeam = PVN8KMR8MY;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -476,6 +477,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-swiftuTests/Pods-swiftuTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		D93C26E52017A445005E933A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"";
 		};
 		E1E4C7B89A267526F5639B78 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -694,7 +708,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8Y8B6GPYMV;
+				DEVELOPMENT_TEAM = PVN8KMR8MY;
 				GCC_PREFIX_HEADER = "MapKitParis-Prefix.pch";
 				INFOPLIST_FILE = swiftu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -715,7 +729,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8Y8B6GPYMV;
+				DEVELOPMENT_TEAM = PVN8KMR8MY;
 				GCC_PREFIX_HEADER = "MapKitParis-Prefix.pch";
 				INFOPLIST_FILE = swiftu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
