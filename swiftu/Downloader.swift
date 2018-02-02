@@ -32,7 +32,7 @@ class Downloader {
         let myURL = URL(string: url)!
         var dataStringOrNil: String?
         let semaphore = DispatchSemaphore(value: 0)
-        let task = URLSession.shared.dataTask(with: myURL) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: myURL) { (data, _, error) in // _ est le param response
             defer {
                 semaphore.signal()
             }
@@ -43,7 +43,7 @@ class Downloader {
             self.data = data
             NotificationCenter.default.post(name: Notification.Name("dataContentReceivedNotification"),
                                             object: nil,
-                                            userInfo: ["type":type])
+                                            userInfo: ["type": type])
         }
         task.resume()
         semaphore.wait()
@@ -53,7 +53,7 @@ class Downloader {
         let myURL = URL(string: url)!
         var dataStringOrNil: String?
         let semaphore = DispatchSemaphore(value: 0)
-        let task = URLSession.shared.dataTask(with: myURL) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: myURL) { (data, _, error) in // _ est le param response
             defer {
                 semaphore.signal()
             }

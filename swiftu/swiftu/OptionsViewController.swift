@@ -22,7 +22,7 @@ protocol mapKitDelegate: class {
 }
 class OptionsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // MARK: delegate
-    weak var delegate:mapKitDelegate?
+    weak var delegate: mapKitDelegate?
     @IBAction func backToMap(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }

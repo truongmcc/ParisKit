@@ -13,7 +13,7 @@ import CoreData
 extension Velib {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Velib> {
-        return NSFetchRequest<Velib>(entityName: "Velib");
+        return NSFetchRequest<Velib>(entityName: "Velib")
     }
 
     @NSManaged public var adress: String?

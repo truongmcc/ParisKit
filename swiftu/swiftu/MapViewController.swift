@@ -12,7 +12,6 @@ import MapKit
 class MapViewController: UIViewController, UIGestureRecognizerDelegate,
                         CLLocationManagerDelegate,
                         MKMapViewDelegate, mapKitDelegate {
-
     // MARK: IBOutlet
     @IBOutlet weak var butAutolib: UIBarButtonItem!
     @IBOutlet weak var butVelib: UIBarButtonItem!
@@ -28,7 +27,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     // <--
     // MARK: Properties
     var tagAnno: Int?
-    var tableau: NSMutableArray? = []
+    var tableau = [AnyObject]()
     var locationManager = CLLocationManager()
     var monDownloader = Downloader()
     var optionViewController: OptionsViewController?
@@ -65,17 +64,14 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         //self.monDownloader.dataFromUrl(url: Constants.urlBelib, type: "Belibs")
         self.monDownloader.dataFromUrl(url: Constants.urlCafe, type: "Cafes")
     }
-    
     @objc func parseFromNotif(notification: Notification) {
         if let type = notification.userInfo?["type"] {
-            NSLog("parseFromNotif %@", type as? String)
-            Constants.MANAGERDATA.parser?.parse(data: self.monDownloader.data, type: type as? String)
+            Constants.MANAGERDATA.parser?.parse(data: self.monDownloader.data, type: (type as? String)!)
         }
     }
     @objc func dynamicParseFromNotif(notification: Notification) {
         if let type = notification.userInfo?["type"] {
-            NSLog("dynamicParseFromNotif %@", type as? String)
-            self.dynamicMessage = Constants.MANAGERDATA.parser?.dynamicParse(data: self.monDownloader.data, type: type as? String)
+            self.dynamicMessage = Constants.MANAGERDATA.parser?.dynamicParse(data: self.monDownloader.data, type: (type as? String)!)
         }
     }
     // MARK: User Location
@@ -106,23 +102,18 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
-        
         if let selectedButton: UIBarButtonItem = self.retournerBoutonService(sender: (sender as? UIBarButtonItem)!) {
             if selectedButton.tintColor == UIColor.black {
                 selectedButton.tintColor = UIColor.blue
-                MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau!, laMap: self.laMap)
+                MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau as [AnyObject], laMap: self.laMap)
             } else {
                 selectedButton.tintColor = UIColor.black
             }
             let allBarButtonItems = barItem.items
-            for buttonItem in allBarButtonItems! {
-                if buttonItem != selectedButton {
-                    buttonItem.tintColor = UIColor.black
-                }
+            for buttonItem in allBarButtonItems! where buttonItem != selectedButton {
+                buttonItem.tintColor = UIColor.black
             }
         }
-        
-        
 //        let selectedButton: UIBarButtonItem = self.retournerBoutonService(sender: (sender as? UIBarButtonItem)!)
 //        if selectedButton.tintColor == UIColor.black {
 //            selectedButton.tintColor = UIColor.blue
@@ -140,7 +131,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     func retournerBoutonService(sender: UIBarButtonItem) -> UIBarButtonItem? {
         if sender == butVelib {
             tagAnno = Constants.INTERETS.VELIB
-            tableau = Constants.MANAGERDATA.tableauVelib
+            tableau = Constants.MANAGERDATA.tableauVelib!
         } else if sender == butAutolib {
             tagAnno = Constants.INTERETS.AUTOLIB
             tableau = Constants.MANAGERDATA.tableauAutolib!
@@ -154,36 +145,37 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         if annotation is MKUserLocation {
             return nil
         }
-        let annotationCustom: MyAnnotation = annotation as? MyAnnotation
+        let annotationCustom: MyAnnotation = (annotation as? MyAnnotation)!
         let lcTag = annotationCustom.tag
         let pinIdentifier = "annotationId"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: pinIdentifier)
+
         if annotationView == nil {
             annotationView = MKPinAnnotationView.init(annotation: annotation, reuseIdentifier: pinIdentifier)
         } else {
             annotationView?.annotation = annotationCustom
         }
         annotationView?.canShowCallout = true
-        (annotationView as? MKPinAnnotationView).animatesDrop = false
+        (annotationView as? MKPinAnnotationView)?.animatesDrop = false
         annotationView?.isEnabled = true
         if lcTag == Constants.INTERETS.VELIB {
-            (annotationView as? MKPinAnnotationView).pinTintColor = UIColor.lightGray
+            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.lightGray
         } else if lcTag == Constants.INTERETS.AUTOLIB {
-            (annotationView as? MKPinAnnotationView).pinTintColor = UIColor.darkGray
+            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.darkGray
         } else if lcTag == Constants.INTERETS.ARBRE {
-            (annotationView as? MKPinAnnotationView).pinTintColor = UIColor.green
+            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.green
         } else if lcTag == Constants.INTERETS.TAXIS {
-            (annotationView as? MKPinAnnotationView).pinTintColor = UIColor.black
+            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.black
         } else if lcTag == Constants.INTERETS.SANISETTES {
-            (annotationView as? MKPinAnnotationView).pinTintColor = UIColor.yellow
+            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.yellow
         } else if lcTag == Constants.INTERETS.CAPOTES {
-            (annotationView as? MKPinAnnotationView).pinTintColor = UIColor.red
+            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.red
         } else if lcTag == Constants.INTERETS.FONTAINE {
-            (annotationView as? MKPinAnnotationView).pinTintColor = UIColor.cyan
+            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.cyan
         } else if lcTag == Constants.INTERETS.BELIB {
-            (annotationView as? MKPinAnnotationView).pinTintColor = UIColor.blue
+            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.blue
         } else if lcTag == Constants.INTERETS.CAFE {
-            (annotationView as? MKPinAnnotationView).pinTintColor = UIColor.brown
+            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.brown
         }
         return annotationView
     }
@@ -193,7 +185,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             return
         }
         // -> récupération du tag (utilisation du cast)
-        let annotationCustom:MyAnnotation! = view.annotation as? MyAnnotation
+        let annotationCustom: MyAnnotation! = view.annotation as? MyAnnotation
         annotationCustom?.prepareForInterfaceBuilder()
         let lcTag: Int = annotationCustom.tag!
        // let reuseId = "pin"
@@ -205,7 +197,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Velib")
             annotationCustom.subtitle = self.dynamicMessage
         } else if lcTag == Constants.INTERETS.AUTOLIB {
-            let id: String = annotationCustom.id!
+            let id: String = annotationCustom.idRecord!
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&q=id+%3D+"
             urlString = urlString.appending(id)
             urlString = urlString.appending("&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status")
@@ -218,7 +210,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
 //            view.isHighlighted = false
 //            view.canShowCallout = true
         } else if lcTag == Constants.INTERETS.BELIB {
-            let id: String = annotationCustom.id!
+            let id: String = annotationCustom.idRecord!
             let calloutButton: UIButton = UIButton(type: .detailDisclosure)
             view.rightCalloutAccessoryView = calloutButton
             view.isDraggable = false
@@ -231,13 +223,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             annotationCustom.subtitle = self.dynamicMessage
         } else if lcTag == Constants.INTERETS.ARBRE {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let detailViewController = storyboard.instantiateViewController(withIdentifier : "detailViewController") as? DetailViewController
+            let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Arbres", field: "recordid",value: annotationCustom.id!)
-            let  arbre: Arbres = result.firstObject as? Arbres
+            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Arbres", field: "recordid", value: annotationCustom.idRecord!)
+            let  arbre: Arbres = (result.firstObject as? Arbres)!
             detailViewController.service = arbre
             detailViewController.adresse = arbre.adresse
-            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.ARBRE] as Array<AnyObject>
+            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.ARBRE] as [AnyObject]
             self.addChildViewController(detailViewController)
             detailViewController.view.frame = self.view.frame
             self.view.addSubview(detailViewController.view)
@@ -245,13 +237,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             mapView.deselectAnnotation(annotationCustom, animated: true)
         } else if lcTag == Constants.INTERETS.CAPOTES {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let detailViewController = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
+            let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Capotes", field: "recordid",value: annotationCustom.id!)
-            let  capote: Capotes = result.firstObject as? Capotes
+            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Capotes", field: "recordid", value: annotationCustom.idRecord!)
+            let  capote: Capotes = (result.firstObject as? Capotes)!
             detailViewController.service = capote
             detailViewController.adresse = capote.adresse
-            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.CAPOTES] as Array<AnyObject>
+            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.CAPOTES] as [AnyObject]
             self.addChildViewController(detailViewController)
             detailViewController.view.frame = self.view.frame
             self.view.addSubview(detailViewController.view)
@@ -259,13 +251,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             mapView.deselectAnnotation(annotationCustom, animated: true)
         } else if lcTag == Constants.INTERETS.FONTAINE {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let detailViewController = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
+            let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Fontaines", field: "recordid", value: annotationCustom.id!)
-            let  fontaine: Fontaines = result.firstObject as? Fontaines
+            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Fontaines", field: "recordid", value: annotationCustom.idRecord!)
+            let  fontaine: Fontaines = (result.firstObject as? Fontaines)!
             detailViewController.service = fontaine
             detailViewController.adresse = fontaine.adresse
-            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.FONTAINE] as Array<AnyObject>
+            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.FONTAINE] as [AnyObject]
             self.addChildViewController(detailViewController)
             detailViewController.view.frame = self.view.frame
             self.view.addSubview(detailViewController.view)
@@ -277,15 +269,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView,
                  calloutAccessoryControlTapped control: UIControl) {
         let annotationCustom = view.annotation as? MyAnnotation
-        if annotationCustom.tag == Constants.INTERETS.CAFE {
+        if annotationCustom?.tag == Constants.INTERETS.CAFE {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let detailViewController = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
+            let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Cafes",field: "recordid",value: annotationCustom.id!)
-            let  cafe: Cafes = result.firstObject as? Cafes
+            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Cafes", field: "recordid", value: (annotationCustom?.idRecord!)!)
+            let  cafe: Cafes = (result.firstObject as? Cafes)!
             detailViewController.service = cafe
             detailViewController.adresse = cafe.adresse
-            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.CAFE] as Array<AnyObject>
+            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.CAFE] as [AnyObject]
             self.addChildViewController(detailViewController)
             detailViewController.view.frame = self.view.frame
             self.view.addSubview(detailViewController.view)
@@ -296,9 +288,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "mapIdentifier" {
-            let optionViewController: OptionsViewController = segue.destination as? OptionsViewController
-            optionViewController.delegate = self
-            optionViewController.mapType = self.laMap.mapType.rawValue
+            let optionViewController: OptionsViewController? = segue.destination as? OptionsViewController
+            optionViewController?.delegate = self
+            optionViewController?.mapType = self.laMap.mapType.rawValue
         }
     }
     // MARK: mapKitDelegate
@@ -329,7 +321,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     func afficherArbres() {
         tagAnno = Constants.INTERETS.ARBRE
-        tableau = Constants.MANAGERDATA.tableauArbres
+        tableau = Constants.MANAGERDATA.tableauArbres!
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -337,11 +329,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!,tableau: self.tableau!,laMap: self.laMap)
+        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
     }
     func afficherSanisettes() {
         tagAnno = Constants.INTERETS.SANISETTES
-        tableau = Constants.MANAGERDATA.tableauSanisettes
+        tableau = Constants.MANAGERDATA.tableauSanisettes!
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -349,11 +341,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!,tableau: self.tableau!,laMap: self.laMap)
+        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
     }
     func afficherCapotes() {
         tagAnno = Constants.INTERETS.CAPOTES
-        tableau = Constants.MANAGERDATA.tableauCapotes
+        tableau = Constants.MANAGERDATA.tableauCapotes!
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -361,11 +353,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!,tableau: self.tableau!,laMap: self.laMap)
+        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
     }
     func afficherFontaines() {
         tagAnno = Constants.INTERETS.FONTAINE
-        tableau = Constants.MANAGERDATA.tableauFontaines
+        tableau = Constants.MANAGERDATA.tableauFontaines!
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -373,11 +365,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau!, laMap: self.laMap)
+        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
     }
     func afficherBelibs() {
         tagAnno = Constants.INTERETS.BELIB
-        tableau = Constants.MANAGERDATA.tableauBelibs
+        tableau = Constants.MANAGERDATA.tableauBelibs!
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -385,11 +377,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau!, laMap: self.laMap)
+        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
     }
     func afficherCafes() {
         tagAnno = Constants.INTERETS.CAFE
-        tableau = Constants.MANAGERDATA.tableauCafes
+        tableau = Constants.MANAGERDATA.tableauCafes!
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -397,7 +389,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau!, laMap: self.laMap)
+        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
     }
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name("dataContentReceivedNotification"),

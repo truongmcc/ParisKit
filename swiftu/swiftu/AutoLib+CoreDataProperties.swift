@@ -10,7 +10,6 @@
 import Foundation
 import CoreData
 
-
 extension AutoLib {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<AutoLib> {
