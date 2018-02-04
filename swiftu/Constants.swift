@@ -38,13 +38,13 @@ struct Constants {
                            "Arbres": "arbres", "Sanisettes": "sanisettes",
                            "Capotes": "capotes", "Fontaines": "fontaines",
                            "Belibs": "belibs", "Cafes": "cafes"] as [String: String]
-    static let tabListServices = ["Velibs", "Autolibs", "Taxis", "Arbres remarquables", "Sanisettes", /*"Préservatifs", */"Fontaines à boire", /*"Stations belib", */"Cafés à 1 euro en terasse ou salle"]
+    static let tabListServices = ["Velibs", "Autolibs", "Taxis", "Arbres remarquables", "Sanisettes", "Préservatifs", "Fontaines à boire", "Stations belib", "Cafés à 1 euro en terasse ou salle"]
     // MARK: detail service
     static let listeTabDetail = [
         tabDetailArbre, // 0
         tabDetailCapote, // 1
-        tabDetailFontaine // 2
-        //tabDetailCafe // 3
+        tabDetailFontaine, // 2
+        tabDetailCafe // 3
     ]
     static let tabDetailFontaine = [
         [
@@ -122,19 +122,19 @@ struct Constants {
             "property": "horairesHiver"
             ]
     ]
-//    static let  tabDetailCafe = [
-//        [
-//            "title": "Prix en terasse",
-//            "property": "prix_terasse"
-//            ],
-//        [
-//            "title": "Prix en salle",
-//            "property": "prix_salle"
-//            ],
-//        [
-//            "title": "Prix au comptoir",
-//            "property": "prix_comptoir"
-//            ]
-//    ]
+    static let  tabDetailCafe = [
+        [
+            "title": "Prix en terasse",
+            "property": "prix_terasse"
+            ],
+        [
+            "title": "Prix en salle",
+            "property": "prix_salle"
+            ],
+        [
+            "title": "Prix au comptoir",
+            "property": "prix_comptoir"
+            ]
+    ]
 
 }
