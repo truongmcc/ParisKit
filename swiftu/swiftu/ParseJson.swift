@@ -162,13 +162,21 @@ class ParseJson: NSObject {
                 if myManagedObject?.entity.name == "Belibs" {
                     if let castedManagedObject = myManagedObject as? Belibs {
                         castedManagedObject.recordid = recordid
-                        castedManagedObject.aggregated_nbplugs =  (dicoField!["aggregated_nbplugs"] as? Int16)!
+                        if let agreg_nbplugs = dicoField!["aggregated_nbplugs"] as? Int16 {
+                            castedManagedObject.aggregated_nbplugs = agreg_nbplugs
+                        }
                         castedManagedObject.geolocation_postalcode =  (dicoField!["geolocation_postalcode"] as? String?)!
                         castedManagedObject.geolocation_route =  (dicoField!["geolocation_route"] as? String?)!
                         castedManagedObject.geolocation_streetnumber = (dicoField!["geolocation_streetnumber"] as? String?)!
-                        castedManagedObject.static_nbparkingspots = (dicoField!["static_nbparkingspots"] as? Int16)!
-                        castedManagedObject.static_nbstations = (dicoField!["static_nbstations"] as? Int16)!
-                        castedManagedObject.static_opening_247 = (dicoField!["static_opening_247"] as? String?)!
+                        if let static_nbparkSpots = dicoField!["static_nbparkingspots"] as? Int16 {
+                            castedManagedObject.static_nbparkingspots = static_nbparkSpots
+                        }
+                        if let staticNbStations = dicoField!["static_nbstations"] as? Int16 {
+                           castedManagedObject.static_nbstations = staticNbStations
+                        }
+                        if let staticOpening247 = dicoField!["static_opening_247"] as? String? {
+                            castedManagedObject.static_opening_247 = staticOpening247
+                        }
                         castedManagedObject.status_available = (dicoField!["status_available"] as? String?)!
                         if let dicoGeometry = dic["geometry"] as? [String: Any] {
                             let coordo: NSArray = (dicoGeometry["coordinates"] as? NSArray)!
@@ -203,10 +211,13 @@ class ParseJson: NSObject {
                     myManagedObject.modele = (dicoField!["modele"] as? String?)!
                     myManagedObject.en_service = (dicoField!["en_service"] as? String?)!
                     myManagedObject.ouv_hiver = (dicoField!["ouv_hiver"] as? String?)!
-                    let dicoGeometry = dic["geometry"] as? [String: Any]
-                    let coordo: NSArray = (dicoGeometry!["coordinates"] as? NSArray)!
-                    myManagedObject.coordinateX = (coordo[1] as? Float)!
-                    myManagedObject.coordinateY = (coordo[0] as? Float)!
+                    if let dicoGeometry = dic["geometry"] as? [String: Any] {
+                        if let optionalCoordo = (dicoGeometry["coordinates"] as? NSArray) {
+                            let coordo: NSArray = optionalCoordo
+                            myManagedObject.coordinateX = (coordo[1] as? Float)!
+                            myManagedObject.coordinateY = (coordo[0] as? Float)!
+                        }
+                    }
                 }
             }
             do {
@@ -233,10 +244,12 @@ class ParseJson: NSObject {
                         castedManagedObject.horairesHiver = (dicoField!["horaires_vacances_hiver"] as? String?)!
                         castedManagedObject.horairesNormales = (dicoField!["horaires_normal"] as? String?)!
                         castedManagedObject.site = (dicoField!["site"] as? String?)!
-                        let dicoGeometry = dic["geometry"] as? [String: Any]
-                        let coordo: NSArray = (dicoGeometry!["coordinates"] as? NSArray)!
-                        castedManagedObject.coordinateX = (coordo[1] as? Float)!
-                        castedManagedObject.coordinateY = (coordo[0] as? Float)!
+                        if let dicoGeometry = dic["geometry"] as? [String: Any] {
+                            if let coordo = (dicoGeometry["coordinates"] as? NSArray) {
+                                castedManagedObject.coordinateX = (coordo[1] as? Float)!
+                                castedManagedObject.coordinateY = (coordo[0] as? Float)!
+                            }
+                        }
                     }
                 }
             }
@@ -292,11 +305,15 @@ class ParseJson: NSObject {
                         castedManagedObject.nom_voie =  (dicoField!["nom_voie"] as? String?)!
                         castedManagedObject.horaires_ouverture =  (dicoField!["horaires_ouverture"] as? String?)!
                         castedManagedObject.numero_voie =  (dicoField!["numero_voie"] as? String?)!
-                        castedManagedObject.arrondissement = (dicoField!["arrondissement"]      as? String?)!
-                        let dicoGeometry = dic["geometry"] as? [String: Any]
-                        let coordo: NSArray = (dicoGeometry!["coordinates"] as? NSArray)!
-                        castedManagedObject.coordinateX = (coordo[1] as? Float)!
-                        castedManagedObject.coordinateY = (coordo[0] as? Float)!
+                        if let ardt = dicoField!["arrondissement"] as? String? {
+                           castedManagedObject.arrondissement = ardt
+                        }
+                        if let dicoGeometry = dic["geometry"] as? [String: Any] {
+                            if let coordo = (dicoGeometry["coordinates"] as? NSArray) {
+                                castedManagedObject.coordinateX = (coordo[1] as? Float)!
+                                castedManagedObject.coordinateY = (coordo[0] as? Float)!
+                            }
+                        }
                     }
                 }
             }
@@ -360,13 +377,20 @@ class ParseJson: NSObject {
                         castedManagedObject.genre = (dicoField!["genre"] as? String?)!
                         castedManagedObject.genre = (dicoField!["domanialite"] as? String?)!
                         castedManagedObject.nom_ev = (dicoField!["nom_env"] as? String?)!
-                        castedManagedObject.hauteurenm = (dicoField!["hauteurenm"] as? Float)!
-                        castedManagedObject.circonferenceencm = (dicoField!["circonferenceencm"] as? Float)!
-                        let dicoGeometry = dic["geometry"] as? [String: Any]
-                        castedManagedObject.type = dicoGeometry!["type"] as? String
-                        if let coord: [Float] = dicoGeometry?["coordinates"] as? [Float] {
-                            castedManagedObject.coordinateY = coord[0]
-                            castedManagedObject.coordinateX = coord[1]
+                        if let hauteur = (dicoField!["hauteurenm"] as? Float) {
+                            castedManagedObject.circonferenceencm = hauteur
+                        }
+                        if let circonf = dicoField!["circonferenceencm"] as? Float {
+                            castedManagedObject.circonferenceencm = circonf
+                        }
+                        if let dicoGeometry = dic["geometry"] as? [String: Any] {
+                            if let typeGeom = dicoGeometry["type"] as? String {
+                                castedManagedObject.type = typeGeom
+                            }
+                            if let coord: [Float] = dicoGeometry["coordinates"] as? [Float] {
+                                castedManagedObject.coordinateY = coord[0]
+                                castedManagedObject.coordinateX = coord[1]
+                            }
                         }
                     }
                 }
@@ -387,8 +411,8 @@ class ParseJson: NSObject {
                     castedManageObject.name = (dataDict["name"] as? String?)!
                     castedManageObject.number = (dataDict["number"]  as? Int32)!
                     castedManageObject.adress = (dataDict["address"] as? String?)!
-                    castedManageObject.latitude = (dataDict["latitude"] as? Float?)!!
-                    castedManageObject.longitude = (dataDict["longitude"] as? Float?)!!
+                    castedManageObject.coordinateX = (dataDict["latitude"] as? Float?)!!
+                    castedManageObject.coordinateY = (dataDict["longitude"] as? Float?)!!
                     do {
                         try castedManageObject.managedObjectContext?.save()
                         Constants.MANAGERDATA.tableauVelib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Velib" as String)
@@ -443,8 +467,8 @@ class ParseJson: NSObject {
                     let dicoGeometry=dataDict["geometry"]
                     let dicoFields = dataDict["fields"]
                     if let coord: [Float] = dicoGeometry?["coordinates"] as? [Float] {
-                        castedManageObject.coordY = coord[0]
-                        castedManageObject.coordX = coord[1]
+                        castedManageObject.coordinateX = coord[0]
+                        castedManageObject.coordinateY = coord[1]
                     }
                     castedManageObject.station_name = (dicoFields?["station_name"] as? String?)!
                     castedManageObject.address = (dicoFields?["address"] as? String?)!

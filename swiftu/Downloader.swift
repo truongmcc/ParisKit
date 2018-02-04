@@ -41,9 +41,12 @@ class Downloader {
                 return
             }
             self.data = data
-            NotificationCenter.default.post(name: Notification.Name("dataContentReceivedNotification"),
-                                            object: nil,
-                                            userInfo: ["type": type])
+            // dispatchQueue.main.async pour régler le pb du main thread checker...
+            //DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notification.Name("dataContentReceivedNotification"),
+                                                object: nil,
+                                                userInfo: ["type": type])
+            //}
         }
         task.resume()
         semaphore.wait()
@@ -62,9 +65,11 @@ class Downloader {
                 return
             }
             self.data = data
+            //DispatchQueue.main.async {
             NotificationCenter.default.post(name: Notification.Name("dynamicDataContentReceivedNotification"),
                                             object: nil,
                                             userInfo: ["type": type])
+            //}
         }
         task.resume()
         semaphore.wait()
