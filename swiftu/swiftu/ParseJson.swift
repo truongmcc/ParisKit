@@ -118,7 +118,7 @@ class ParseJson: NSObject {
         }
     }
     // MARK: Services
-    func cafesJsonManager(_ tabCafes: [AnyObject]) {
+    @objc func cafesJsonManager(_ tabCafes: [AnyObject]) {
         let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
         container?.performBackgroundTask { (context) in
             for dic  in tabCafes {
@@ -152,7 +152,7 @@ class ParseJson: NSObject {
             }
         }
     }
-    func belibsJsonManager(_ tabBelibs: [AnyObject]) {
+    @objc func belibsJsonManager(_ tabBelibs: [AnyObject]) {
         let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
         container?.performBackgroundTask { (context) in
             for dic  in tabBelibs {
@@ -186,7 +186,7 @@ class ParseJson: NSObject {
             }
         }
     }
-    func fontainesJsonManager(_ tabFontaines: [AnyObject]) {
+    @objc func fontainesJsonManager(_ tabFontaines: [AnyObject]) {
         let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
         container?.performBackgroundTask { (context) in
             for dic in tabFontaines {
@@ -217,7 +217,7 @@ class ParseJson: NSObject {
             }
         }
     }
-    func capotesJsonManager(_ tabCapotes: [AnyObject]) {
+    @objc func capotesJsonManager(_ tabCapotes: [AnyObject]) {
         let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
         container?.performBackgroundTask { (context) in
             for dic in tabCapotes {
@@ -281,7 +281,7 @@ class ParseJson: NSObject {
     //        },
     //        "record_timestamp":"2017-06-30T22:00:44+00:00"
     //        }
-    func sanisettesJsonManager(_ tabSanisettes: [AnyObject]) {
+    @objc func sanisettesJsonManager(_ tabSanisettes: [AnyObject]) {
         let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
         container?.performBackgroundTask { (context) in
             for dic  in tabSanisettes {
@@ -341,7 +341,7 @@ class ParseJson: NSObject {
      //             "record_timestamp": "2014-08-13T20:16:19.201211"
      //             }
      //             */
-    func arbresJsonManager(_ tabArbres: [AnyObject]) {
+    @objc func arbresJsonManager(_ tabArbres: [AnyObject]) {
         let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
         container?.performBackgroundTask { (context) in
             for dic in tabArbres {
@@ -379,7 +379,7 @@ class ParseJson: NSObject {
             }
         }
     }
-    func velibJsonManager(_ jsonObj: [[String: AnyObject]]) {
+    @objc func velibJsonManager(_ jsonObj: [[String: AnyObject]]) {
         for dataDict in jsonObj {
             let myManageObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Velib" as String, into: Constants.MANAGEDOBJECTCONTEXT! )
             if myManageObject?.entity.name == "Velib" {
@@ -399,7 +399,7 @@ class ParseJson: NSObject {
             }
         }
     }
-    func autolibJsonManager(_ jsonObj: [[String: AnyObject]]) {
+    @objc func autolibJsonManager(_ jsonObj: [[String: AnyObject]]) {
         let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         privateMOC.parent = Constants.MANAGEDOBJECTCONTEXT
         privateMOC.perform {
@@ -435,7 +435,7 @@ class ParseJson: NSObject {
             }
         }
     }
-    func taxiJsonManager(_ jsonObj: [[String: AnyObject]]) {
+     @objc func taxiJsonManager(_ jsonObj: [[String: AnyObject]]) {
         for dataDict in jsonObj {
             let myManageObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Taxis" as String, into: (Constants.MANAGEDOBJECTCONTEXT)!)
             if myManageObject?.entity.name == "Taxis" {

@@ -290,7 +290,7 @@
 				TargetAttributes = {
 					EB43BBE21D9FA41100B0E7DE = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = PVN8KMR8MY;
+						DevelopmentTeam = 8Y8B6GPYMV;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -712,7 +712,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PVN8KMR8MY;
+				DEVELOPMENT_TEAM = 8Y8B6GPYMV;
 				GCC_PREFIX_HEADER = "MapKitParis-Prefix.pch";
 				INFOPLIST_FILE = swiftu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -733,7 +733,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = PVN8KMR8MY;
+				DEVELOPMENT_TEAM = 8Y8B6GPYMV;
 				GCC_PREFIX_HEADER = "MapKitParis-Prefix.pch";
 				INFOPLIST_FILE = swiftu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

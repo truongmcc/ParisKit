@@ -53,16 +53,16 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         //<--
 
         // from bundle
-        Constants.MANAGERDATA.parser?.parseFileWithType(type: "Velib")
+        //Constants.MANAGERDATA.parser?.parseFileWithType(type: "Velib")
         Constants.MANAGERDATA.parser?.parseFileWithType(type: "Taxis")
         // from url
         self.monDownloader.dataFromUrl(url: Constants.urlAutolib, type: "AutoLib")
         self.monDownloader.dataFromUrl(url: Constants.urlArbres, type: "Arbres")
         self.monDownloader.dataFromUrl(url: Constants.urlSanisettes, type: "Sanisettes")
-        self.monDownloader.dataFromUrl(url: Constants.urlCapotes, type: "Capotes")
-        self.monDownloader.dataFromUrl(url: Constants.urlFontaines, type: "Fontaines")
+        //self.monDownloader.dataFromUrl(url: Constants.urlCapotes, type: "Capotes")
+        //self.monDownloader.dataFromUrl(url: Constants.urlFontaines, type: "Fontaines")
         //self.monDownloader.dataFromUrl(url: Constants.urlBelib, type: "Belibs")
-        self.monDownloader.dataFromUrl(url: Constants.urlCafe, type: "Cafes")
+        //self.monDownloader.dataFromUrl(url: Constants.urlCafe, type: "Cafes")
     }
     @objc func parseFromNotif(notification: Notification) {
         if let type = notification.userInfo?["type"] {
