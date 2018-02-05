@@ -24,12 +24,23 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         self.view.addGestureRecognizer(tapGesture)
         tableViewController.tableFooterView = UIView(frame: CGRect.zero)
         tableViewController.isScrollEnabled = false
-        adressLabel.text = adresse
+        recupAdresse()
         adressLabel.textColor = setServiceColor()
         // MARK: manage background colour
         //let color = UIColor.init(red: 0, green: 58, blue: 120, alpha: 0.7)
         self.view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         self.showAnimate()
+    }
+    func recupAdresse() {
+        if let fontaine = service as? Fontaines {
+            adressLabel.text = fontaine.adresse
+        } else if let arbre = service as? Arbres {
+            adressLabel.text = arbre.adresse
+        } else if let capote = service as? Capotes {
+            if let adress = capote.adresse {
+                adressLabel.text = adress
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {

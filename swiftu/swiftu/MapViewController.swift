@@ -189,12 +189,12 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "AutoLib")
             annotationCustom.subtitle = self.dynamicMessage
 //          --> SI JE VEUX UTILISER LE DETAILDISCLOSURE /
-        } else if lcTag == Constants.INTERETS.CAFE {
-            let calloutButton: UIButton = UIButton(type: .detailDisclosure)
-            view.rightCalloutAccessoryView = calloutButton
-            view.isDraggable = false
-            view.isHighlighted = false
-            view.canShowCallout = true
+//        } else if lcTag == Constants.INTERETS.CAFE {
+//            let calloutButton: UIButton = UIButton(type: .detailDisclosure)
+//            view.rightCalloutAccessoryView = calloutButton
+//            view.isDraggable = false
+//            view.isHighlighted = false
+//            view.canShowCallout = true
 //         <--
         } else if lcTag == Constants.INTERETS.BELIB {
             let id: String = annotationCustom.idRecord!
@@ -209,25 +209,29 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Belibs")
             annotationCustom.subtitle = self.dynamicMessage
         } else if lcTag == Constants.INTERETS.ARBRE {
-            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Arbres", field: "recordid", value: annotationCustom.idRecord!)
-            let  arbre: Arbres = (result.firstObject as? Arbres)!
-            detailViewController = self.createDetailViewController()
-            detailViewController?.service = arbre
-            detailViewController?.adresse = arbre.adresse
-            detailViewController?.tabService = Constants.listeTabDetail[Constants.INTERETS.ARBRE] as [AnyObject]
+            if let entity: String = Constants.SERVICES[lcTag]["entity"] as? String {
+                if let field: String = Constants.SERVICES[lcTag]["field"] as? String {
+                    let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
+                    let service: Services = (result.firstObject as? Services)!
+                    //let arbre: Arbres = (result.firstObject as? Arbres)!
+                    detailViewController = self.createDetailViewController(service: service)
+                    //detailViewController?.tabService = Constants.SERVICES[lcTag]["listeTabDetail"] as? [AnyObject]
+                    detailViewController?.tabService = Constants.listeTabDetail[lcTag] as [AnyObject]
+                }
+            }
+//            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Arbres", field: "recordid", value: annotationCustom.idRecord!)
+//            let arbre: Arbres = (result.firstObject as? Arbres)!
+//            detailViewController = self.createDetailViewController(service: arbre)
+//            detailViewController?.tabService = Constants.listeTabDetail[Constants.INTERETS.ARBRE] as [AnyObject]
         } else if lcTag == Constants.INTERETS.CAPOTES {
             let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Capotes", field: "recordid", value: annotationCustom.idRecord!)
             let  capote: Capotes = (result.firstObject as? Capotes)!
-            detailViewController = self.createDetailViewController()
-            detailViewController?.service = capote
-            detailViewController?.adresse = capote.adresse
+            detailViewController = self.createDetailViewController(service: capote)
             detailViewController?.tabService = Constants.listeTabDetail[Constants.INTERETS.CAPOTES] as [AnyObject]
         } else if lcTag == Constants.INTERETS.FONTAINE {
             let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Fontaines", field: "recordid", value: annotationCustom.idRecord!)
-            let  fontaine: Fontaines = (result.firstObject as? Fontaines)!
-            detailViewController = self.createDetailViewController()
-            detailViewController?.service = fontaine
-            detailViewController?.adresse = fontaine.adresse
+            let fontaine: Fontaines = (result.firstObject as? Fontaines)!
+            detailViewController = self.createDetailViewController(service: fontaine)
             detailViewController?.tabService = Constants.listeTabDetail[Constants.INTERETS.FONTAINE] as [AnyObject]
         }
         if let detailView = detailViewController {
@@ -238,10 +242,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             mapView.deselectAnnotation(annotationCustom, animated: true)
         }
     }
-    func createDetailViewController() -> DetailViewController {
+    func createDetailViewController(service: AnyObject) -> DetailViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
         detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
+        detailViewController?.service = service
         return detailViewController
     }
     // delegate sur appui sur le bouton disclosure

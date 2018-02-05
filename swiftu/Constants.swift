@@ -37,15 +37,27 @@ struct Constants {
     static let SERVICES = [
         [
             "service": INTERETS.ARBRE,
-            "color": UIColor.green
+            "color": UIColor.green,
+            "entity": "Arbres",
+            "field": "recordid",
+            //"class": Arbres(),
+             "listeTabDetail": [Constants.tabListServices[INTERETS.ARBRE]]
         ],
         [
             "service": INTERETS.CAPOTES,
-            "color": UIColor.red
+            "color": UIColor.red,
+            "entity": "Capotes",
+            "field": "recordid",
+            //"class": Capotes.self,
+             "©": [Constants.tabListServices[INTERETS.CAPOTES]]
         ],
         [
             "service": INTERETS.FONTAINE,
-            "color": UIColor.cyan
+            "color": UIColor.cyan,
+            "entity": "Fontaines",
+            "field": "recordid",
+            //"class": Fontaines(),
+            "listeTabDetail": [Constants.tabListServices[INTERETS.FONTAINE]]
         ],
         [
             "service": INTERETS.CAFE,
@@ -72,7 +84,6 @@ struct Constants {
             "color": UIColor.black
         ]
     ]
-    
     static let dicoType = ["Velib": "velib", "AutoLib": "autolib", "Taxis": "taxi",
                            "Arbres": "arbres", "Sanisettes": "sanisettes",
                            "Capotes": "capotes", "Fontaines": "fontaines",
