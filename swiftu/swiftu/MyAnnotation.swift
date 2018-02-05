@@ -25,6 +25,11 @@ class MyAnnotation: NSObject, MKAnnotation {
     // MARK: Constructeurs
     init(location coord: CLLocationCoordinate2D, service: Services) {
         self.coordinate = coord
+        if let optionalIdRecord = service.recordid {
+            self.idRecord = optionalIdRecord
+        }
+        // initialiser self.title pour permmetre l'affichate de l'annotation
+        self.title = " "
         if let velib = service as? Velib {
             self.tag = Constants.INTERETS.VELIB
             self.number = String(format: "%d", velib.number)
@@ -35,7 +40,6 @@ class MyAnnotation: NSObject, MKAnnotation {
             self.title = String(subString)
         } else if let autolib = service as? AutoLib {
             self.tag = Constants.INTERETS.AUTOLIB
-            self.idRecord = autolib.id!
             let address: String = autolib.address!
             let codePostal =  autolib.postal_code!
             self.title = String.init(format: "%@ %@", address as String, codePostal as String)
@@ -60,7 +64,6 @@ class MyAnnotation: NSObject, MKAnnotation {
             }
         } else if let belib = service as? Belibs {
             self.tag = Constants.INTERETS.BELIB
-            self.idRecord = belib.recordid
             var adresse: String?
             if let nomVoie = belib.geolocation_route {
                 if let numerovoie = belib.geolocation_streetnumber {
@@ -68,24 +71,16 @@ class MyAnnotation: NSObject, MKAnnotation {
                 }
             }
             self.title = adresse
-        } else if let arbre = service as? Arbres {
-            self.tag = Constants.INTERETS.ARBRE
-            self.idRecord = arbre.recordid
-            // initialiser self.title pour permmetre l'affichate de l'annotation
-            self.title = " "
-        } else if let capote = service as? Capotes {
-            self.tag = Constants.INTERETS.CAPOTES
-            self.idRecord = capote.recordid
-            self.title = " "
-        } else if let fontaine = service as? Fontaines {
-            self.tag = Constants.INTERETS.FONTAINE
-            self.idRecord = fontaine.recordid
-            self.title = " "
         } else if let cafe = service as? Cafes {
             self.tag = Constants.INTERETS.CAFE
-            self.idRecord = cafe.recordid
             self.title = cafe.nom_du_cafe
             self.subtitle = String.init(format: "%@ %d", cafe.adresse!, cafe.arrondissement)
+        } else if service is Arbres {
+            self.tag = Constants.INTERETS.ARBRE
+        } else if service is Capotes {
+            self.tag = Constants.INTERETS.CAPOTES
+        } else if service is Fontaines {
+            self.tag = Constants.INTERETS.FONTAINE
         }
         super.init()
     }

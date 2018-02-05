@@ -119,40 +119,43 @@ class ParseJson: NSObject {
     }
     // MARK: Services
     @objc func cafesJsonManager(_ tabCafes: [AnyObject]) {
-        let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-        container?.performBackgroundTask { (context) in
-            for dic  in tabCafes {
-                let recordid = dic["recordid"] as? String
-                var dicoField = dic["fields"] as? [String: Any]
-                let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Cafes" as String, into: context )
-                if myManagedObject?.entity.name == "Cafes" {
-                    if let castedManagedObject = myManagedObject as? Cafes {
-                        castedManagedObject.recordid = recordid
-                        castedManagedObject.arrondissement =  (dicoField!["arrondissement"] as? Int32)!
-                        castedManagedObject.prix_terasse =  (dicoField!["prix_terasse"] as? String?)!
-                        if dicoField!["prix_comptoir"] as? Int16 != nil {
-                            castedManagedObject.prix_comptoir = (dicoField!["prix_comptoir"] as? Int16)!
-                        }
-                        castedManagedObject.prix_salle = (dicoField!["prix_salle"] as? String?)!
-                        castedManagedObject.nom_du_cafe = (dicoField!["nom_du_cafe"] as? String?)!
-                        castedManagedObject.adresse = (dicoField!["adresse"] as? String?)!
-                        if let dicoGeometry = dic["geometry"] as? [String: Any] {
-                            let coordo: NSArray = (dicoGeometry["coordinates"] as? NSArray)!
-                            castedManagedObject.coordinateX = (coordo[1] as? Float)!
-                            castedManagedObject.coordinateY = (coordo[0] as? Float)!
+         DispatchQueue.main.async {
+            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+            container?.performBackgroundTask { (context) in
+                for dic  in tabCafes {
+                    let recordid = dic["recordid"] as? String
+                    var dicoField = dic["fields"] as? [String: Any]
+                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Cafes" as String, into: context )
+                    if myManagedObject?.entity.name == "Cafes" {
+                        if let castedManagedObject = myManagedObject as? Cafes {
+                            castedManagedObject.recordid = recordid
+                            castedManagedObject.arrondissement =  (dicoField!["arrondissement"] as? Int32)!
+                            castedManagedObject.prix_terasse =  (dicoField!["prix_terasse"] as? String?)!
+                            if dicoField!["prix_comptoir"] as? Int16 != nil {
+                                castedManagedObject.prix_comptoir = (dicoField!["prix_comptoir"] as? Int16)!
+                            }
+                            castedManagedObject.prix_salle = (dicoField!["prix_salle"] as? String?)!
+                            castedManagedObject.nom_du_cafe = (dicoField!["nom_du_cafe"] as? String?)!
+                            castedManagedObject.adresse = (dicoField!["adresse"] as? String?)!
+                            if let dicoGeometry = dic["geometry"] as? [String: Any] {
+                                let coordo: NSArray = (dicoGeometry["coordinates"] as? NSArray)!
+                                castedManagedObject.coordinateX = (coordo[1] as? Float)!
+                                castedManagedObject.coordinateY = (coordo[0] as? Float)!
+                            }
                         }
                     }
                 }
-            }
-            do {
-                try context.save()
-                Constants.MANAGERDATA.tableauCafes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Cafes" as String)
-            } catch _ {
-                fatalError("Failure to save context")
+                do {
+                    try context.save()
+                    Constants.MANAGERDATA.tableauCafes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Cafes" as String)
+                } catch _ {
+                    fatalError("Failure to save context")
+                }
             }
         }
     }
     @objc func belibsJsonManager(_ tabBelibs: [AnyObject]) {
+        DispatchQueue.main.async {
         let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
         container?.performBackgroundTask { (context) in
             for dic  in tabBelibs {
@@ -193,8 +196,10 @@ class ParseJson: NSObject {
                 fatalError("Failure to save context")
             }
         }
+        }
     }
     @objc func fontainesJsonManager(_ tabFontaines: [AnyObject]) {
+        DispatchQueue.main.async {
         let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
         container?.performBackgroundTask { (context) in
             for dic in tabFontaines {
@@ -227,8 +232,10 @@ class ParseJson: NSObject {
                 fatalError("Failure to save context")
             }
         }
+        }
     }
     @objc func capotesJsonManager(_ tabCapotes: [AnyObject]) {
+        DispatchQueue.main.async {
         let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
         container?.performBackgroundTask { (context) in
             for dic in tabCapotes {
@@ -259,6 +266,7 @@ class ParseJson: NSObject {
             } catch _ {
                 fatalError("Failure to save context")
             }
+        }
         }
     }
     //    {
@@ -295,6 +303,7 @@ class ParseJson: NSObject {
     //        "record_timestamp":"2017-06-30T22:00:44+00:00"
     //        }
     @objc func sanisettesJsonManager(_ tabSanisettes: [AnyObject]) {
+        DispatchQueue.main.async {
         let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
         container?.performBackgroundTask { (context) in
             for dic  in tabSanisettes {
@@ -323,6 +332,7 @@ class ParseJson: NSObject {
             } catch _ {
                 fatalError("Failure to save context")
             }
+        }
         }
     }
     /*--------- FORMAT -----------------
@@ -359,6 +369,7 @@ class ParseJson: NSObject {
      //             }
      //             */
     @objc func arbresJsonManager(_ tabArbres: [AnyObject]) {
+        DispatchQueue.main.async {
         let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
         container?.performBackgroundTask { (context) in
             for dic in tabArbres {
@@ -402,7 +413,9 @@ class ParseJson: NSObject {
                 fatalError("Failure to save context")
             }
         }
+        }
     }
+    // MARK: Perform Selector
     @objc func velibJsonManager(_ jsonObj: [[String: AnyObject]]) {
         for dataDict in jsonObj {
             let myManageObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Velib" as String, into: Constants.MANAGEDOBJECTCONTEXT! )
@@ -433,7 +446,7 @@ class ParseJson: NSObject {
                     if let castedManageObject: AutoLib = myManageObject as? AutoLib {
                         let dicoGeometry=dataDict["geometry"]
                         let dicoFields = dataDict["fields"]
-                        castedManageObject.id = (dicoFields?["id"] as? String?)!
+                        castedManageObject.recordid = (dicoFields?["id"] as? String?)!
                         if let coord: [Float] = dicoGeometry?["coordinates"] as? [Float] {
                             castedManageObject.coordinateY = coord[0]
                             castedManageObject.coordinateX = coord[1]
@@ -467,8 +480,8 @@ class ParseJson: NSObject {
                     let dicoGeometry=dataDict["geometry"]
                     let dicoFields = dataDict["fields"]
                     if let coord: [Float] = dicoGeometry?["coordinates"] as? [Float] {
-                        castedManageObject.coordinateX = coord[0]
-                        castedManageObject.coordinateY = coord[1]
+                        castedManageObject.coordinateX = coord[1]
+                        castedManageObject.coordinateY = coord[0]
                     }
                     castedManageObject.station_name = (dicoFields?["station_name"] as? String?)!
                     castedManageObject.address = (dicoFields?["address"] as? String?)!

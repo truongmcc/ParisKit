@@ -34,6 +34,45 @@ struct Constants {
         static let BELIB = 7
         static let TAXIS = 8
     }
+    static let SERVICES = [
+        [
+            "service": INTERETS.ARBRE,
+            "color": UIColor.green
+        ],
+        [
+            "service": INTERETS.CAPOTES,
+            "color": UIColor.red
+        ],
+        [
+            "service": INTERETS.FONTAINE,
+            "color": UIColor.cyan
+        ],
+        [
+            "service": INTERETS.CAFE,
+            "color": UIColor.brown
+        ],
+        [
+            "service": INTERETS.SANISETTES,
+            "color": UIColor.yellow
+        ],
+        [
+            "service": INTERETS.VELIB,
+            "color": UIColor.lightGray
+        ],
+        [
+            "service": INTERETS.AUTOLIB,
+            "color": UIColor.darkGray
+        ],
+        [
+            "service": INTERETS.BELIB,
+            "color": UIColor.blue
+        ],
+        [
+            "service": INTERETS.TAXIS,
+            "color": UIColor.black
+        ]
+    ]
+    
     static let dicoType = ["Velib": "velib", "AutoLib": "autolib", "Taxis": "taxi",
                            "Arbres": "arbres", "Sanisettes": "sanisettes",
                            "Capotes": "capotes", "Fontaines": "fontaines",

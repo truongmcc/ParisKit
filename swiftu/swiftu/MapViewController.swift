@@ -158,24 +158,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         annotationView?.canShowCallout = true
         (annotationView as? MKPinAnnotationView)?.animatesDrop = false
         annotationView?.isEnabled = true
-        if lcTag == Constants.INTERETS.VELIB {
-            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.lightGray
-        } else if lcTag == Constants.INTERETS.AUTOLIB {
-            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.darkGray
-        } else if lcTag == Constants.INTERETS.ARBRE {
-            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.green
-        } else if lcTag == Constants.INTERETS.TAXIS {
-            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.black
-        } else if lcTag == Constants.INTERETS.SANISETTES {
-            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.yellow
-        } else if lcTag == Constants.INTERETS.CAPOTES {
-            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.red
-        } else if lcTag == Constants.INTERETS.FONTAINE {
-            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.cyan
-        } else if lcTag == Constants.INTERETS.BELIB {
-            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.blue
-        } else if lcTag == Constants.INTERETS.CAFE {
-            (annotationView as? MKPinAnnotationView)?.pinTintColor = UIColor.brown
+        if let colorAnnotation = Constants.SERVICES[lcTag!]["color"] as? UIColor {
+             (annotationView as? MKPinAnnotationView)?.pinTintColor = colorAnnotation
         }
         return annotationView
     }
@@ -188,6 +172,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         let annotationCustom: MyAnnotation! = view.annotation as? MyAnnotation
         annotationCustom?.prepareForInterfaceBuilder()
         let lcTag: Int = annotationCustom.tag!
+        var detailViewController: DetailViewController?
        // let reuseId = "pin"
         if lcTag == Constants.INTERETS.VELIB {
             let number: String = annotationCustom.number!
@@ -203,12 +188,14 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             urlString = urlString.appending("&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status")
             self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "AutoLib")
             annotationCustom.subtitle = self.dynamicMessage
-//        } else if lcTag == Constants.INTERETS.CAFE {
-//            let calloutButton: UIButton = UIButton(type: .detailDisclosure)
-//            view.rightCalloutAccessoryView = calloutButton
-//            view.isDraggable = false
-//            view.isHighlighted = false
-//            view.canShowCallout = true
+//          --> SI JE VEUX UTILISER LE DETAILDISCLOSURE /
+        } else if lcTag == Constants.INTERETS.CAFE {
+            let calloutButton: UIButton = UIButton(type: .detailDisclosure)
+            view.rightCalloutAccessoryView = calloutButton
+            view.isDraggable = false
+            view.isHighlighted = false
+            view.canShowCallout = true
+//         <--
         } else if lcTag == Constants.INTERETS.BELIB {
             let id: String = annotationCustom.idRecord!
             let calloutButton: UIButton = UIButton(type: .detailDisclosure)
@@ -222,48 +209,40 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Belibs")
             annotationCustom.subtitle = self.dynamicMessage
         } else if lcTag == Constants.INTERETS.ARBRE {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
-            detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
             let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Arbres", field: "recordid", value: annotationCustom.idRecord!)
             let  arbre: Arbres = (result.firstObject as? Arbres)!
-            detailViewController.service = arbre
-            detailViewController.adresse = arbre.adresse
-            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.ARBRE] as [AnyObject]
-            self.addChildViewController(detailViewController)
-            detailViewController.view.frame = self.view.frame
-            self.view.addSubview(detailViewController.view)
-            detailViewController.didMove(toParentViewController: self)
-            mapView.deselectAnnotation(annotationCustom, animated: true)
+            detailViewController = self.createDetailViewController()
+            detailViewController?.service = arbre
+            detailViewController?.adresse = arbre.adresse
+            detailViewController?.tabService = Constants.listeTabDetail[Constants.INTERETS.ARBRE] as [AnyObject]
         } else if lcTag == Constants.INTERETS.CAPOTES {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
-            detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
             let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Capotes", field: "recordid", value: annotationCustom.idRecord!)
             let  capote: Capotes = (result.firstObject as? Capotes)!
-            detailViewController.service = capote
-            detailViewController.adresse = capote.adresse
-            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.CAPOTES] as [AnyObject]
-            self.addChildViewController(detailViewController)
-            detailViewController.view.frame = self.view.frame
-            self.view.addSubview(detailViewController.view)
-            detailViewController.didMove(toParentViewController: self)
-            mapView.deselectAnnotation(annotationCustom, animated: true)
+            detailViewController = self.createDetailViewController()
+            detailViewController?.service = capote
+            detailViewController?.adresse = capote.adresse
+            detailViewController?.tabService = Constants.listeTabDetail[Constants.INTERETS.CAPOTES] as [AnyObject]
         } else if lcTag == Constants.INTERETS.FONTAINE {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
-            detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
             let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Fontaines", field: "recordid", value: annotationCustom.idRecord!)
             let  fontaine: Fontaines = (result.firstObject as? Fontaines)!
-            detailViewController.service = fontaine
-            detailViewController.adresse = fontaine.adresse
-            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.FONTAINE] as [AnyObject]
-            self.addChildViewController(detailViewController)
-            detailViewController.view.frame = self.view.frame
-            self.view.addSubview(detailViewController.view)
-            detailViewController.didMove(toParentViewController: self)
+            detailViewController = self.createDetailViewController()
+            detailViewController?.service = fontaine
+            detailViewController?.adresse = fontaine.adresse
+            detailViewController?.tabService = Constants.listeTabDetail[Constants.INTERETS.FONTAINE] as [AnyObject]
+        }
+        if let detailView = detailViewController {
+            self.addChildViewController(detailView)
+            detailView.view.frame = self.view.frame
+            self.view.addSubview((detailView.view)!)
+            detailView.didMove(toParentViewController: self)
             mapView.deselectAnnotation(annotationCustom, animated: true)
         }
+    }
+    func createDetailViewController() -> DetailViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
+        detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
+        return detailViewController
     }
     // delegate sur appui sur le bouton disclosure
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView,

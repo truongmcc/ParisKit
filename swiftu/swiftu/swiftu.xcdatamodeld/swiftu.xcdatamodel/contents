@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C88" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Arbres" representedClassName=".Arbres" parentEntity="Services" syncable="YES" codeGenerationType="class">
         <attribute name="adresse" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="arrondisse" optional="YES" attributeType="String" syncable="YES"/>
@@ -13,13 +13,11 @@
         <attribute name="libellefrancais" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nom_ev" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="objectid" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="AutoLib" representedClassName="AutoLib" parentEntity="Services" syncable="YES" codeGenerationType="class">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="cars" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postal_code" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="public_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="slots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -29,7 +27,6 @@
         <attribute name="geolocation_postalcode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocation_route" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocation_streetnumber" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="static_nbparkingspots" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="static_nbstations" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="static_opening_247" optional="YES" attributeType="String" syncable="YES"/>
@@ -42,7 +39,6 @@
         <attribute name="prix_comptoir" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="prix_salle" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="prix_terasse" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Capotes" representedClassName="Capotes" parentEntity="Services" syncable="YES" codeGenerationType="class">
         <attribute name="acces" optional="YES" attributeType="String" syncable="YES"/>
@@ -50,7 +46,6 @@
         <attribute name="horairesEte" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="horairesHiver" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="horairesNormales" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="site" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Fontaines" representedClassName="Fontaines" parentEntity="Services" syncable="YES" codeGenerationType="class">
@@ -60,7 +55,6 @@
         <attribute name="localisation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="modele" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ouv_hiver" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Sanisettes" representedClassName="Sanisettes" parentEntity="Services" syncable="YES" codeGenerationType="class">
         <attribute name="arrondissement" optional="YES" attributeType="String" syncable="YES"/>
@@ -71,6 +65,7 @@
     <entity name="Services" representedClassName="Services" syncable="YES" codeGenerationType="class">
         <attribute name="coordinateX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="coordinateY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="StaticBelibs" representedClassName="StaticBelibs" parentEntity="Services" syncable="YES" codeGenerationType="class">
         <attribute name="abon_erdf_kw" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -86,7 +81,6 @@
         <attribute name="nom_station" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="paiement" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="puissance_pdc_kw" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="recordid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tel_sav_sodetrel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type_charge" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type_connecteur" optional="YES" attributeType="String" syncable="YES"/>
@@ -103,15 +97,15 @@
         <attribute name="number" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Arbres" positionX="0" positionY="-216" width="128" height="255"/>
-        <element name="AutoLib" positionX="0" positionY="-135" width="128" height="135"/>
-        <element name="Belibs" positionX="0" positionY="-135" width="128" height="180"/>
-        <element name="Cafes" positionX="9" positionY="-126" width="128" height="150"/>
-        <element name="Capotes" positionX="0" positionY="-135" width="128" height="150"/>
-        <element name="Fontaines" positionX="0" positionY="-135" width="128" height="150"/>
+        <element name="Arbres" positionX="0" positionY="-216" width="128" height="240"/>
+        <element name="AutoLib" positionX="0" positionY="-135" width="128" height="120"/>
+        <element name="Belibs" positionX="0" positionY="-135" width="128" height="165"/>
+        <element name="Cafes" positionX="9" positionY="-126" width="128" height="135"/>
+        <element name="Capotes" positionX="0" positionY="-135" width="128" height="135"/>
+        <element name="Fontaines" positionX="0" positionY="-135" width="128" height="135"/>
         <element name="Sanisettes" positionX="0" positionY="-135" width="128" height="105"/>
-        <element name="Services" positionX="0" positionY="-135" width="128" height="75"/>
-        <element name="StaticBelibs" positionX="0" positionY="-135" width="128" height="315"/>
+        <element name="Services" positionX="0" positionY="-135" width="128" height="90"/>
+        <element name="StaticBelibs" positionX="0" positionY="-135" width="128" height="300"/>
         <element name="Taxis" positionX="9" positionY="-207" width="128" height="90"/>
         <element name="Velib" positionX="-11" positionY="-288" width="128" height="90"/>
     </elements>
