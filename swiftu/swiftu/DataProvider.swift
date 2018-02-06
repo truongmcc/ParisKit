@@ -11,12 +11,6 @@ import CoreData
 import UIKit
 
 class DataProvider {
-    // MARK: singleton
-//    static let sharedInstance: DataProvider = {
-//        let instance = DataProvider()
-//        return instance
-//    }()
-        //static let instance = DataProvider()
     var tableauVelib: [AnyObject]? = []
     var tableauAutolib: [AnyObject]? = []
     var tableauTaxis: [AnyObject]? = []
