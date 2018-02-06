@@ -23,38 +23,32 @@ class MyAnnotation: NSObject, MKAnnotation {
         super.init()
     }
     // MARK: Constructeurs
-    init(location coord: CLLocationCoordinate2D, service: Services) {
+    init(typeService: Int, location coord: CLLocationCoordinate2D, service: Services) {
         self.coordinate = coord
+        self.tag = typeService
         if let optionalIdRecord = service.recordid {
             self.idRecord = optionalIdRecord
         }
         // initialiser self.title pour permmetre l'affichate de l'annotation
         self.title = " "
         if let velib = service as? Velib {
-            self.tag = Constants.INTERETS.VELIB
-            self.number = String(format: "%d", velib.number)
-            let title = velib.name!
-            let index2 = title.range(of: "-")?.lowerBound
-            var subString = title[index2!...]
-            subString.remove(at: subString.startIndex)
-            self.title = String(subString)
+//            let title = velib.name!
+//            let index2 = title.range(of: "-")?.lowerBound
+//            var subString = title[index2!...]
+//            subString.remove(at: subString.startIndex)
+//            self.title = String(subString)
+            self.title = velib.name
         } else if let autolib = service as? AutoLib {
-            self.tag = Constants.INTERETS.AUTOLIB
             let address: String = autolib.address!
             let codePostal =  autolib.postal_code!
             self.title = String.init(format: "%@ %@", address as String, codePostal as String)
         } else if let taxi = service as? Taxis {
-            self.tag = Constants.INTERETS.TAXIS
             self.title = taxi.station_name
             self.subtitle = String.init(format: "%@ %@", taxi.address!, taxi.zip_code!)
         } else if let sanisette = service as? Sanisettes {
-            self.tag = Constants.INTERETS.SANISETTES
-            self.coordinate = coord
             var adresse: String?
-            if let nomVoie = sanisette.nom_voie {
-                if let numeroVoie = sanisette.numero_voie {
-                    adresse = numeroVoie + ", " + nomVoie
-                }
+            if let nomVoie = sanisette.nom_voie, let numeroVoie = sanisette.numero_voie {
+                adresse = numeroVoie + ", " + nomVoie
             }
             self.title = adresse
             if sanisette.horaires_ouverture != nil {
@@ -63,25 +57,19 @@ class MyAnnotation: NSObject, MKAnnotation {
                 self.subtitle = "Horaires inconnues"
             }
         } else if let belib = service as? Belibs {
-            self.tag = Constants.INTERETS.BELIB
             var adresse: String?
-            if let nomVoie = belib.geolocation_route {
-                if let numerovoie = belib.geolocation_streetnumber {
-                    adresse = numerovoie + ", " + nomVoie
-                }
+            if let nomVoie = belib.geolocation_route, let numerovoie = belib.geolocation_streetnumber {
+                adresse = numerovoie + ", " + nomVoie
             }
             self.title = adresse
         } else if let cafe = service as? Cafes {
-            self.tag = Constants.INTERETS.CAFE
             self.title = cafe.nom_du_cafe
             self.subtitle = String.init(format: "%@ %d", cafe.adresse!, cafe.arrondissement)
-        } else if service is Arbres {
-            self.tag = Constants.INTERETS.ARBRE
-        } else if service is Capotes {
-            self.tag = Constants.INTERETS.CAPOTES
-        } else if service is Fontaines {
-            self.tag = Constants.INTERETS.FONTAINE
         }
+//        else if service is Arbres {
+//        } else if service is Capotes {
+//        } else if service is Fontaines {
+//        }
         super.init()
     }
     class func addAnntotation(tag: Int, tableau: [AnyObject], laMap: MKMapView) {
@@ -89,7 +77,7 @@ class MyAnnotation: NSObject, MKAnnotation {
         for service in (tableau as? [Services])! {
             let coord: CLLocationCoordinate2D? = CLLocationCoordinate2DMake (CLLocationDegrees(service.coordinateX), CLLocationDegrees(service.coordinateY))
             if coord != nil {
-                annotation = MyAnnotation(location: coord!, service: service)
+                annotation = MyAnnotation(typeService: tag, location: coord!, service: service)
                 laMap.addAnnotation(annotation)
             }
         }

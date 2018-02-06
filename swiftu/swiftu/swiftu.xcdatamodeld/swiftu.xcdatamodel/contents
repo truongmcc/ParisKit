@@ -94,7 +94,7 @@
     <entity name="Velib" representedClassName=".Velib" parentEntity="Services" syncable="YES" codeGenerationType="class">
         <attribute name="adress" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="number" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="station_id" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="Arbres" positionX="0" positionY="-216" width="128" height="240"/>

@@ -22,6 +22,7 @@ struct Constants {
     static let urlFontaines = "https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=a_boire+%3D+1&rows=915&facet=arro&facet=modele&facet=a_boire"
     static let urlBelib = "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&rows=150&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247"
     static let urlCafe = "https://opendata.paris.fr/api/records/1.0/search/?dataset=liste-des-cafes-a-un-euro&q=prix_salle+%3D+%221%22++or+prix_terasse+%3D+%221%22&rows=200&facet=arrondissement"
+    static let urlVelib = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&rows=1300"
     // MARK: Interets
     struct INTERETS {
         static let ARBRE = 0
@@ -40,7 +41,6 @@ struct Constants {
             "color": UIColor.green,
             "entity": "Arbres",
             "field": "recordid",
-            //"class": Arbres(),
              "listeTabDetail": [Constants.tabListServices[INTERETS.ARBRE]]
         ],
         [
@@ -48,7 +48,6 @@ struct Constants {
             "color": UIColor.red,
             "entity": "Capotes",
             "field": "recordid",
-            //"class": Capotes.self,
              "©": [Constants.tabListServices[INTERETS.CAPOTES]]
         ],
         [
@@ -56,7 +55,6 @@ struct Constants {
             "color": UIColor.cyan,
             "entity": "Fontaines",
             "field": "recordid",
-            //"class": Fontaines(),
             "listeTabDetail": [Constants.tabListServices[INTERETS.FONTAINE]]
         ],
         [

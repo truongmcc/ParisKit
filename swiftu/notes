@@ -58,6 +58,8 @@ refaire velib : jcdecaux api dead
 
 redeclarer proprement les singleton (voir dataprovider)
 
+revoir le point du listeTabDetail dans Constants et son utilisation dans mapviewcontroller
+
 creation de table services et deporter le idrecord OK
 
 revoir toute la partie dispatch dans downloader et parseJson OK

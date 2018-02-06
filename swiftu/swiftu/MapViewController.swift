@@ -53,9 +53,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         //<--
 
         // from bundle
-        Constants.MANAGERDATA.parser?.parseFileWithType(type: "Velib")
+        //Constants.MANAGERDATA.parser?.parseFileWithType(type: "Velib")
         Constants.MANAGERDATA.parser?.parseFileWithType(type: "Taxis")
         // from url
+        self.monDownloader.dataFromUrl(url: Constants.urlVelib, type: "Velib")
         self.monDownloader.dataFromUrl(url: Constants.urlAutolib, type: "AutoLib")
         self.monDownloader.dataFromUrl(url: Constants.urlArbres, type: "Arbres")
         self.monDownloader.dataFromUrl(url: Constants.urlSanisettes, type: "Sanisettes")
@@ -165,9 +166,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     // on rajoute un bouton detaildisclosure lorsqu'on sélectionne une annotationView
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        if view.annotation is MKUserLocation {
-            return
-        }
+        if view.annotation is MKUserLocation { return }
         // -> récupération du tag (utilisation du cast)
         let annotationCustom: MyAnnotation! = view.annotation as? MyAnnotation
         annotationCustom?.prepareForInterfaceBuilder()
@@ -175,17 +174,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         var detailViewController: DetailViewController?
        // let reuseId = "pin"
         if lcTag == Constants.INTERETS.VELIB {
-            let number: String = annotationCustom.number!
-            var urlString = "https://api.jcdecaux.com/vls/v1/stations/"
-            urlString = urlString.appending(number)
-            urlString = urlString.appending("/?contract=Paris&apiKey=f6b16206b4d7753e702784d6f7df149b2142da22")
+            let idRecord: String = annotationCustom.idRecord!
+            var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=recordid%3D%22"
+            urlString = urlString.appending(idRecord).appending("%22")
             self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Velib")
             annotationCustom.subtitle = self.dynamicMessage
         } else if lcTag == Constants.INTERETS.AUTOLIB {
-            let id: String = annotationCustom.idRecord!
+            let idRecord: String = annotationCustom.idRecord!
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&q=id+%3D+"
-            urlString = urlString.appending(id)
-            urlString = urlString.appending("&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status")
+            urlString = urlString.appending(idRecord).appending("&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status")
             self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "AutoLib")
             annotationCustom.subtitle = self.dynamicMessage
 //          --> SI JE VEUX UTILISER LE DETAILDISCLOSURE /
@@ -197,52 +194,33 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
 //            view.canShowCallout = true
 //         <--
         } else if lcTag == Constants.INTERETS.BELIB {
-            let id: String = annotationCustom.idRecord!
+            let idRecord: String = annotationCustom.idRecord!
             let calloutButton: UIButton = UIButton(type: .detailDisclosure)
             view.rightCalloutAccessoryView = calloutButton
             view.isDraggable = false
             view.isHighlighted = false
             view.canShowCallout = true
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&q=recordid%3D"
-            urlString = urlString.appending(id)
-            urlString = urlString.appending("&rows=1&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247")
+            urlString = urlString.appending(idRecord).appending("&rows=1&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247")
             self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Belibs")
             annotationCustom.subtitle = self.dynamicMessage
-        } else if lcTag == Constants.INTERETS.ARBRE {
+        } else { // arbres, fontaines, preservatifs
             if let entity: String = Constants.SERVICES[lcTag]["entity"] as? String {
                 if let field: String = Constants.SERVICES[lcTag]["field"] as? String {
                     let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
                     let service: Services = (result.firstObject as? Services)!
-                    //let arbre: Arbres = (result.firstObject as? Arbres)!
                     detailViewController = self.createDetailViewController(service: service)
-                    //detailViewController?.tabService = Constants.SERVICES[lcTag]["listeTabDetail"] as? [AnyObject]
                     detailViewController?.tabService = Constants.listeTabDetail[lcTag] as [AnyObject]
+                    self.addChildViewController(detailViewController!)
+                    detailViewController?.view.frame = self.view.frame
+                    self.view.addSubview((detailViewController?.view)!)
+                    detailViewController?.didMove(toParentViewController: self)
+                    mapView.deselectAnnotation(annotationCustom, animated: true)
                 }
             }
-//            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Arbres", field: "recordid", value: annotationCustom.idRecord!)
-//            let arbre: Arbres = (result.firstObject as? Arbres)!
-//            detailViewController = self.createDetailViewController(service: arbre)
-//            detailViewController?.tabService = Constants.listeTabDetail[Constants.INTERETS.ARBRE] as [AnyObject]
-        } else if lcTag == Constants.INTERETS.CAPOTES {
-            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Capotes", field: "recordid", value: annotationCustom.idRecord!)
-            let  capote: Capotes = (result.firstObject as? Capotes)!
-            detailViewController = self.createDetailViewController(service: capote)
-            detailViewController?.tabService = Constants.listeTabDetail[Constants.INTERETS.CAPOTES] as [AnyObject]
-        } else if lcTag == Constants.INTERETS.FONTAINE {
-            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Fontaines", field: "recordid", value: annotationCustom.idRecord!)
-            let fontaine: Fontaines = (result.firstObject as? Fontaines)!
-            detailViewController = self.createDetailViewController(service: fontaine)
-            detailViewController?.tabService = Constants.listeTabDetail[Constants.INTERETS.FONTAINE] as [AnyObject]
-        }
-        if let detailView = detailViewController {
-            self.addChildViewController(detailView)
-            detailView.view.frame = self.view.frame
-            self.view.addSubview((detailView.view)!)
-            detailView.didMove(toParentViewController: self)
-            mapView.deselectAnnotation(annotationCustom, animated: true)
         }
     }
-    func createDetailViewController(service: AnyObject) -> DetailViewController {
+    func createDetailViewController(service: AnyObject) -> DetailViewController? {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
         detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)

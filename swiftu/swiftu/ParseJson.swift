@@ -51,17 +51,20 @@ class ParseJson: NSObject {
                 return "infos non disponibles pour le moment"
             }
             if type == "Velib" {
-                let dico = json as NSDictionary
-                message = String.localizedStringWithFormat("Attaches disponibles: %@ ", (dico.object(forKey: "available_bike_stands") as? CVarArg)!) as String
-                message = message.appending(String.localizedStringWithFormat("velibs disponibles: %@",
-                                                                             (dico.object(forKey: "available_bikes") as? CVarArg)!) as String)
+                if let listeDisponibilites = json["records"] as? [[String: AnyObject]] {
+                    let dicoFields = listeDisponibilites[0]
+                    let fields = dicoFields["fields"]
+                    let attachesDispos = (fields?["numdocksavailable"] as? Int16?)!
+                    let velibsDispos = (fields?["numbikesavailable"] as? Int16?)!
+                    message = "Attaches disponibles: \(attachesDispos!) velibs disponibles: \(velibsDispos!)"
+                }
             } else if type == "AutoLib" {
                 if let listeDisponibilites = json["records"] as? [[String: AnyObject]] {
                     let dicoFields = listeDisponibilites[0]
                     let fields = dicoFields["fields"]
                     let slots = (fields?["slots"] as? Int16?)!
                     let cars = (fields?["cars"] as? Int16?)!
-                    message = String.init(format: "%d voiture(s) restante(s) et %d place(s) libre(s)", cars!, slots!)
+                    message = "\(cars!) voiture(s) restante(s) et \(slots!) place(s) libre(s)"
                 }
             } else if type == "Belibs" {
                 if let datas = json["records"] as? [[String: AnyObject]] {
@@ -421,11 +424,22 @@ class ParseJson: NSObject {
             let myManageObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Velib" as String, into: Constants.MANAGEDOBJECTCONTEXT! )
             if myManageObject?.entity.name == "Velib" {
                 if let castedManageObject = myManageObject as? Velib {
-                    castedManageObject.name = (dataDict["name"] as? String?)!
-                    castedManageObject.number = (dataDict["number"]  as? Int32)!
-                    castedManageObject.adress = (dataDict["address"] as? String?)!
-                    castedManageObject.coordinateX = (dataDict["latitude"] as? Float?)!!
-                    castedManageObject.coordinateY = (dataDict["longitude"] as? Float?)!!
+                    if let recordid = dataDict["recordid"] as? String {
+                        castedManageObject.recordid = recordid
+                    }
+                    if var dicoField = dataDict["fields"] as? [String: Any] {
+                        if let name = dicoField["name"] as? String {
+                            castedManageObject.name = name
+                        } else if let station_id = dicoField["station_id"] as? String {
+                            castedManageObject.station_id = station_id
+                        }
+                    }
+                    if let dicoGeometry = dataDict["geometry"] as? [String: Any] {
+                        if let coord: [Float] = dicoGeometry["coordinates"] as? [Float] {
+                            castedManageObject.coordinateY = coord[0]
+                            castedManageObject.coordinateX = coord[1]
+                        }
+                    }
                     do {
                         try castedManageObject.managedObjectContext?.save()
                         Constants.MANAGERDATA.tableauVelib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Velib" as String)
@@ -524,7 +538,7 @@ class ParseJson: NSObject {
         let dico: [String: Any]
         switch type {
         case "Velib":
-            dico = ["idKey": "number", "sort": true]
+            dico = ["idKey": "recordid", "sort": true]
         case "AutoLib":
             dico = ["idKey": "nomStation", "sort": false]
         case "Arbres":
