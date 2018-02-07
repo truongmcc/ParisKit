@@ -40,11 +40,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         locationManager.delegate = self
         location(self)
         //--> notifications
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(parseFromNotif(notification:)),
-            name: NSNotification.Name(rawValue: "dataContentReceivedNotification"),
-            object: nil)
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(parseFromNotif(notification:)),
+//            name: NSNotification.Name(rawValue: "dataContentReceivedNotification"),
+//            object: nil)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(dynamicParseFromNotif(notification:)),
@@ -65,11 +65,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         self.monDownloader.dataFromUrl(url: Constants.urlBelib, type: "Belibs")
         self.monDownloader.dataFromUrl(url: Constants.urlCafe, type: "Cafes")
     }
-    @objc func parseFromNotif(notification: Notification) {
-        if let type = notification.userInfo?["type"] {
-            Constants.MANAGERDATA.parser?.parse(data: self.monDownloader.data, type: (type as? String)!)
-        }
-    }
+//    @objc func parseFromNotif(notification: Notification) {
+//        if let type = notification.userInfo?["type"] {
+//            Constants.MANAGERDATA.parser?.parse(data: self.monDownloader.data, type: (type as? String)!)
+//        }
+//    }
     @objc func dynamicParseFromNotif(notification: Notification) {
         if let type = notification.userInfo?["type"] {
             self.dynamicMessage = Constants.MANAGERDATA.parser?.dynamicParse(data: self.monDownloader.data, type: (type as? String)!)
@@ -354,8 +354,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
     }
     deinit {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name("dataContentReceivedNotification"),
-                                                  object: nil)
+//        NotificationCenter.default.removeObserver(self, name: Notification.Name("dataContentReceivedNotification"),
+//                                                  object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name("dynamicDataContentReceivedNotification"),
                                                   object: nil)
     }
