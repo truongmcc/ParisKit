@@ -12,8 +12,8 @@ import Alamofire
 class Downloader {
     var data = Data()
     var dynamicValue: String?
+    // ANCIENNE METHODE
 //    func dataFromUrl(url:String, type:String) {
-//        
 //        let urlString = URL(string: url)
 //        if let url = urlString {
 //            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -74,38 +74,38 @@ class Downloader {
 //        task.resume()
 //        semaphore.wait()
     }
-//    func dynamiciDataFromUrl(url: String, type: String) {
-//        // MODE DATA
-//        Alamofire.request(url).responseData(completionHandler: { (response) in
-//            if let data = response.data {
-//                self.data = data
-//                guard let result = Constants.MANAGERDATA.parser?.dynamicParse(data: self.data, type: type) else {
-//                    print("pas de valeur dynamiques")
-//                    return
-//                }
-//                self.dynamicValue = result
-//            }
-//        })
-//    }
-//     Using a semaphore for synchronous request
-    func dynamiciDataFromUrl(url: String, type: String) {
-        let myURL = URL(string: url)!
-        var dataStringOrNil: String?
-        let semaphore = DispatchSemaphore(value: 0)
-        let task = URLSession.shared.dataTask(with: myURL) { (data, _, error) in // _ est le param response
-            defer {
-                semaphore.signal()
+    // LA COMPLETION FINISHED VA ETRE APPELE A LA FIN DE LA REQUETE ET VA PERMETTRE LA MISE A JOUR UI DANS MAPVIEWCONTROLLER
+    func dynamiciDataFromUrl(url: String, type: String, finished: @escaping (Bool, String) -> Void) {
+        var result: String?
+        Alamofire.request(url).responseData(completionHandler: { (response) in
+            if let data = response.data {
+                self.data = data
+                result = Constants.MANAGERDATA.parser?.dynamicParse(data: self.data, type: type)
+                finished(true, result!)
+            } else {
+                finished(false, "données non disponibles")
             }
-            guard let data = data, error == nil else {
-                print("error")
-                return
-            }
-            self.data = data
-            NotificationCenter.default.post(name: Notification.Name("dynamicDataContentReceivedNotification"),
-                                            object: nil,
-                                            userInfo: ["type": type])
-        }
-        task.resume()
-        semaphore.wait()
+        })
     }
+//     SEMAPHORE VERSION
+//    func dynamiciDataFromUrl(url: String, type: String) {
+//        let myURL = URL(string: url)!
+//        var dataStringOrNil: String?
+//        let semaphore = DispatchSemaphore(value: 0)
+//        let task = URLSession.shared.dataTask(with: myURL) { (data, _, error) in // _ est le param response
+//            defer {
+//                semaphore.signal()
+//            }
+//            guard let data = data, error == nil else {
+//                print("error")
+//                return
+//            }
+//            self.data = data
+//            NotificationCenter.default.post(name: Notification.Name("dynamicDataContentReceivedNotification"),
+//                                            object: nil,
+//                                            userInfo: ["type": type])
+//        }
+//        task.resume()
+//        semaphore.wait()
+//    }
 }

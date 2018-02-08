@@ -32,28 +32,21 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     var monDownloader = Downloader()
     var optionViewController: OptionsViewController?
     var dynamicMessage: String?
-
+    var subtitleAnnotation: (Bool, String) -> (String) = { (finish, result) in
+        if finish {
+            return result
+        } else {
+            print("données non trouvées")
+            return result
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
         laMap.delegate = self
         locationManager.delegate = self
         location(self)
-        //--> notifications
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(parseFromNotif(notification:)),
-//            name: NSNotification.Name(rawValue: "dataContentReceivedNotification"),
-//            object: nil)
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(dynamicParseFromNotif(notification:)),
-            name: NSNotification.Name(rawValue: "dynamicDataContentReceivedNotification"),
-            object: nil)
-        //<--
-
         // from bundle
-        //Constants.MANAGERDATA.parser?.parseFileWithType(type: "Velib")
         Constants.MANAGERDATA.parser?.parseFileWithType(type: "Taxis")
         // from url
         self.monDownloader.dataFromUrl(url: Constants.urlVelib, type: "Velib")
@@ -64,16 +57,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         self.monDownloader.dataFromUrl(url: Constants.urlFontaines, type: "Fontaines")
         self.monDownloader.dataFromUrl(url: Constants.urlBelib, type: "Belibs")
         self.monDownloader.dataFromUrl(url: Constants.urlCafe, type: "Cafes")
-    }
-//    @objc func parseFromNotif(notification: Notification) {
-//        if let type = notification.userInfo?["type"] {
-//            Constants.MANAGERDATA.parser?.parse(data: self.monDownloader.data, type: (type as? String)!)
-//        }
-//    }
-    @objc func dynamicParseFromNotif(notification: Notification) {
-        if let type = notification.userInfo?["type"] {
-            self.dynamicMessage = Constants.MANAGERDATA.parser?.dynamicParse(data: self.monDownloader.data, type: (type as? String)!)
-        }
     }
     // MARK: User Location
     @IBAction func location(_ sender: Any) {
@@ -177,14 +160,17 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             let idRecord: String = annotationCustom.idRecord!
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=recordid%3D%22"
             urlString = urlString.appending(idRecord).appending("%22")
-            self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Velib")
-            annotationCustom.subtitle = self.dynamicMessage
+            self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Velib") { (finish, result) in
+                if finish { annotationCustom.subtitle = result
+                } else { annotationCustom.subtitle = "données non disponibles"}
+            }
         } else if lcTag == Constants.INTERETS.AUTOLIB {
             let idRecord: String = annotationCustom.idRecord!
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&q=id+%3D+"
             urlString = urlString.appending(idRecord).appending("&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status")
-            self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "AutoLib")
-            annotationCustom.subtitle = self.dynamicMessage
+            self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "AutoLib") { (finish, result) in
+                annotationCustom.subtitle = self.subtitleAnnotation(finish, result)
+            }
 //          --> SI JE VEUX UTILISER LE DETAILDISCLOSURE /
 //        } else if lcTag == Constants.INTERETS.CAFE {
 //            let calloutButton: UIButton = UIButton(type: .detailDisclosure)
@@ -202,8 +188,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             view.canShowCallout = true
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&q=recordid%3D"
             urlString = urlString.appending(idRecord).appending("&rows=1&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247")
-            self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Belibs")
-            annotationCustom.subtitle = self.dynamicMessage
+            self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Belibs") { (finish, result) in
+                if finish { annotationCustom.subtitle = result
+                } else { annotationCustom.subtitle = "données non disponibles"}
+            }
+           // annotationCustom.subtitle = self.dynamicMessage
         } else { // arbres, fontaines, preservatifs
             if let entity: String = Constants.SERVICES[lcTag]["entity"] as? String {
                 if let field: String = Constants.SERVICES[lcTag]["field"] as? String {
