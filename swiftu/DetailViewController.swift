@@ -101,8 +101,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             return UIColor.red
         } else if service is Fontaines? {
             return UIColor.cyan
-//        } else if (service is Cafes?) {
-//            return UIColor.brown
+        } else if service is Cafes? {
+            return UIColor.brown
         } else {
             return UIColor.white
         }

@@ -29,14 +29,9 @@ class MyAnnotation: NSObject, MKAnnotation {
         if let optionalIdRecord = service.recordid {
             self.idRecord = optionalIdRecord
         }
-        // initialiser self.title pour permmetre l'affichate de l'annotation
+        // initialiser self.title pour permetre l'affichage de la date de l'annotation
         self.title = " "
         if let velib = service as? Velib {
-//            let title = velib.name!
-//            let index2 = title.range(of: "-")?.lowerBound
-//            var subString = title[index2!...]
-//            subString.remove(at: subString.startIndex)
-//            self.title = String(subString)
             self.title = velib.name
         } else if let autolib = service as? AutoLib {
             let address: String = autolib.address!
@@ -64,12 +59,10 @@ class MyAnnotation: NSObject, MKAnnotation {
             self.title = adresse
         } else if let cafe = service as? Cafes {
             self.title = cafe.nom_du_cafe
-            self.subtitle = String.init(format: "%@ %d", cafe.adresse!, cafe.arrondissement)
+            if let adresse = cafe.adresse {
+                self.subtitle = "\(adresse) \(cafe.arrondissement)" // String.init(format: "%@ %@", adresse, String(cafe.arrondissement))
+            }
         }
-//        else if service is Arbres {
-//        } else if service is Capotes {
-//        } else if service is Fontaines {
-//        }
         super.init()
     }
     class func addAnntotation(tag: Int, tableau: [AnyObject], laMap: MKMapView) {

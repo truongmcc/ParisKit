@@ -148,7 +148,7 @@ struct Constants {
             "property": "domanialite"
             ]
         ]
-    static let  tabDetailCapote = [
+    static let tabDetailCapote = [
         [
             "title": "Site",
             "property": "site"
@@ -170,7 +170,7 @@ struct Constants {
             "property": "horairesHiver"
             ]
     ]
-    static let  tabDetailCafe = [
+    static let tabDetailCafe = [
         [
             "title": "Prix en terasse",
             "property": "prix_terasse"
@@ -185,4 +185,30 @@ struct Constants {
             ]
     ]
 
+    static let cafeFieldsAndKeys = [
+        [
+            "field": "arrondissement",
+            "key": "arrondissement"
+        ],
+        [
+            "field": "prix_terasse",
+            "key": "prix_terasse"
+        ],
+        [
+            "field": "prix_comptoir",
+            "key": "prix_comptoir"
+        ],
+        [
+            "field": "prix_salle",
+            "key": "prix_salle"
+        ],
+        [
+            "field": "nom_du_cafe",
+            "key": "nom_du_cafe"
+        ],
+        [
+            "field": "adresse",
+            "key": "adresse"
+        ]
+    ]
 }

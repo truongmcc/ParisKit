@@ -52,6 +52,10 @@ revoir le point du listeTabDetail dans Constants et son utilisation dans mapview
 
 redeclarer proprement les singleton (voir dataprovider) OK
 
+utiliser ALAMOFIRE OK
+
+refactoring parsing json 
+
 warning errors et violation
 
 revoir la méthode de suppression des tables

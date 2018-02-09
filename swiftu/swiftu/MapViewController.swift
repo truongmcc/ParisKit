@@ -98,19 +98,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
                 buttonItem.tintColor = UIColor.black
             }
         }
-//        let selectedButton: UIBarButtonItem = self.retournerBoutonService(sender: (sender as? UIBarButtonItem)!)
-//        if selectedButton.tintColor == UIColor.black {
-//            selectedButton.tintColor = UIColor.blue
-//            MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau!, laMap: self.laMap)
-//        } else {
-//            selectedButton.tintColor = UIColor.black
-//        }
-//        let allBarButtonItems = barItem.items
-//        for buttonItem in allBarButtonItems! {
-//            if buttonItem != selectedButton {
-//                buttonItem.tintColor = UIColor.black
-//            }
-//        }
     }
     func retournerBoutonService(sender: UIBarButtonItem) -> UIBarButtonItem? {
         if sender == butVelib {
@@ -183,14 +170,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             let idRecord: String = annotationCustom.idRecord!
             let calloutButton: UIButton = UIButton(type: .detailDisclosure)
             view.rightCalloutAccessoryView = calloutButton
-            view.isDraggable = false
-            view.isHighlighted = false
-            view.canShowCallout = true
+            view.isDraggable = false ; view.isHighlighted = false ; view.canShowCallout = true
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&q=recordid%3D"
             urlString = urlString.appending(idRecord).appending("&rows=1&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247")
             self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Belibs") { (finish, result) in
-                if finish { annotationCustom.subtitle = result
-                } else { annotationCustom.subtitle = "données non disponibles"}
+                if finish { annotationCustom.subtitle = result } else { annotationCustom.subtitle = "données non disponibles"}
             }
            // annotationCustom.subtitle = self.dynamicMessage
         } else { // arbres, fontaines, preservatifs
