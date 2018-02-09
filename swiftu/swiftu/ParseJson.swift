@@ -125,15 +125,21 @@ class ParseJson: NSObject {
         //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
         if let recordid = dic["recordid"] as? String {
             service.setValue(recordid, forKey: "recordid")
-            if let dicoGeometry = dic["geometry"] as? [String: Any] {
-                let coordo: NSArray = (dicoGeometry["coordinates"] as? NSArray)!
-                service.coordinateX = (coordo[1] as? Float)!
-                service.coordinateY = (coordo[0] as? Float)!
-                for property in (Constants.cafeFieldsAndKeys) {
-                    var dicoField = dic["fields"] as? [String: Any]
-                    let field: String? = property["field"]      // field du Service
-                    let keyDico: String = (property["key"])!    // clé du dictionnaire correspondant au field
-                    let value = dicoField![keyDico]             // valeur à updater
+            var dicoField = dic["fields"] as? [String: Any]
+            for property in (Constants.cafeFieldsAndKeys) {
+                let field: String? = property["field"]      // field du Service
+                let keyDico: String = (property["key"])!    // clé du dictionnaire correspondant au field
+                if keyDico == "geoloc" {
+                    guard let coordo: NSArray = dicoField!["geoloc"] as? NSArray else {
+                        return
+                    }
+                    if field == "coordinateX" {
+                        service.setValue(coordo[0], forKey: field!)
+                    } else if field == "coordinateY" {
+                        service.setValue(coordo[1], forKey: field!)
+                    }
+                } else {
+                    let value = dicoField![keyDico]         // valeur à updater
                     service.setValue(value, forKey: field!)
                 }
             }
@@ -310,35 +316,35 @@ class ParseJson: NSObject {
     //        }
     @objc func sanisettesJsonManager(_ tabSanisettes: [AnyObject]) {
         DispatchQueue.main.async {
-        let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-        container?.performBackgroundTask { (context) in
-            for dic  in tabSanisettes {
-                var dicoField = dic["fields"] as? [String: Any]
-                let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Sanisettes" as String, into: context )
-                if myManagedObject?.entity.name == "Sanisettes" {
-                    if let castedManagedObject = myManagedObject as? Sanisettes {
-                        castedManagedObject.nom_voie =  (dicoField!["nom_voie"] as? String?)!
-                        castedManagedObject.horaires_ouverture =  (dicoField!["horaires_ouverture"] as? String?)!
-                        castedManagedObject.numero_voie =  (dicoField!["numero_voie"] as? String?)!
-                        if let ardt = dicoField!["arrondissement"] as? String? {
-                           castedManagedObject.arrondissement = ardt
-                        }
-                        if let dicoGeometry = dic["geometry"] as? [String: Any] {
-                            if let coordo = (dicoGeometry["coordinates"] as? NSArray) {
-                                castedManagedObject.coordinateX = (coordo[1] as? Float)!
-                                castedManagedObject.coordinateY = (coordo[0] as? Float)!
+            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+            container?.performBackgroundTask { (context) in
+                for dic  in tabSanisettes {
+                    var dicoField = dic["fields"] as? [String: Any]
+                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Sanisettes" as String, into: context )
+                    if myManagedObject?.entity.name == "Sanisettes" {
+                        if let castedManagedObject = myManagedObject as? Sanisettes {
+                            castedManagedObject.nom_voie =  (dicoField!["nom_voie"] as? String?)!
+                            castedManagedObject.horaires_ouverture =  (dicoField!["horaires_ouverture"] as? String?)!
+                            castedManagedObject.numero_voie =  (dicoField!["numero_voie"] as? String?)!
+                            if let ardt = dicoField!["arrondissement"] as? String? {
+                                castedManagedObject.arrondissement = ardt
+                            }
+                            if let dicoGeometry = dic["geometry"] as? [String: Any] {
+                                if let coordo = (dicoGeometry["coordinates"] as? NSArray) {
+                                    castedManagedObject.coordinateX = (coordo[1] as? Float)!
+                                    castedManagedObject.coordinateY = (coordo[0] as? Float)!
+                                }
                             }
                         }
                     }
                 }
+                do {
+                    try context.save()
+                    Constants.MANAGERDATA.tableauSanisettes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Sanisettes" as String)
+                } catch _ {
+                    fatalError("Failure to save context")
+                }
             }
-            do {
-                try context.save()
-                Constants.MANAGERDATA.tableauSanisettes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Sanisettes" as String)
-            } catch _ {
-                fatalError("Failure to save context")
-            }
-        }
         }
     }
     /*--------- FORMAT -----------------
@@ -376,49 +382,49 @@ class ParseJson: NSObject {
      //             */
     @objc func arbresJsonManager(_ tabArbres: [AnyObject]) {
         DispatchQueue.main.async {
-        let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-        container?.performBackgroundTask { (context) in
-            for dic in tabArbres {
-                let recordid = dic["recordid"] as? String
-                var dicoField = dic["fields"] as? [String: Any]
-                let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Arbres" as String, into: context )
-                if myManagedObject?.entity.name == "Arbres" {
-                    if let castedManagedObject = myManagedObject as? Arbres {
-                        castedManagedObject.dateplantation =  (dicoField!["dateplantation"] as? String?)!
-                        castedManagedObject.recordid = recordid
-                        castedManagedObject.adresse = (dicoField!["adresse"]      as? String?)!
-                        castedManagedObject.espece = (dicoField!["espece"]        as? String?)!
-                        castedManagedObject.arrondisse = (dicoField!["arrondisse"] as? String?)!
-                        castedManagedObject.famille = (dicoField!["famille"] as? String?)!
-                        castedManagedObject.libellefrancais = (dicoField!["libellefrancais"] as? String?)!
-                        castedManagedObject.genre = (dicoField!["genre"] as? String?)!
-                        castedManagedObject.genre = (dicoField!["domanialite"] as? String?)!
-                        castedManagedObject.nom_ev = (dicoField!["nom_env"] as? String?)!
-                        if let hauteur = (dicoField!["hauteurenm"] as? Float) {
-                            castedManagedObject.circonferenceencm = hauteur
-                        }
-                        if let circonf = dicoField!["circonferenceencm"] as? Float {
-                            castedManagedObject.circonferenceencm = circonf
-                        }
-                        if let dicoGeometry = dic["geometry"] as? [String: Any] {
-                            if let typeGeom = dicoGeometry["type"] as? String {
-                                castedManagedObject.type = typeGeom
+            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+            container?.performBackgroundTask { (context) in
+                for dic in tabArbres {
+                    let recordid = dic["recordid"] as? String
+                    var dicoField = dic["fields"] as? [String: Any]
+                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Arbres" as String, into: context )
+                    if myManagedObject?.entity.name == "Arbres" {
+                        if let castedManagedObject = myManagedObject as? Arbres {
+                            castedManagedObject.dateplantation =  (dicoField!["dateplantation"] as? String?)!
+                            castedManagedObject.recordid = recordid
+                            castedManagedObject.adresse = (dicoField!["adresse"]      as? String?)!
+                            castedManagedObject.espece = (dicoField!["espece"]        as? String?)!
+                            castedManagedObject.arrondisse = (dicoField!["arrondisse"] as? String?)!
+                            castedManagedObject.famille = (dicoField!["famille"] as? String?)!
+                            castedManagedObject.libellefrancais = (dicoField!["libellefrancais"] as? String?)!
+                            castedManagedObject.genre = (dicoField!["genre"] as? String?)!
+                            castedManagedObject.genre = (dicoField!["domanialite"] as? String?)!
+                            castedManagedObject.nom_ev = (dicoField!["nom_env"] as? String?)!
+                            if let hauteur = (dicoField!["hauteurenm"] as? Float) {
+                                castedManagedObject.circonferenceencm = hauteur
                             }
-                            if let coord: [Float] = dicoGeometry["coordinates"] as? [Float] {
-                                castedManagedObject.coordinateY = coord[0]
-                                castedManagedObject.coordinateX = coord[1]
+                            if let circonf = dicoField!["circonferenceencm"] as? Float {
+                                castedManagedObject.circonferenceencm = circonf
+                            }
+                            if let dicoGeometry = dic["geometry"] as? [String: Any] {
+                                if let typeGeom = dicoGeometry["type"] as? String {
+                                    castedManagedObject.type = typeGeom
+                                }
+                                if let coord: [Float] = dicoGeometry["coordinates"] as? [Float] {
+                                    castedManagedObject.coordinateY = coord[0]
+                                    castedManagedObject.coordinateX = coord[1]
+                                }
                             }
                         }
                     }
                 }
+                do {
+                    try context.save()
+                    Constants.MANAGERDATA.tableauArbres = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Arbres" as String)
+                } catch _ {
+                    fatalError("Failure to save context")
+                }
             }
-            do {
-                try context.save()
-                Constants.MANAGERDATA.tableauArbres = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Arbres" as String)
-            } catch _ {
-                fatalError("Failure to save context")
-            }
-        }
         }
     }
     // MARK: Perform Selector
@@ -489,7 +495,7 @@ class ParseJson: NSObject {
             }
         }
     }
-     @objc func taxiJsonManager(_ jsonObj: [[String: AnyObject]]) {
+    @objc func taxiJsonManager(_ jsonObj: [[String: AnyObject]]) {
         for dataDict in jsonObj {
             let myManageObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Taxis" as String, into: (Constants.MANAGEDOBJECTCONTEXT)!)
             if myManageObject?.entity.name == "Taxis" {

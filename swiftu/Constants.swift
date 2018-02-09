@@ -209,6 +209,14 @@ struct Constants {
         [
             "field": "adresse",
             "key": "adresse"
+        ],
+        [
+            "field": "coordinateX",
+            "key": "geoloc"
+        ],
+        [
+            "field": "coordinateY",
+            "key": "geoloc"
         ]
     ]
 }
