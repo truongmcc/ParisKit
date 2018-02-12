@@ -47,9 +47,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         locationManager.delegate = self
         location(self)
         // from bundle
-        Constants.MANAGERDATA.parser?.parseFileWithType(type: "Taxis")
+        //Constants.MANAGERDATA.parser?.parseFileWithType(type: "Taxis")
         // from url
-        self.monDownloader.dataFromUrl(url: Constants.urlVelib, type: "Velib")
+        //self.monDownloader.dataFromUrl(url: Constants.urlVelib, type: "Velib")
         self.monDownloader.dataFromUrl(url: Constants.urlAutolib, type: "AutoLib")
         self.monDownloader.dataFromUrl(url: Constants.urlArbres, type: "Arbres")
         self.monDownloader.dataFromUrl(url: Constants.urlSanisettes, type: "Sanisettes")

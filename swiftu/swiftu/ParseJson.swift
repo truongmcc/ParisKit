@@ -121,25 +121,23 @@ class ParseJson: NSObject {
         }
     }
     // MARK: Services
-    func createServiceFromJson(service: Services, structure: NSArray, dic: NSDictionary) {
+    func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: NSDictionary) {
         //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
         if let recordid = dic["recordid"] as? String {
             service.setValue(recordid, forKey: "recordid")
             var dicoField = dic["fields"] as? [String: Any]
-            for property in (Constants.cafeFieldsAndKeys) {
-                let field: String? = property["field"]      // field du Service
-                let keyDico: String = (property["key"])!    // clé du dictionnaire correspondant au field
-                if keyDico == "geoloc" {
-                    guard let coordo: NSArray = dicoField!["geoloc"] as? NSArray else {
-                        return
-                    }
+            for property in structure {
+                let field: String? = property["field"] as? String      // field du Service
+                let keyDico: String? = (property["key"]) as? String    // clé du dictionnaire correspondant au field
+                if keyDico == "geoloc" || keyDico == "geolocation_coordinates" || keyDico == "geo_point_2d" || keyDico == "xy" || keyDico == "geom_x_y" || keyDico == "geo_point" {
+                    guard let coordo = dicoField![keyDico!] as? NSArray else { return }
                     if field == "coordinateX" {
                         service.setValue(coordo[0], forKey: field!)
                     } else if field == "coordinateY" {
                         service.setValue(coordo[1], forKey: field!)
                     }
                 } else {
-                    let value = dicoField![keyDico]         // valeur à updater
+                    let value = dicoField![keyDico!]         // valeur à updater
                     service.setValue(value, forKey: field!)
                 }
             }
@@ -153,7 +151,7 @@ class ParseJson: NSObject {
                     let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Cafes" as String, into: context )
                     if myManagedObject?.entity.name == "Cafes" {
                         if let castedManagedObject = myManagedObject as? Cafes {
-                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.cafeFieldsAndKeys as NSArray, dic: (dic as? NSDictionary)!)
+                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.cafeFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
                         }
                     }
                 }
@@ -171,33 +169,10 @@ class ParseJson: NSObject {
             let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
             container?.performBackgroundTask { (context) in
                 for dic  in tabBelibs {
-                    let recordid = dic["recordid"] as? String
-                    var dicoField = dic["fields"] as? [String: Any]
                     let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Belibs" as String, into: context )
                     if myManagedObject?.entity.name == "Belibs" {
                         if let castedManagedObject = myManagedObject as? Belibs {
-                            castedManagedObject.recordid = recordid
-                            if let agreg_nbplugs = dicoField!["aggregated_nbplugs"] as? Int16 {
-                                castedManagedObject.aggregated_nbplugs = agreg_nbplugs
-                            }
-                            castedManagedObject.geolocation_postalcode =  (dicoField!["geolocation_postalcode"] as? String?)!
-                            castedManagedObject.geolocation_route =  (dicoField!["geolocation_route"] as? String?)!
-                            castedManagedObject.geolocation_streetnumber = (dicoField!["geolocation_streetnumber"] as? String?)!
-                            if let static_nbparkSpots = dicoField!["static_nbparkingspots"] as? Int16 {
-                                castedManagedObject.static_nbparkingspots = static_nbparkSpots
-                            }
-                            if let staticNbStations = dicoField!["static_nbstations"] as? Int16 {
-                                castedManagedObject.static_nbstations = staticNbStations
-                            }
-                            if let staticOpening247 = dicoField!["static_opening_247"] as? String? {
-                                castedManagedObject.static_opening_247 = staticOpening247
-                            }
-                            castedManagedObject.status_available = (dicoField!["status_available"] as? String?)!
-                            if let dicoGeometry = dic["geometry"] as? [String: Any] {
-                                let coordo: NSArray = (dicoGeometry["coordinates"] as? NSArray)!
-                                castedManagedObject.coordinateX = (coordo[1] as? Float)!
-                                castedManagedObject.coordinateY = (coordo[0] as? Float)!
-                            }
+                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.belibFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
                         }
                     }
                 }
@@ -215,25 +190,10 @@ class ParseJson: NSObject {
             let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
             container?.performBackgroundTask { (context) in
                 for dic in tabFontaines {
-                    let recordid = dic["recordid"] as? String
-                    var dicoField: Dictionary? = dic["fields"] as? [String: Any]
-                    if let myManagedObject = NSEntityDescription.insertNewObject(forEntityName: "Fontaines" as String, into: context ) as? Fontaines {
-                        myManagedObject.recordid = recordid
-                        if let localisation = dicoField!["localisati"] as? String {
-                            myManagedObject.localisation = localisation
-                        }
-                        myManagedObject.localisation = (dicoField!["localisati"] as? String?)!
-                        myManagedObject.adresse =  (dicoField!["adr_s"] as? String?)!
-                        myManagedObject.classee =  (dicoField!["classee"] as? String?)!
-                        myManagedObject.modele = (dicoField!["modele"] as? String?)!
-                        myManagedObject.en_service = (dicoField!["en_service"] as? String?)!
-                        myManagedObject.ouv_hiver = (dicoField!["ouv_hiver"] as? String?)!
-                        if let dicoGeometry = dic["geometry"] as? [String: Any] {
-                            if let optionalCoordo = (dicoGeometry["coordinates"] as? NSArray) {
-                                let coordo: NSArray = optionalCoordo
-                                myManagedObject.coordinateX = (coordo[1] as? Float)!
-                                myManagedObject.coordinateY = (coordo[0] as? Float)!
-                            }
+                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Fontaines" as String, into: context )
+                    if myManagedObject?.entity.name == "Fontaines" {
+                        if let castedManagedObject = myManagedObject as? Fontaines {
+                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.fontaineFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
                         }
                     }
                 }
@@ -251,24 +211,10 @@ class ParseJson: NSObject {
             let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
             container?.performBackgroundTask { (context) in
                 for dic in tabCapotes {
-                    let recordid = dic["recordid"] as? String
-                    var dicoField = dic["fields"] as? [String: Any]
                     let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Capotes" as String, into: context )
                     if myManagedObject?.entity.name == "Capotes" {
                         if let castedManagedObject = myManagedObject as? Capotes {
-                            castedManagedObject.recordid = recordid
-                            castedManagedObject.acces =  (dicoField!["acces"] as? String?)!
-                            castedManagedObject.adresse =  (dicoField!["adresse_complete"] as? String?)!
-                            castedManagedObject.horairesEte =  (dicoField!["horaires_vacances_ete"] as? String?)!
-                            castedManagedObject.horairesHiver = (dicoField!["horaires_vacances_hiver"] as? String?)!
-                            castedManagedObject.horairesNormales = (dicoField!["horaires_normal"] as? String?)!
-                            castedManagedObject.site = (dicoField!["site"] as? String?)!
-                            if let dicoGeometry = dic["geometry"] as? [String: Any] {
-                                if let coordo = (dicoGeometry["coordinates"] as? NSArray) {
-                                    castedManagedObject.coordinateX = (coordo[1] as? Float)!
-                                    castedManagedObject.coordinateY = (coordo[0] as? Float)!
-                                }
-                            }
+                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.capoteFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
                         }
                     }
                 }
@@ -281,60 +227,16 @@ class ParseJson: NSObject {
             }
         }
     }
-    //    {
-    //        "datasetid":"sanisettesparis2011",
-    //        "recordid":"cb7aee1791ccce595e97d98fc0f72d05709abf52",
-    //        "fields":{
-    //            "objectid":10,
-    //            "arrondissement":"02",
-    //            "nom_voie":"BOULEVARD DE SEBASTOPOL",
-    //            "geom_x_y":[
-    //            48.864828018946774,
-    //            2.351611260829617
-    //            ],
-    //            "geom":{
-    //                "type":"Point",
-    //                "coordinates":[
-    //                2.351611260829617,
-    //                48.864828018946774
-    //                ]
-    //            },
-    //            "y":129375.048287,
-    //            "x":601106.877435,
-    //            "numero_voie":"85",
-    //            "identifiant":"2/102",
-    //            "horaires_ouverture":"6 h - 22 h"
-    //        },
-    //        "geometry":{
-    //            "type":"Point",
-    //            "coordinates":[
-    //            2.351611260829617,
-    //            48.864828018946774
-    //            ]
-    //        },
-    //        "record_timestamp":"2017-06-30T22:00:44+00:00"
-    //        }
+    // https://opendata.paris.fr/api/records/1.0/search/?dataset=distributeurspreservatifsmasculinsparis2012&rows=1&facet=annee_installation&facet=arrond&facet=acces
     @objc func sanisettesJsonManager(_ tabSanisettes: [AnyObject]) {
         DispatchQueue.main.async {
             let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
             container?.performBackgroundTask { (context) in
                 for dic  in tabSanisettes {
-                    var dicoField = dic["fields"] as? [String: Any]
                     let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Sanisettes" as String, into: context )
                     if myManagedObject?.entity.name == "Sanisettes" {
                         if let castedManagedObject = myManagedObject as? Sanisettes {
-                            castedManagedObject.nom_voie =  (dicoField!["nom_voie"] as? String?)!
-                            castedManagedObject.horaires_ouverture =  (dicoField!["horaires_ouverture"] as? String?)!
-                            castedManagedObject.numero_voie =  (dicoField!["numero_voie"] as? String?)!
-                            if let ardt = dicoField!["arrondissement"] as? String? {
-                                castedManagedObject.arrondissement = ardt
-                            }
-                            if let dicoGeometry = dic["geometry"] as? [String: Any] {
-                                if let coordo = (dicoGeometry["coordinates"] as? NSArray) {
-                                    castedManagedObject.coordinateX = (coordo[1] as? Float)!
-                                    castedManagedObject.coordinateY = (coordo[0] as? Float)!
-                                }
-                            }
+                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.saniesetteFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
                         }
                     }
                 }
@@ -347,74 +249,19 @@ class ParseJson: NSObject {
             }
         }
     }
+    
     /*--------- FORMAT -----------------
-     //             [
-     //             {
-     //             "datasetid": "arbresremarquablesparis2011",
-     //             "recordid": "209c78f694523775aed9e93af8e8bab730007f71",
-     //             "fields":
-     //             {
-     //             "annee_pla": "1935",
-     //             "circonf": 335.0,
-     //             "objectid": 27,
-     //             "adresse": "Bd Jourdan, avenue Reille, rue Gazan, rue de la Cité-Universitaire, rue Nansouty",
-     //             "espece": "sempervirens",
-     //             "arrondisse": "14",
-     //             "famille": "Taxodiaceae",
-     //             "geom_x_y": [
-     //             48.8220238534,
-     //             2.33628540112
-     //             ],
-     //             "genre": "Sequoia",
-     //             "nom_commun": "Sequoia sempervirent",
-     //             "nom_ev": "Parc Montsouris",
-     //             "hauteur": 30.0
-     //             },
-     //             "geometry": {
-     //             "type": "Point",
-     //             "coordinates": [
-     //             2.33628540112,
-     //             48.8220238534
-     //             ]
-     //             },
-     //             "record_timestamp": "2014-08-13T20:16:19.201211"
-     //             }
-     //             */
+    // https://opendata.paris.fr/api/records/1.0/search/?dataset=les-arbres&rows=1&facet=typeemplacement&facet=domanialite&facet=arrondissement&facet=libellefrancais&facet=genre&facet=espece
+    */
     @objc func arbresJsonManager(_ tabArbres: [AnyObject]) {
         DispatchQueue.main.async {
             let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
             container?.performBackgroundTask { (context) in
                 for dic in tabArbres {
-                    let recordid = dic["recordid"] as? String
-                    var dicoField = dic["fields"] as? [String: Any]
                     let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Arbres" as String, into: context )
                     if myManagedObject?.entity.name == "Arbres" {
                         if let castedManagedObject = myManagedObject as? Arbres {
-                            castedManagedObject.dateplantation =  (dicoField!["dateplantation"] as? String?)!
-                            castedManagedObject.recordid = recordid
-                            castedManagedObject.adresse = (dicoField!["adresse"]      as? String?)!
-                            castedManagedObject.espece = (dicoField!["espece"]        as? String?)!
-                            castedManagedObject.arrondisse = (dicoField!["arrondisse"] as? String?)!
-                            castedManagedObject.famille = (dicoField!["famille"] as? String?)!
-                            castedManagedObject.libellefrancais = (dicoField!["libellefrancais"] as? String?)!
-                            castedManagedObject.genre = (dicoField!["genre"] as? String?)!
-                            castedManagedObject.genre = (dicoField!["domanialite"] as? String?)!
-                            castedManagedObject.nom_ev = (dicoField!["nom_env"] as? String?)!
-                            if let hauteur = (dicoField!["hauteurenm"] as? Float) {
-                                castedManagedObject.circonferenceencm = hauteur
-                            }
-                            if let circonf = dicoField!["circonferenceencm"] as? Float {
-                                castedManagedObject.circonferenceencm = circonf
-                            }
-                            if let dicoGeometry = dic["geometry"] as? [String: Any] {
-                                if let typeGeom = dicoGeometry["type"] as? String {
-                                    castedManagedObject.type = typeGeom
-                                }
-                                if let coord: [Float] = dicoGeometry["coordinates"] as? [Float] {
-                                    castedManagedObject.coordinateY = coord[0]
-                                    castedManagedObject.coordinateX = coord[1]
-                                }
-                            }
+                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.arbreFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
                         }
                     }
                 }
@@ -459,11 +306,48 @@ class ParseJson: NSObject {
             }
         }
     }
+//    @objc func velibJsonManager(_ jsonObj: [[String: AnyObject]]) {
+//        for dataDict in jsonObj {
+//            let myManageObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Velib" as String, into: Constants.MANAGEDOBJECTCONTEXT! )
+//            if myManageObject?.entity.name == "Velib" {
+//                if let castedManageObject = myManageObject as? Velib {
+//                    if let recordid = dataDict["recordid"] as? String {
+//                        castedManageObject.recordid = recordid
+//                    }
+//                    if var dicoField = dataDict["fields"] as? [String: Any] {
+//                        if let name = dicoField["name"] as? String {
+//                            castedManageObject.name = name
+//                        } else if let station_id = dicoField["station_id"] as? String {
+//                            castedManageObject.station_id = station_id
+//                        }
+//                    }
+//                    if let dicoGeometry = dataDict["geometry"] as? [String: Any] {
+//                        if let coord: [Float] = dicoGeometry["coordinates"] as? [Float] {
+//                            castedManageObject.coordinateY = coord[0]
+//                            castedManageObject.coordinateX = coord[1]
+//                        }
+//                    }
+//                    do {
+//                        try castedManageObject.managedObjectContext?.save()
+//                        Constants.MANAGERDATA.tableauVelib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Velib" as String)
+//                    } catch _ {
+//                        fatalError("Failure to save context")
+//                    }
+//                }
+//            }
+//        }
+//    }
     @objc func autolibJsonManager(_ jsonObj: [[String: AnyObject]]) {
         let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         privateMOC.parent = Constants.MANAGEDOBJECTCONTEXT
         privateMOC.perform {
             for dataDict in jsonObj {
+//                let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "AutoLib" as String, into: context )
+//                if myManagedObject?.entity.name == "AutoLib" {
+//                    if let castedManagedObject = myManagedObject as? AutoLib {
+//                        self.createServiceFromJson(service: castedManagedObject, structure: Constants.autolibFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
+//                    }
+//                }
                 let myManageObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "AutoLib" as String, into: privateMOC )
                 if myManageObject?.entity.name == "AutoLib" {
                     if let castedManageObject: AutoLib = myManageObject as? AutoLib {

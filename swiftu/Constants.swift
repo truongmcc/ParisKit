@@ -219,4 +219,266 @@ struct Constants {
             "key": "geoloc"
         ]
     ]
+    
+    static let belibFieldsAndKeys = [
+        [
+            "field": "aggregated_nbplugs",
+            "key": "aggregated_nbplugs"
+        ],
+        [
+            "field": "geolocation_postalcode",
+            "key": "geolocation_postalcode"
+        ],
+        [
+            "field": "geolocation_route",
+            "key": "geolocation_route"
+        ],
+        [
+            "field": "geolocation_streetnumber",
+            "key": "geolocation_streetnumber"
+        ],
+        [
+            "field": "static_nbparkingspots",
+            "key": "static_nbparkingspots"
+        ],
+        [
+            "field": "static_nbstations",
+            "key": "static_nbstations"
+        ],
+        [
+            "field": "static_opening_247",
+            "key": "static_opening_247"
+        ],
+        [
+            "field": "status_available",
+            "key": "status_available"
+        ],
+        [
+            "field": "coordinateX",
+            "key": "geolocation_coordinates"
+        ],
+        [
+            "field": "coordinateY",
+            "key": "geolocation_coordinates"
+        ]
+    ]
+    static let fontaineFieldsAndKeys = [
+        [
+            "field": "adresse",
+            "key": "adr_s"
+        ],
+        [
+            "field": "classee",
+            "key": "classee"
+        ],
+        [
+            "field": "en_service",
+            "key": "en_service"
+        ],
+        [
+            "field": "localisation",
+            "key": "localisati"
+        ],
+        [
+            "field": "modele",
+            "key": "modele"
+        ],
+        [
+            "field": "ouv_hiver",
+            "key": "ouv_hiver"
+        ],
+        [
+            "field": "coordinateX",
+            "key": "geo_point_2d"
+        ],
+        [
+            "field": "coordinateY",
+            "key": "geo_point_2d"
+        ]
+    ]
+    static let capoteFieldsAndKeys = [
+        [
+            "field": "acces",
+            "key": "acces"
+        ],
+        [
+            "field": "adresse",
+            "key": "adresse_complete"
+        ],
+        [
+            "field": "horairesEte",
+            "key": "horaires_vacances_ete"
+        ],
+        [
+            "field": "horairesHiver",
+            "key": "horaires_vacances_hiver"
+        ],
+        [
+            "field": "horairesNormales",
+            "key": "horaires_normal"
+        ],
+        [
+            "field": "site",
+            "key": "site"
+        ],
+        [
+            "field": "coordinateX",
+            "key": "xy"
+        ],
+        [
+            "field": "coordinateY",
+            "key": "xy"
+        ]
+    ]
+    
+    static let saniesetteFieldsAndKeys = [
+        [
+            "field": "arrondissement",
+            "key": "arrondissement"
+        ],
+        [
+            "field": "horaires_ouverture",
+            "key": "horaires_ouverture"
+        ],
+        [
+            "field": "nom_voie",
+            "key": "nom_voie"
+        ],
+        [
+            "field": "numero_voie",
+            "key": "numero_voie"
+        ],
+        [
+            "field": "coordinateX",
+            "key": "geom_x_y"
+        ],
+        [
+            "field": "coordinateY",
+            "key": "geom_x_y"
+        ]
+    ]
+    
+    static let arbreFieldsAndKeys = [
+        [
+            "field": "dateplantation",
+            "key": "dateplantation"
+        ],
+        [
+            "field": "adresse",
+            "key": "adresse"
+        ],
+        [
+            "field": "espece",
+            "key": "espece"
+        ],
+        [
+            "field": "arrondisse",
+            "key": "arrondisse"
+        ],
+        [
+            "field": "famille",
+            "key": "famille"
+        ],
+        [
+            "field": "libellefrancais",
+            "key": "libellefrancais"
+        ],
+        [
+            "field": "genre",
+            "key": "genre"
+        ],
+        [
+            "field": "domanialite",
+            "key": "domanialite"
+        ],
+        [
+            "field": "hauteurenm",
+            "key": "hauteurenm"
+        ],
+        [
+            "field": "nom_ev",
+            "key": "nom_env"
+        ],
+        [
+            "field": "circonferenceencm",
+            "key": "circonferenceencm"
+        ],
+        [
+            "field": "coordinateX",
+            "key": "geom_x_y"
+        ],
+        [
+            "field": "coordinateY",
+            "key": "geom_x_y"
+        ]
+    ]
+    
+    static let autolibFieldsAndKeys = [
+        [
+            "field": "recordid",
+            "key": "id"
+        ],
+        [
+            "field": "address",
+            "key": "address"
+        ],
+        [
+            "field": "postal_code",
+            "key": "postal_code"
+        ],
+        [
+            "field": "public_name",
+            "key": "public_name"
+        ],
+        [
+            "field": "coordinateX",
+            "key": "geo_point"
+        ],
+        [
+            "field": "coordinateY",
+            "key": "geo_point"
+        ]
+    ]
+    
+    static let taxiFieldsAndKeys = [
+        [
+            "field": "address",
+            "key": "address"
+        ],
+        [
+            "field": "station_name",
+            "key": "station_name"
+        ],
+        [
+            "field": "zip_code",
+            "key": "zip_code"
+        ],
+        [
+            "field": "coordinateX",
+            "key": "geoloc"
+        ],
+        [
+            "field": "coordinateY",
+            "key": "geoloc"
+        ]
+    ]
+    
+    static let velibFieldsAndKeys = [
+        [
+            "field": "name",
+            "key": "name"
+        ],
+        [
+            "field": "station_id",
+            "key": "station_id"
+        ],
+        [
+            "field": "coordinateX",
+            "key": "geoloc"
+        ],
+        [
+            "field": "coordinateY",
+            "key": "geoloc"
+        ]
+    ]
 }
