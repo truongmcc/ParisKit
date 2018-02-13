@@ -28,7 +28,6 @@
 		EB664D611F1696590001D5BC /* MapViewControllerUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB664D601F1696590001D5BC /* MapViewControllerUITest.swift */; };
 		EB8E78261F3B898200699899 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8E78251F3B898200699899 /* DetailViewController.swift */; };
 		EBC954011DA1343B006B2E86 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC954001DA1343B006B2E86 /* DataProvider.swift */; };
-		EBF817561DE0A9D800EBF8D5 /* Taxis.json in Resources */ = {isa = PBXBuildFile; fileRef = EBF817531DE0A9D800EBF8D5 /* Taxis.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,7 +80,6 @@
 		EB664D601F1696590001D5BC /* MapViewControllerUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewControllerUITest.swift; sourceTree = "<group>"; };
 		EB8E78251F3B898200699899 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailViewController.swift; path = ../DetailViewController.swift; sourceTree = "<group>"; };
 		EBC954001DA1343B006B2E86 /* DataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
-		EBF817531DE0A9D800EBF8D5 /* Taxis.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Taxis.json; sourceTree = "<group>"; };
 		F905660893FB3955EDEB0A7A /* Pods-swiftuTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swiftuTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-swiftuTests/Pods-swiftuTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -191,7 +189,6 @@
 		EBF817591DE0A9E600EBF8D5 /* json */ = {
 			isa = PBXGroup;
 			children = (
-				EBF817531DE0A9D800EBF8D5 /* Taxis.json */,
 			);
 			name = json;
 			sourceTree = "<group>";
@@ -340,7 +337,6 @@
 				EB0D0AFD1F2C8C9B001FF869 /* notes in Resources */,
 				D9ED00582024B83F00E8E36C /* .swiftlint.yml in Resources */,
 				EB43BBEC1D9FA41500B0E7DE /* Main.storyboard in Resources */,
-				EBF817561DE0A9D800EBF8D5 /* Taxis.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
