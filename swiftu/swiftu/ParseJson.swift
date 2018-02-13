@@ -87,39 +87,6 @@ class ParseJson: NSObject {
         }
         return message
     }
-    // parse from embedded file
-    func parseFileWithType(type: String) {
-        let fetchResult: NSArray?
-        let dicoSort: NSDictionary = idKeySort(type: type as String)
-        fetchResult = Constants.MANAGERDATA.resultFromSelectWithEntity(nomEntity: type as String, idKey: (dicoSort["idKey"] as? String)!, bSort: (dicoSort["sort"] as? Bool)!, bSave: false)
-        let filePath = self.filePath(type: type as String)
-        if let dataJson = try? Data(contentsOf: URL(fileURLWithPath: filePath)) {
-            do {
-                // array of dictionaries
-                if let jsonObj = try JSONSerialization.jsonObject(with: dataJson, options: []) as? [[String: AnyObject]] {
-                    // voir s'il faut remettre à jour la table
-                    if (fetchResult?.count)! < jsonObj.count {
-                        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: type as String)
-                        if let result = try? Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest) {
-                            for object in result! {
-                                Constants.MANAGEDOBJECTCONTEXT?.delete((object as? NSManagedObject)!)
-                            }
-                            let typeFromDico = Constants.dicoType[type as String]!
-                            let typeForSelector = String(format: "%@JsonManager:", typeFromDico)
-                            let selector = NSSelectorFromString(typeForSelector)
-                            if responds(to: selector) {
-                                self.perform(selector, with: jsonObj)
-                            }
-                        }
-                    } else {
-                        updateArrayInterets(type: type as String, fetchResult: fetchResult! as [AnyObject])
-                    }
-                }
-            } catch {
-                print("Error")
-            }
-        }
-    }
     // MARK: Services
     func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: NSDictionary) {
         //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
@@ -129,7 +96,7 @@ class ParseJson: NSObject {
             for property in structure {
                 let field: String? = property["field"] as? String      // field du Service
                 let keyDico: String? = (property["key"]) as? String    // clé du dictionnaire correspondant au field
-                if keyDico == "geoloc" || keyDico == "geolocation_coordinates" || keyDico == "geo_point_2d" || keyDico == "xy" || keyDico == "geom_x_y" || keyDico == "geo_point" {
+                if keyDico == "geoloc" || keyDico == "geolocation_coordinates" || keyDico == "geo_point_2d" || keyDico == "xy" || keyDico == "geom_x_y" || keyDico == "geo_point" || keyDico == "geo_coordinates" {
                     guard let coordo = dicoField![keyDico!] as? NSArray else { return }
                     if field == "coordinateX" {
                         service.setValue(coordo[0], forKey: field!)
@@ -249,10 +216,7 @@ class ParseJson: NSObject {
             }
         }
     }
-    
-    /*--------- FORMAT -----------------
     // https://opendata.paris.fr/api/records/1.0/search/?dataset=les-arbres&rows=1&facet=typeemplacement&facet=domanialite&facet=arrondissement&facet=libellefrancais&facet=genre&facet=espece
-    */
     @objc func arbresJsonManager(_ tabArbres: [AnyObject]) {
         DispatchQueue.main.async {
             let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
@@ -276,91 +240,35 @@ class ParseJson: NSObject {
     }
     // MARK: Perform Selector
     @objc func velibJsonManager(_ jsonObj: [[String: AnyObject]]) {
-        for dataDict in jsonObj {
-            let myManageObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Velib" as String, into: Constants.MANAGEDOBJECTCONTEXT! )
-            if myManageObject?.entity.name == "Velib" {
-                if let castedManageObject = myManageObject as? Velib {
-                    if let recordid = dataDict["recordid"] as? String {
-                        castedManageObject.recordid = recordid
-                    }
-                    if var dicoField = dataDict["fields"] as? [String: Any] {
-                        if let name = dicoField["name"] as? String {
-                            castedManageObject.name = name
-                        } else if let station_id = dicoField["station_id"] as? String {
-                            castedManageObject.station_id = station_id
+        DispatchQueue.main.async {
+            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+            container?.performBackgroundTask { (context) in
+                for dic  in jsonObj {
+                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Velib" as String, into: context )
+                    if myManagedObject?.entity.name == "Velib" {
+                        if let castedManagedObject = myManagedObject as? Velib {
+                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.velibFieldsAndKeys as [[String : AnyObject]], dic: dic as NSDictionary)
                         }
                     }
-                    if let dicoGeometry = dataDict["geometry"] as? [String: Any] {
-                        if let coord: [Float] = dicoGeometry["coordinates"] as? [Float] {
-                            castedManageObject.coordinateY = coord[0]
-                            castedManageObject.coordinateX = coord[1]
-                        }
-                    }
-                    do {
-                        try castedManageObject.managedObjectContext?.save()
-                        Constants.MANAGERDATA.tableauVelib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Velib" as String)
-                    } catch _ {
-                        fatalError("Failure to save context")
-                    }
+                }
+                do {
+                    try context.save()
+                    Constants.MANAGERDATA.tableauVelib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Velib" as String)
+                } catch _ {
+                    fatalError("Failure to save context")
                 }
             }
         }
     }
-//    @objc func velibJsonManager(_ jsonObj: [[String: AnyObject]]) {
-//        for dataDict in jsonObj {
-//            let myManageObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Velib" as String, into: Constants.MANAGEDOBJECTCONTEXT! )
-//            if myManageObject?.entity.name == "Velib" {
-//                if let castedManageObject = myManageObject as? Velib {
-//                    if let recordid = dataDict["recordid"] as? String {
-//                        castedManageObject.recordid = recordid
-//                    }
-//                    if var dicoField = dataDict["fields"] as? [String: Any] {
-//                        if let name = dicoField["name"] as? String {
-//                            castedManageObject.name = name
-//                        } else if let station_id = dicoField["station_id"] as? String {
-//                            castedManageObject.station_id = station_id
-//                        }
-//                    }
-//                    if let dicoGeometry = dataDict["geometry"] as? [String: Any] {
-//                        if let coord: [Float] = dicoGeometry["coordinates"] as? [Float] {
-//                            castedManageObject.coordinateY = coord[0]
-//                            castedManageObject.coordinateX = coord[1]
-//                        }
-//                    }
-//                    do {
-//                        try castedManageObject.managedObjectContext?.save()
-//                        Constants.MANAGERDATA.tableauVelib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Velib" as String)
-//                    } catch _ {
-//                        fatalError("Failure to save context")
-//                    }
-//                }
-//            }
-//        }
-//    }
     @objc func autolibJsonManager(_ jsonObj: [[String: AnyObject]]) {
         let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         privateMOC.parent = Constants.MANAGEDOBJECTCONTEXT
         privateMOC.perform {
-            for dataDict in jsonObj {
-//                let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "AutoLib" as String, into: context )
-//                if myManagedObject?.entity.name == "AutoLib" {
-//                    if let castedManagedObject = myManagedObject as? AutoLib {
-//                        self.createServiceFromJson(service: castedManagedObject, structure: Constants.autolibFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
-//                    }
-//                }
-                let myManageObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "AutoLib" as String, into: privateMOC )
-                if myManageObject?.entity.name == "AutoLib" {
-                    if let castedManageObject: AutoLib = myManageObject as? AutoLib {
-                        let dicoGeometry=dataDict["geometry"]
-                        let dicoFields = dataDict["fields"]
-                        castedManageObject.recordid = (dicoFields?["id"] as? String?)!
-                        if let coord: [Float] = dicoGeometry?["coordinates"] as? [Float] {
-                            castedManageObject.coordinateY = coord[0]
-                            castedManageObject.coordinateX = coord[1]
-                        }
-                        castedManageObject.address = (dicoFields?["address"] as? String?)!
-                        castedManageObject.postal_code = (dicoFields?["postal_code"] as? String?)!
-                        castedManageObject.public_name = (dicoFields?["public_name"] as? String?)!
+            for dic in jsonObj {
+                let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "AutoLib" as String, into: privateMOC )
+                if myManagedObject?.entity.name == "AutoLib" {
+                    if let castedManagedObject = myManagedObject as? AutoLib {
+                        self.createServiceFromJson(service: castedManagedObject, structure: Constants.autolibFieldsAndKeys as [[String : AnyObject]], dic: dic as NSDictionary)
                     }
                 }
             }
@@ -379,26 +287,24 @@ class ParseJson: NSObject {
             }
         }
     }
+    // https://opendata.paris.fr/api/records/1.0/search/?dataset=paris_taxis_stations&rows=150&facet=zip_code&facet=city
     @objc func taxiJsonManager(_ jsonObj: [[String: AnyObject]]) {
-        for dataDict in jsonObj {
-            let myManageObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Taxis" as String, into: (Constants.MANAGEDOBJECTCONTEXT)!)
-            if myManageObject?.entity.name == "Taxis" {
-                if let castedManageObject = myManageObject as? Taxis {
-                    let dicoGeometry=dataDict["geometry"]
-                    let dicoFields = dataDict["fields"]
-                    if let coord: [Float] = dicoGeometry?["coordinates"] as? [Float] {
-                        castedManageObject.coordinateX = coord[1]
-                        castedManageObject.coordinateY = coord[0]
+        DispatchQueue.main.async {
+            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+            container?.performBackgroundTask { (context) in
+                for dic  in jsonObj {
+                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Taxis" as String, into: context )
+                    if myManagedObject?.entity.name == "Taxis" {
+                        if let castedManagedObject = myManagedObject as? Taxis {
+                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.taxiFieldsAndKeys as [[String : AnyObject]], dic: dic as NSDictionary)
+                        }
                     }
-                    castedManageObject.station_name = (dicoFields?["station_name"] as? String?)!
-                    castedManageObject.address = (dicoFields?["address"] as? String?)!
-                    castedManageObject.zip_code = (dicoFields?["zip_code"] as? String?)!
-                    do {
-                        try castedManageObject.managedObjectContext?.save()
-                        Constants.MANAGERDATA.tableauTaxis = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Taxis" as String) as [AnyObject]
-                    } catch _ {
-                        fatalError("Failure to save context")
-                    }
+                }
+                do {
+                    try context.save()
+                    Constants.MANAGERDATA.tableauTaxis = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Taxis" as String)
+                } catch _ {
+                    fatalError("Failure to save context")
                 }
             }
         }

@@ -54,7 +54,11 @@ redeclarer proprement les singleton (voir dataprovider) OK
 
 utiliser ALAMOFIRE OK
 
-refactoring parsing json 
+refactoring parsing json
+
+remplacer nsarray et nsdictionary par array et dictionary
+
+taxi en dynamic (virer la version static avec fichier embarqué)
 
 warning errors et violation
 

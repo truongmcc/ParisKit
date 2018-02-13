@@ -23,6 +23,7 @@ struct Constants {
     static let urlBelib = "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&rows=150&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247"
     static let urlCafe = "https://opendata.paris.fr/api/records/1.0/search/?dataset=liste-des-cafes-a-un-euro&q=prix_salle+%3D+%221%22++or+prix_terasse+%3D+%221%22&rows=200&facet=arrondissement"
     static let urlVelib = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&rows=1300"
+    static let urlTaxi = "https://opendata.paris.fr/api/records/1.0/search/?dataset=paris_taxis_stations&rows=150&facet=zip_code&facet=city"
     // MARK: Interets
     struct INTERETS {
         static let ARBRE = 0
@@ -219,7 +220,6 @@ struct Constants {
             "key": "geoloc"
         ]
     ]
-    
     static let belibFieldsAndKeys = [
         [
             "field": "aggregated_nbplugs",
@@ -330,7 +330,6 @@ struct Constants {
             "key": "xy"
         ]
     ]
-    
     static let saniesetteFieldsAndKeys = [
         [
             "field": "arrondissement",
@@ -357,7 +356,6 @@ struct Constants {
             "key": "geom_x_y"
         ]
     ]
-    
     static let arbreFieldsAndKeys = [
         [
             "field": "dateplantation",
@@ -412,7 +410,6 @@ struct Constants {
             "key": "geom_x_y"
         ]
     ]
-    
     static let autolibFieldsAndKeys = [
         [
             "field": "recordid",
@@ -439,7 +436,6 @@ struct Constants {
             "key": "geo_point"
         ]
     ]
-    
     static let taxiFieldsAndKeys = [
         [
             "field": "address",
@@ -455,30 +451,25 @@ struct Constants {
         ],
         [
             "field": "coordinateX",
-            "key": "geoloc"
+            "key": "geo_coordinates"
         ],
         [
             "field": "coordinateY",
-            "key": "geoloc"
+            "key": "geo_coordinates"
         ]
     ]
-    
     static let velibFieldsAndKeys = [
         [
             "field": "name",
             "key": "name"
         ],
         [
-            "field": "station_id",
-            "key": "station_id"
-        ],
-        [
             "field": "coordinateX",
-            "key": "geoloc"
+            "key": "xy"
         ],
         [
             "field": "coordinateY",
-            "key": "geoloc"
+            "key": "xy"
         ]
     ]
 }
