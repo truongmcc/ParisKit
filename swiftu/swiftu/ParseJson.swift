@@ -11,7 +11,6 @@ import Foundation
 import CoreData
 
 class ParseJson: NSObject {
-    // PARSE FROM EMBEDDED FILE (Taxis.json file)
     func parse(data: Data, type: String) {
         NSLog("parse file data %@", type)
         var fetchResult: NSArray?
@@ -19,7 +18,7 @@ class ParseJson: NSObject {
         fetchResult = Constants.MANAGERDATA.resultFromSelectWithEntity(nomEntity: type as String, idKey: (dicoSort["idKey"] as? String)!, bSort: (dicoSort["sort"] as? Bool)!, bSave: false)
         do {
             let dicoJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]
-            if let listeServices = dicoJson?["records"] as? [AnyObject] {
+            if let listeServices = dicoJson?["records"] as? [[String: AnyObject]] {
                 if (fetchResult?.count)! < listeServices.count {
                     let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: type as String)
                     if let result = try? Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest) {
@@ -28,12 +27,7 @@ class ParseJson: NSObject {
                             Constants.MANAGEDOBJECTCONTEXT?.delete((object as? NSManagedObject)!)
                         }
                         // <--
-                        let typeFromDico = Constants.dicoType[type as String]!
-                        let typeForSelector = String(format: "%@JsonManager:", typeFromDico)
-                        let selector = NSSelectorFromString(typeForSelector)
-                        if responds(to: selector) {
-                            self.perform(selector, with: listeServices)
-                        }
+                        addServices(typeService: type, listeServices: listeServices)
                     }
                 } else {
                     updateArrayInterets(type: type as String, fetchResult: fetchResult! as [AnyObject])
@@ -41,6 +35,72 @@ class ParseJson: NSObject {
             }
         } catch {
             print("Error")
+        }
+    }
+    func addServices(typeService: String, listeServices: [[String: AnyObject]]) {
+        DispatchQueue.main.async {
+            let structService = Constants.STRUCTSERVICE[typeService]?["fieldAndKeyStruct"] as? [[String: AnyObject]]
+            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
+            container?.performBackgroundTask { (context) in
+                for dic in listeServices {
+                    if let myManagedObject: Services = NSEntityDescription.insertNewObject(forEntityName: typeService as String, into: context ) as? Services {
+                        self.createServiceFromJson(service: myManagedObject, structure: structService!, dic: dic as NSDictionary)
+                    }
+                }
+                do {
+                    try context.save()
+                    
+                    switch typeService {
+                    case "Arbres":
+                        Constants.MANAGERDATA.tableauArbres = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+                    case "Velib":
+                        Constants.MANAGERDATA.tableauVelib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+                    case "AutoLib":
+                        Constants.MANAGERDATA.tableauAutolib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+                    case "Belibs":
+                        Constants.MANAGERDATA.tableauBelibs = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+                    case "Capotes":
+                        Constants.MANAGERDATA.tableauCapotes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+                    case "Sanisettes":
+                        Constants.MANAGERDATA.tableauSanisettes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+                    case "Cafes":
+                        Constants.MANAGERDATA.tableauCafes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+                    case "Fontaines":
+                        Constants.MANAGERDATA.tableauFontaines = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+                    case "Taxis":
+                        Constants.MANAGERDATA.tableauTaxis = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+                    default:
+                        return
+                    }
+                    //Constants.STRUCTSERVICE[typeService]?["tab"] = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String) as? [[String: AnyObject]]
+                } catch _ {
+                    fatalError("Failure to save context")
+                }
+            }
+        }
+    }
+    // MARK: Services
+    // createServiceFromJson va parser de manière générique chaque service en utilsant le KVC
+    func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: NSDictionary) {
+        //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
+        if let recordid = dic["recordid"] as? String {
+            service.setValue(recordid, forKey: "recordid")
+            var dicoField = dic["fields"] as? [String: Any]
+            for property in structure {
+                let field: String? = property["field"] as? String // field du Service
+                let keyDico: String? = (property["key"]) as? String // clé du dictionnaire correspondant au field
+                if keyDico == "geoloc" || keyDico == "geolocation_coordinates" || keyDico == "geo_point_2d" || keyDico == "xy" || keyDico == "geom_x_y" || keyDico == "geo_point" || keyDico == "geo_coordinates" {
+                    guard let coordo = dicoField![keyDico!] as? NSArray else { return }
+                    if field == "coordinateX" {
+                        service.setValue(coordo[0], forKey: field!)
+                    } else if field == "coordinateY" {
+                        service.setValue(coordo[1], forKey: field!)
+                    }
+                } else {
+                    let value = dicoField![keyDico!] // valeur à updater
+                    service.setValue(value, forKey: field!)
+                }
+            }
         }
     }
     // Dynamic parse (disponibilités des véhicules...)
@@ -86,228 +146,6 @@ class ParseJson: NSObject {
             return "error trying to convert data to JSON"
         }
         return message
-    }
-    // MARK: Services
-    func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: NSDictionary) {
-        //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
-        if let recordid = dic["recordid"] as? String {
-            service.setValue(recordid, forKey: "recordid")
-            var dicoField = dic["fields"] as? [String: Any]
-            for property in structure {
-                let field: String? = property["field"] as? String      // field du Service
-                let keyDico: String? = (property["key"]) as? String    // clé du dictionnaire correspondant au field
-                if keyDico == "geoloc" || keyDico == "geolocation_coordinates" || keyDico == "geo_point_2d" || keyDico == "xy" || keyDico == "geom_x_y" || keyDico == "geo_point" || keyDico == "geo_coordinates" {
-                    guard let coordo = dicoField![keyDico!] as? NSArray else { return }
-                    if field == "coordinateX" {
-                        service.setValue(coordo[0], forKey: field!)
-                    } else if field == "coordinateY" {
-                        service.setValue(coordo[1], forKey: field!)
-                    }
-                } else {
-                    let value = dicoField![keyDico!]         // valeur à updater
-                    service.setValue(value, forKey: field!)
-                }
-            }
-        }
-    }
-    @objc func cafesJsonManager(_ tabCafes: [AnyObject]) {
-        DispatchQueue.main.async {
-            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-            container?.performBackgroundTask { (context) in
-                for dic in tabCafes {
-                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Cafes" as String, into: context )
-                    if myManagedObject?.entity.name == "Cafes" {
-                        if let castedManagedObject = myManagedObject as? Cafes {
-                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.cafeFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
-                        }
-                    }
-                }
-                do {
-                    try context.save()
-                    Constants.MANAGERDATA.tableauCafes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Cafes" as String)
-                } catch _ {
-                    fatalError("Failure to save context")
-                }
-            }
-        }
-    }
-    @objc func belibsJsonManager(_ tabBelibs: [AnyObject]) {
-        DispatchQueue.main.async {
-            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-            container?.performBackgroundTask { (context) in
-                for dic  in tabBelibs {
-                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Belibs" as String, into: context )
-                    if myManagedObject?.entity.name == "Belibs" {
-                        if let castedManagedObject = myManagedObject as? Belibs {
-                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.belibFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
-                        }
-                    }
-                }
-                do {
-                    try context.save()
-                    Constants.MANAGERDATA.tableauBelibs = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Belibs" as String)
-                } catch _ {
-                    fatalError("Failure to save context")
-                }
-            }
-        }
-    }
-    @objc func fontainesJsonManager(_ tabFontaines: [AnyObject]) {
-        DispatchQueue.main.async {
-            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-            container?.performBackgroundTask { (context) in
-                for dic in tabFontaines {
-                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Fontaines" as String, into: context )
-                    if myManagedObject?.entity.name == "Fontaines" {
-                        if let castedManagedObject = myManagedObject as? Fontaines {
-                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.fontaineFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
-                        }
-                    }
-                }
-                do {
-                    try context.save()
-                    Constants.MANAGERDATA.tableauFontaines = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Fontaines" as String)
-                } catch _ {
-                    fatalError("Failure to save context")
-                }
-            }
-        }
-    }
-    @objc func capotesJsonManager(_ tabCapotes: [AnyObject]) {
-        DispatchQueue.main.async {
-            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-            container?.performBackgroundTask { (context) in
-                for dic in tabCapotes {
-                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Capotes" as String, into: context )
-                    if myManagedObject?.entity.name == "Capotes" {
-                        if let castedManagedObject = myManagedObject as? Capotes {
-                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.capoteFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
-                        }
-                    }
-                }
-                do {
-                    try context.save()
-                    Constants.MANAGERDATA.tableauCapotes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Capotes" as String)
-                } catch _ {
-                    fatalError("Failure to save context")
-                }
-            }
-        }
-    }
-    // https://opendata.paris.fr/api/records/1.0/search/?dataset=distributeurspreservatifsmasculinsparis2012&rows=1&facet=annee_installation&facet=arrond&facet=acces
-    @objc func sanisettesJsonManager(_ tabSanisettes: [AnyObject]) {
-        DispatchQueue.main.async {
-            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-            container?.performBackgroundTask { (context) in
-                for dic  in tabSanisettes {
-                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Sanisettes" as String, into: context )
-                    if myManagedObject?.entity.name == "Sanisettes" {
-                        if let castedManagedObject = myManagedObject as? Sanisettes {
-                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.saniesetteFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
-                        }
-                    }
-                }
-                do {
-                    try context.save()
-                    Constants.MANAGERDATA.tableauSanisettes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Sanisettes" as String)
-                } catch _ {
-                    fatalError("Failure to save context")
-                }
-            }
-        }
-    }
-    // https://opendata.paris.fr/api/records/1.0/search/?dataset=les-arbres&rows=1&facet=typeemplacement&facet=domanialite&facet=arrondissement&facet=libellefrancais&facet=genre&facet=espece
-    @objc func arbresJsonManager(_ tabArbres: [AnyObject]) {
-        DispatchQueue.main.async {
-            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-            container?.performBackgroundTask { (context) in
-                for dic in tabArbres {
-                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Arbres" as String, into: context )
-                    if myManagedObject?.entity.name == "Arbres" {
-                        if let castedManagedObject = myManagedObject as? Arbres {
-                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.arbreFieldsAndKeys as [[String : AnyObject]], dic: (dic as? NSDictionary)!)
-                        }
-                    }
-                }
-                do {
-                    try context.save()
-                    Constants.MANAGERDATA.tableauArbres = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Arbres" as String)
-                } catch _ {
-                    fatalError("Failure to save context")
-                }
-            }
-        }
-    }
-    // MARK: Perform Selector
-    @objc func velibJsonManager(_ jsonObj: [[String: AnyObject]]) {
-        DispatchQueue.main.async {
-            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-            container?.performBackgroundTask { (context) in
-                for dic  in jsonObj {
-                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Velib" as String, into: context )
-                    if myManagedObject?.entity.name == "Velib" {
-                        if let castedManagedObject = myManagedObject as? Velib {
-                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.velibFieldsAndKeys as [[String : AnyObject]], dic: dic as NSDictionary)
-                        }
-                    }
-                }
-                do {
-                    try context.save()
-                    Constants.MANAGERDATA.tableauVelib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Velib" as String)
-                } catch _ {
-                    fatalError("Failure to save context")
-                }
-            }
-        }
-    }
-    @objc func autolibJsonManager(_ jsonObj: [[String: AnyObject]]) {
-        let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        privateMOC.parent = Constants.MANAGEDOBJECTCONTEXT
-        privateMOC.perform {
-            for dic in jsonObj {
-                let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "AutoLib" as String, into: privateMOC )
-                if myManagedObject?.entity.name == "AutoLib" {
-                    if let castedManagedObject = myManagedObject as? AutoLib {
-                        self.createServiceFromJson(service: castedManagedObject, structure: Constants.autolibFieldsAndKeys as [[String : AnyObject]], dic: dic as NSDictionary)
-                    }
-                }
-            }
-            do {
-                try privateMOC.save()
-                Constants.MANAGEDOBJECTCONTEXT?.performAndWait {
-                    do {
-                        try Constants.MANAGEDOBJECTCONTEXT?.save()
-                        Constants.MANAGERDATA.tableauAutolib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "AutoLib" as String)
-                    } catch {
-                        fatalError("Failure to save context: \(error)")
-                    }
-                }
-            } catch {
-                fatalError("Failure to save context: \(error)")
-            }
-        }
-    }
-    // https://opendata.paris.fr/api/records/1.0/search/?dataset=paris_taxis_stations&rows=150&facet=zip_code&facet=city
-    @objc func taxiJsonManager(_ jsonObj: [[String: AnyObject]]) {
-        DispatchQueue.main.async {
-            let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
-            container?.performBackgroundTask { (context) in
-                for dic  in jsonObj {
-                    let myManagedObject: NSManagedObject? = NSEntityDescription.insertNewObject(forEntityName: "Taxis" as String, into: context )
-                    if myManagedObject?.entity.name == "Taxis" {
-                        if let castedManagedObject = myManagedObject as? Taxis {
-                            self.createServiceFromJson(service: castedManagedObject, structure: Constants.taxiFieldsAndKeys as [[String : AnyObject]], dic: dic as NSDictionary)
-                        }
-                    }
-                }
-                do {
-                    try context.save()
-                    Constants.MANAGERDATA.tableauTaxis = Constants.MANAGERDATA.updateArrayEntity(nomEntity: "Taxis" as String)
-                } catch _ {
-                    fatalError("Failure to save context")
-                }
-            }
-        }
     }
     // MARK: type manager
     func updateArrayInterets(type: String, fetchResult: [AnyObject]) {

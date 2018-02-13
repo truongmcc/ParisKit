@@ -42,14 +42,14 @@ struct Constants {
             "color": UIColor.green,
             "entity": "Arbres",
             "field": "recordid",
-             "listeTabDetail": [Constants.tabListServices[INTERETS.ARBRE]]
+            "listeTabDetail": [Constants.tabListServices[INTERETS.ARBRE]]
         ],
         [
             "service": INTERETS.CAPOTES,
             "color": UIColor.red,
             "entity": "Capotes",
             "field": "recordid",
-             "©": [Constants.tabListServices[INTERETS.CAPOTES]]
+            "listeTabDetail": [Constants.tabListServices[INTERETS.CAPOTES]]
         ],
         [
             "service": INTERETS.FONTAINE,
@@ -98,7 +98,7 @@ struct Constants {
     static let tabDetailFontaine = [
         [
             "title": "Localisation",
-            "property": "localisation"
+            "property": "localisation",
             ],
         [
             "title": "Modèle",
@@ -470,6 +470,44 @@ struct Constants {
         [
             "field": "coordinateY",
             "key": "xy"
+        ]
+    ]
+    static let STRUCTSERVICE = [
+        "Arbres": [
+            "tab": Constants.MANAGERDATA.tableauArbres!,
+            "fieldAndKeyStruct": arbreFieldsAndKeys
+        ],
+        "Capotes": [
+            "tab": Constants.MANAGERDATA.tableauCapotes!,
+            "fieldAndKeyStruct": capoteFieldsAndKeys
+        ],
+        "Fontaines": [
+            "tab": Constants.MANAGERDATA.tableauFontaines!,
+            "fieldAndKeyStruct": fontaineFieldsAndKeys
+        ],
+        "Cafes": [
+            "tab": Constants.MANAGERDATA.tableauCafes!,
+            "fieldAndKeyStruct": cafeFieldsAndKeys
+        ],
+        "Sanisettes": [
+            "tab": Constants.MANAGERDATA.tableauSanisettes!,
+            "fieldAndKeyStruct": saniesetteFieldsAndKeys
+        ],
+        "Velib": [
+            "tab": Constants.MANAGERDATA.tableauVelib!,
+            "fieldAndKeyStruct": velibFieldsAndKeys
+        ],
+        "AutoLib": [
+            "tab": Constants.MANAGERDATA.tableauAutolib!,
+            "fieldAndKeyStruct": autolibFieldsAndKeys
+        ],
+        "Belibs": [
+            "tab": Constants.MANAGERDATA.tableauBelibs!,
+            "fieldAndKeyStruct": belibFieldsAndKeys
+        ],
+        "Taxis": [
+            "tab": Constants.MANAGERDATA.tableauTaxis!,
+            "fieldAndKeyStruct": taxiFieldsAndKeys
         ]
     ]
 }

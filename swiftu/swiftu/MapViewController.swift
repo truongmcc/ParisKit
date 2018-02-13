@@ -46,7 +46,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         laMap.delegate = self
         locationManager.delegate = self
         location(self)
-        // from url
+        self.monDownloader.dataFromUrl(url: Constants.urlVelib, type: "Velib")
         self.monDownloader.dataFromUrl(url: Constants.urlArbres, type: "Arbres")
         self.monDownloader.dataFromUrl(url: Constants.urlSanisettes, type: "Sanisettes")
         self.monDownloader.dataFromUrl(url: Constants.urlCapotes, type: "Capotes")
@@ -54,7 +54,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         self.monDownloader.dataFromUrl(url: Constants.urlBelib, type: "Belibs")
         self.monDownloader.dataFromUrl(url: Constants.urlCafe, type: "Cafes")
         self.monDownloader.dataFromUrl(url: Constants.urlAutolib, type: "AutoLib")
-        self.monDownloader.dataFromUrl(url: Constants.urlVelib, type: "Velib")
         self.monDownloader.dataFromUrl(url: Constants.urlTaxi, type: "Taxis")
     }
     // MARK: User Location
