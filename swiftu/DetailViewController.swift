@@ -9,7 +9,6 @@
 import UIKit
 
 class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate {
-
     var service: AnyObject?
     var tabService: [AnyObject]?
     var gesture = UIGestureRecognizer()
@@ -42,12 +41,10 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             }
         }
     }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
     @objc func tapOnScreen(_ sender: UITapGestureRecognizer) {
         self.removeAnimate()
     }
@@ -69,7 +66,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             }
         })
     }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.tabService!.count
     }

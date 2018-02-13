@@ -98,7 +98,7 @@ struct Constants {
     static let tabDetailFontaine = [
         [
             "title": "Localisation",
-            "property": "localisation",
+            "property": "localisation"
             ],
         [
             "title": "Modèle",
@@ -472,42 +472,51 @@ struct Constants {
             "key": "xy"
         ]
     ]
-    static let STRUCTSERVICE = [
+    static var STRUCTSERVICE = [
         "Arbres": [
-            "tab": Constants.MANAGERDATA.tableauArbres!,
-            "fieldAndKeyStruct": arbreFieldsAndKeys
+            "fieldAndKeyStruct": arbreFieldsAndKeys,
+            "idKey": "objectid",
+            "sort": true
         ],
         "Capotes": [
-            "tab": Constants.MANAGERDATA.tableauCapotes!,
-            "fieldAndKeyStruct": capoteFieldsAndKeys
+            "fieldAndKeyStruct": capoteFieldsAndKeys,
+            "idKey": "site",
+            "sort": false
         ],
         "Fontaines": [
-            "tab": Constants.MANAGERDATA.tableauFontaines!,
-            "fieldAndKeyStruct": fontaineFieldsAndKeys
+            "fieldAndKeyStruct": fontaineFieldsAndKeys,
+            "idKey": "recordid",
+            "sort": false
         ],
         "Cafes": [
-            "tab": Constants.MANAGERDATA.tableauCafes!,
-            "fieldAndKeyStruct": cafeFieldsAndKeys
+            "fieldAndKeyStruct": cafeFieldsAndKeys,
+            "idKey": "recordid",
+            "sort": false
         ],
         "Sanisettes": [
-            "tab": Constants.MANAGERDATA.tableauSanisettes!,
-            "fieldAndKeyStruct": saniesetteFieldsAndKeys
+            "fieldAndKeyStruct": saniesetteFieldsAndKeys,
+            "idKey": "arrondissement",
+            "sort": true
         ],
         "Velib": [
-            "tab": Constants.MANAGERDATA.tableauVelib!,
-            "fieldAndKeyStruct": velibFieldsAndKeys
+            "fieldAndKeyStruct": velibFieldsAndKeys,
+            "idKey": "recordid",
+            "sort": true
         ],
         "AutoLib": [
-            "tab": Constants.MANAGERDATA.tableauAutolib!,
-            "fieldAndKeyStruct": autolibFieldsAndKeys
+            "fieldAndKeyStruct": autolibFieldsAndKeys,
+            "idKey": "nomStation",
+            "sort": false
         ],
         "Belibs": [
-            "tab": Constants.MANAGERDATA.tableauBelibs!,
-            "fieldAndKeyStruct": belibFieldsAndKeys
+            "fieldAndKeyStruct": belibFieldsAndKeys,
+            "idKey": "recordid",
+            "sort": false
         ],
         "Taxis": [
-            "tab": Constants.MANAGERDATA.tableauTaxis!,
-            "fieldAndKeyStruct": taxiFieldsAndKeys
+            "fieldAndKeyStruct": taxiFieldsAndKeys,
+            "idKey": "zip_code",
+            "sort": true
         ]
     ]
 }

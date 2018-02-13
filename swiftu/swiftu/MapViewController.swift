@@ -324,10 +324,4 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         }
         MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
     }
-    deinit {
-//        NotificationCenter.default.removeObserver(self, name: Notification.Name("dataContentReceivedNotification"),
-//                                                  object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name("dynamicDataContentReceivedNotification"),
-                                                  object: nil)
-    }
 }

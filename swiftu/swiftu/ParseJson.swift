@@ -14,8 +14,13 @@ class ParseJson: NSObject {
     func parse(data: Data, type: String) {
         NSLog("parse file data %@", type)
         var fetchResult: NSArray?
-        let dicoSort: NSDictionary = idKeySort(type: type as String)
-        fetchResult = Constants.MANAGERDATA.resultFromSelectWithEntity(nomEntity: type as String, idKey: (dicoSort["idKey"] as? String)!, bSort: (dicoSort["sort"] as? Bool)!, bSave: false)
+        guard let idKey = Constants.STRUCTSERVICE[type]!["idKey"] as? String else {
+            print("erreur idKey") ; return
+        }
+        guard let sort = Constants.STRUCTSERVICE[type]!["sort"] as? Bool else {
+            print("erreur sort") ; return
+        }
+        fetchResult = Constants.MANAGERDATA.resultFromSelectWithEntity(nomEntity: type as String, idKey: idKey, bSort: sort, bSave: false)
         do {
             let dicoJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]
             if let listeServices = dicoJson?["records"] as? [[String: AnyObject]] {
@@ -49,37 +54,13 @@ class ParseJson: NSObject {
                 }
                 do {
                     try context.save()
-                    
-                    switch typeService {
-                    case "Arbres":
-                        Constants.MANAGERDATA.tableauArbres = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
-                    case "Velib":
-                        Constants.MANAGERDATA.tableauVelib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
-                    case "AutoLib":
-                        Constants.MANAGERDATA.tableauAutolib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
-                    case "Belibs":
-                        Constants.MANAGERDATA.tableauBelibs = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
-                    case "Capotes":
-                        Constants.MANAGERDATA.tableauCapotes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
-                    case "Sanisettes":
-                        Constants.MANAGERDATA.tableauSanisettes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
-                    case "Cafes":
-                        Constants.MANAGERDATA.tableauCafes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
-                    case "Fontaines":
-                        Constants.MANAGERDATA.tableauFontaines = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
-                    case "Taxis":
-                        Constants.MANAGERDATA.tableauTaxis = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
-                    default:
-                        return
-                    }
-                    //Constants.STRUCTSERVICE[typeService]?["tab"] = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String) as? [[String: AnyObject]]
+                    self.updateTabService(typeService: typeService)
                 } catch _ {
                     fatalError("Failure to save context")
                 }
             }
         }
     }
-    // MARK: Services
     // createServiceFromJson va parser de manière générique chaque service en utilsant le KVC
     func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: NSDictionary) {
         //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
@@ -147,7 +128,30 @@ class ParseJson: NSObject {
         }
         return message
     }
-    // MARK: type manager
+    func updateTabService(typeService: String) {
+        switch typeService {
+        case "Arbres":
+            Constants.MANAGERDATA.tableauArbres = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+        case "Velib":
+            Constants.MANAGERDATA.tableauVelib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+        case "AutoLib":
+            Constants.MANAGERDATA.tableauAutolib = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+        case "Belibs":
+            Constants.MANAGERDATA.tableauBelibs = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+        case "Capotes":
+            Constants.MANAGERDATA.tableauCapotes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+        case "Sanisettes":
+            Constants.MANAGERDATA.tableauSanisettes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+        case "Cafes":
+            Constants.MANAGERDATA.tableauCafes = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+        case "Fontaines":
+            Constants.MANAGERDATA.tableauFontaines = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+        case "Taxis":
+            Constants.MANAGERDATA.tableauTaxis = Constants.MANAGERDATA.updateArrayEntity(nomEntity: typeService as String)
+        default:
+            return
+        }
+    }
     func updateArrayInterets(type: String, fetchResult: [AnyObject]) {
         switch type {
         case "Velib":
@@ -170,42 +174,5 @@ class ParseJson: NSObject {
             Constants.MANAGERDATA.tableauCafes = fetchResult as [AnyObject]
         default: break
         }
-    }
-    func idKeySort(type: String) -> NSDictionary {
-        let dico: [String: Any]
-        switch type {
-        case "Velib":
-            dico = ["idKey": "recordid", "sort": true]
-        case "AutoLib":
-            dico = ["idKey": "nomStation", "sort": false]
-        case "Arbres":
-            dico = ["idKey": "objectid", "sort": true]
-        case "Taxis":
-            dico = ["idKey": "zip_code", "sort": true]
-        case "Sanisettes":
-            dico = ["idKey": "arrondissement", "sort": true]
-        case "Capotes":
-            dico = ["idKey": "site", "sort": false]
-        case "Fontaines":
-            dico = ["idKey": "recordid", "sort": false]
-        case "Belibs":
-            dico = ["idKey": "recordid", "sort": false]
-        case "Cafes":
-            dico = ["idKey": "recordid", "sort": false]
-        default:
-            dico = ["idKey": "", "sort": false]
-        }
-        return dico as NSDictionary
-    }
-    func filePath(type: String) -> String {
-        var filePath: String?
-        switch type {
-        case "Velib":
-            filePath = Bundle.main.path(forResource: "Paris", ofType: "json")
-        case "Taxis":
-            filePath = Bundle.main.path(forResource: "Taxis", ofType: "json")
-        default: break
-        }
-        return filePath!
     }
 }
