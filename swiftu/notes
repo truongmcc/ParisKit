@@ -56,9 +56,11 @@ utiliser ALAMOFIRE OK
 
 refactoring parsing json OK
 
+taxi en dynamic (virer la version static avec fichier embarqué) OK
+
 remplacer nsarray et nsdictionary par array et dictionary
 
-taxi en dynamic (virer la version static avec fichier embarqué)
+MVVM
 
 warning errors et violation
 
