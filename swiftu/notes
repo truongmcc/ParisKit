@@ -56,9 +56,11 @@ utiliser ALAMOFIRE OK
 
 refactoring parsing json OK
 
-integration RXSWIFT pour uploader les services OK
+integration RXSWIFT pour uploader les services en static et dynamic OK
 
 taxi en dynamic (virer la version static avec fichier embarqué) OK
+
+refactorer la partie affichage des infos en dynamic via le dictionnaire des services
 
 remplacer nsarray et nsdictionary par array et dictionary
 
@@ -77,6 +79,9 @@ icone appli : tour eiffel minimaliste ?
 ajout spot wifi paris
 
 les marchés...
+
+
+
 
 
 

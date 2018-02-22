@@ -14,7 +14,7 @@ import Alamofire
 class Downloader {
     var data = Data()
     var dynamicValue: String?
-    // RXSWIFT version
+    // ALAMOFIRE & RXSWIFT version
     func rxDataFromUrl(url: String) -> Observable<Data> {
         return Observable<Data>.create({ (observer) -> Disposable in
             Alamofire.request(url).responseData(completionHandler: { (response) in
@@ -39,7 +39,6 @@ class Downloader {
             })
         })
     }
-
     // ANCIENNE METHODE
 //    func dataFromUrl(url:String, type:String) {
 //        let urlString = URL(string: url)
@@ -58,14 +57,14 @@ class Downloader {
 //        }
 //    }
     // VERSION ALAMOFIRE
-    func dataFromUrl(url: String, type: String) {
-        // MODE DATA
-        Alamofire.request(url).responseData(completionHandler: { (response) in
-            if let data = response.data {
-                self.data = data
-                Constants.MANAGERDATA.parser?.parse(data: self.data, type: type)
-            }
-        })
+//    func dataFromUrl(url: String, type: String) {
+//        // MODE DATA
+//        Alamofire.request(url).responseData(completionHandler: { (response) in
+//            if let data = response.data {
+//                self.data = data
+//                Constants.MANAGERDATA.parser?.parse(data: self.data, type: type)
+//            }
+//        })
         // mode trailing closure
 //        Alamofire.request(url).responseData() { (response) in
 //            if let data = response.data {
@@ -101,22 +100,22 @@ class Downloader {
 //        }
 //        task.resume()
 //        semaphore.wait()
-    }
+//    }
     // LA COMPLETION FINISHED VA ETRE APPELE A LA FIN DE LA REQUETE ET VA PERMETTRE LA MISE A JOUR UI DANS MAPVIEWCONTROLLER
-    func dynamiciDataFromUrl(url: String, type: String, finished: @escaping (Bool, String) -> Void) {
-        var result: String?
-        Alamofire.request(url).responseData(completionHandler: { (response) in
-            var isFinished = false
-            if let data = response.data {
-                self.data = data
-                result = Constants.MANAGERDATA.parser?.dynamicParse(data: self.data, type: type)
-                isFinished = true
-            }
-            finished(isFinished, result!)
-        })
-    }
+//    func dynamicDataFromUrl(url: String, type: String, finished: @escaping (Bool, String) -> Void) {
+//        var result: String?
+//        Alamofire.request(url).responseData(completionHandler: { (response) in
+//            var isFinished = false
+//            if let data = response.data {
+//                self.data = data
+//                result = Constants.MANAGERDATA.parser?.dynamicParse(data: self.data, type: type)
+//                isFinished = true
+//            }
+//            finished(isFinished, result!)
+//        })
+//    }
 //     SEMAPHORE VERSION
-//    func dynamiciDataFromUrl(url: String, type: String) {
+//    func dynamicDataFromUrl(url: String, type: String) {
 //        let myURL = URL(string: url)!
 //        var dataStringOrNil: String?
 //        let semaphore = DispatchSemaphore(value: 0)
