@@ -7,11 +7,39 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 import Alamofire
 
 class Downloader {
     var data = Data()
     var dynamicValue: String?
+    // RXSWIFT version
+    func rxDataFromUrl(url: String) -> Observable<Data> {
+        return Observable<Data>.create({ (observer) -> Disposable in
+            Alamofire.request(url).responseData(completionHandler: { (response) in
+                if let err = response.error {
+                    // If there's an error, send an Error event and finish the sequence
+                    observer.onError(err)
+                } else {
+                    if let data = response.data {
+                            observer.onNext(data)
+                    } else {
+                        observer.onNext(Data())
+                    }
+                    //Complete the sequence
+                    observer.onCompleted()
+                }
+            })
+            //task.resume()
+            //Return an AnonymousDisposable
+            return Disposables.create(with: {
+                //Cancel the connection if disposed
+                //task.cancel()
+            })
+        })
+    }
+
     // ANCIENNE METHODE
 //    func dataFromUrl(url:String, type:String) {
 //        let urlString = URL(string: url)
@@ -78,13 +106,13 @@ class Downloader {
     func dynamiciDataFromUrl(url: String, type: String, finished: @escaping (Bool, String) -> Void) {
         var result: String?
         Alamofire.request(url).responseData(completionHandler: { (response) in
+            var isFinished = false
             if let data = response.data {
                 self.data = data
                 result = Constants.MANAGERDATA.parser?.dynamicParse(data: self.data, type: type)
-                finished(true, result!)
-            } else {
-                finished(false, "données non disponibles")
+                isFinished = true
             }
+            finished(isFinished, result!)
         })
     }
 //     SEMAPHORE VERSION

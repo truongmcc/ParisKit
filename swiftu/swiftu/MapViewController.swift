@@ -8,6 +8,8 @@
 
 import UIKit
 import MapKit
+import RxCocoa
+import RxSwift
 
 class MapViewController: UIViewController, UIGestureRecognizerDelegate,
                         CLLocationManagerDelegate,
@@ -26,6 +28,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     // <--
     // MARK: Properties
+    let disposeBag = DisposeBag()
     var tagAnno: Int?
     var tableau = [AnyObject]()
     var locationManager = CLLocationManager()
@@ -42,19 +45,26 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
         laMap.delegate = self
         locationManager.delegate = self
         location(self)
-        self.monDownloader.dataFromUrl(url: Constants.urlVelib, type: "Velib")
-        self.monDownloader.dataFromUrl(url: Constants.urlArbres, type: "Arbres")
-        self.monDownloader.dataFromUrl(url: Constants.urlSanisettes, type: "Sanisettes")
-        self.monDownloader.dataFromUrl(url: Constants.urlCapotes, type: "Capotes")
-        self.monDownloader.dataFromUrl(url: Constants.urlFontaines, type: "Fontaines")
-        self.monDownloader.dataFromUrl(url: Constants.urlBelib, type: "Belibs")
-        self.monDownloader.dataFromUrl(url: Constants.urlCafe, type: "Cafes")
-        self.monDownloader.dataFromUrl(url: Constants.urlAutolib, type: "AutoLib")
-        self.monDownloader.dataFromUrl(url: Constants.urlTaxi, type: "Taxis")
+        for dico in Constants.SERVICES {
+            if let url: String = dico["url"] as? String, let type = dico["type"] as? String {
+                self.updateService(url: url, type: type)
+            }
+        }
+    }
+    func updateService(url: String, type: String) {
+        self.monDownloader.rxDataFromUrl(url: url).subscribe { element in
+            switch element {
+            case .next(let value):
+                Constants.MANAGERDATA.parser?.parse(data: value, type: type)
+            case .error:
+                print("error")
+            case .completed:
+                print("completed")
+            }
+            }.disposed(by: disposeBag)
     }
     // MARK: User Location
     @IBAction func location(_ sender: Any) {
@@ -156,7 +166,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "AutoLib") { (finish, result) in
                 annotationCustom.subtitle = self.subtitleAnnotation(finish, result)
             }
-//          --> SI JE VEUX UTILISER LE DETAILDISCLOSURE /
+//          --> POUR UTILISER LE DETAILDISCLOSURE /
 //        } else if lcTag == Constants.INTERETS.CAFE {
 //            let calloutButton: UIButton = UIButton(type: .detailDisclosure)
 //            view.rightCalloutAccessoryView = calloutButton

@@ -38,47 +38,65 @@ struct Constants {
     }
     static let SERVICES = [
         [
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=arbresremarquablesparis2011&rows=500&facet=genre&facet=espece",
             "service": INTERETS.ARBRE,
             "color": UIColor.green,
+            "type": "Arbres",
             "entity": "Arbres",
             "field": "recordid",
             "listeTabDetail": [Constants.tabListServices[INTERETS.ARBRE]]
         ],
         [
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=distributeurspreservatifsmasculinsparis2012&rows=100&facet=annee_installation&facet=arrond&facet=acces",
             "service": INTERETS.CAPOTES,
             "color": UIColor.red,
+            "type": "Capotes",
             "entity": "Capotes",
             "field": "recordid",
             "listeTabDetail": [Constants.tabListServices[INTERETS.CAPOTES]]
         ],
         [
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=a_boire+%3D+1&rows=915&facet=arro&facet=modele&facet=a_boire",
             "service": INTERETS.FONTAINE,
             "color": UIColor.cyan,
+            "type": "Fontaines",
             "entity": "Fontaines",
             "field": "recordid",
             "listeTabDetail": [Constants.tabListServices[INTERETS.FONTAINE]]
         ],
         [
+            "type": "Cafes",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=liste-des-cafes-a-un-euro&q=prix_salle+%3D+%221%22++or+prix_terasse+%3D+%221%22&rows=200&facet=arrondissement",
             "service": INTERETS.CAFE,
             "color": UIColor.brown
         ],
         [
+            "type": "Sanisettes",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=sanisettesparis2011&rows=1000&facet=arrondissement&facet=horaires_ouverture",
             "service": INTERETS.SANISETTES,
             "color": UIColor.yellow
         ],
         [
+            "type": "Velib",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&rows=1300",
             "service": INTERETS.VELIB,
             "color": UIColor.lightGray
         ],
         [
+            "type": "AutoLib",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&rows=2000&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status",
             "service": INTERETS.AUTOLIB,
             "color": UIColor.darkGray
         ],
         [
+            "type": "Belibs",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&rows=150&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247",
             "service": INTERETS.BELIB,
             "color": UIColor.blue
         ],
         [
+            "type": "Taxis",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=paris_taxis_stations&rows=150&facet=zip_code&facet=city",
             "service": INTERETS.TAXIS,
             "color": UIColor.black
         ]
