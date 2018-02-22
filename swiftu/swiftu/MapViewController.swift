@@ -60,11 +60,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             case .next(let value):
                 Constants.MANAGERDATA.parser?.parse(data: value, type: type)
             case .error:
-                print("error")
+                print("error : retrieving data from url")
             case .completed:
                 print("completed")
             }
-            }.disposed(by: disposeBag)
+        }.disposed(by: disposeBag)
     }
     // MARK: User Location
     @IBAction func location(_ sender: Any) {

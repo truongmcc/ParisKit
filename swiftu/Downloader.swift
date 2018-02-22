@@ -23,7 +23,7 @@ class Downloader {
                     observer.onError(err)
                 } else {
                     if let data = response.data {
-                            observer.onNext(data)
+                        observer.onNext(data)
                     } else {
                         observer.onNext(Data())
                     }
