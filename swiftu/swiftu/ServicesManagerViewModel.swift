@@ -120,15 +120,17 @@ class ServicesManagerViewModel: NSObject {
             let dicoJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]
             if let listeServices = dicoJson?["records"] as? [[String: AnyObject]] {
                 if (fetchResult?.count)! < listeServices.count {
-                    let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: type as String)
-                    if let result = try? Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest) {
                         // --> suppression de la table s'il y a plus de data dans le json que dans la table
-                        for object in result! {
-                            Constants.MANAGEDOBJECTCONTEXT?.delete((object as? NSManagedObject)!)
+
+                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: type)
+                        // Create Batch Delete Request
+                        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                        do {
+                            try Constants.MANAGEDOBJECTCONTEXT?.execute(batchDeleteRequest)
+                        } catch {
+                            NSLog("error batch delete request")
                         }
-                        // <--
                         addServices(typeService: type, listeServices: listeServices)
-                    }
                 }
             }
         } catch {
