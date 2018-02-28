@@ -14,16 +14,6 @@ struct Constants {
     // MARK: Singletons
     static let MANAGERDATA = DataProvider()
     static let MANAGEDOBJECTCONTEXT = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
-    // MARK: URLs
-    static let urlArbres = "https://opendata.paris.fr/api/records/1.0/search/?dataset=arbresremarquablesparis2011&rows=500&facet=genre&facet=espece"
-    static let urlSanisettes = "https://opendata.paris.fr/api/records/1.0/search/?dataset=sanisettesparis2011&rows=1000&facet=arrondissement&facet=horaires_ouverture"
-    static let urlAutolib = "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&rows=2000&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status"
-    static let urlCapotes = "https://opendata.paris.fr/api/records/1.0/search/?dataset=distributeurspreservatifsmasculinsparis2012&rows=100&facet=annee_installation&facet=arrond&facet=acces"
-    static let urlFontaines = "https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=a_boire+%3D+1&rows=915&facet=arro&facet=modele&facet=a_boire"
-    static let urlBelib = "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&rows=150&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247"
-    static let urlCafe = "https://opendata.paris.fr/api/records/1.0/search/?dataset=liste-des-cafes-a-un-euro&q=prix_salle+%3D+%221%22++or+prix_terasse+%3D+%221%22&rows=200&facet=arrondissement"
-    static let urlVelib = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&rows=1300"
-    static let urlTaxi = "https://opendata.paris.fr/api/records/1.0/search/?dataset=paris_taxis_stations&rows=150&facet=zip_code&facet=city"
     // MARK: Interets
     struct INTERETS {
         static let ARBRE = 0
@@ -38,47 +28,65 @@ struct Constants {
     }
     static let SERVICES = [
         [
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=arbresremarquablesparis2011&rows=500&facet=genre&facet=espece",
             "service": INTERETS.ARBRE,
             "color": UIColor.green,
+            "type": "Arbres",
             "entity": "Arbres",
             "field": "recordid",
             "listeTabDetail": [Constants.tabListServices[INTERETS.ARBRE]]
         ],
         [
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=distributeurspreservatifsmasculinsparis2012&rows=100&facet=annee_installation&facet=arrond&facet=acces",
             "service": INTERETS.CAPOTES,
             "color": UIColor.red,
+            "type": "Capotes",
             "entity": "Capotes",
             "field": "recordid",
             "listeTabDetail": [Constants.tabListServices[INTERETS.CAPOTES]]
         ],
         [
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=a_boire+%3D+1&rows=915&facet=arro&facet=modele&facet=a_boire",
             "service": INTERETS.FONTAINE,
             "color": UIColor.cyan,
+            "type": "Fontaines",
             "entity": "Fontaines",
             "field": "recordid",
             "listeTabDetail": [Constants.tabListServices[INTERETS.FONTAINE]]
         ],
         [
+            "type": "Cafes",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=liste-des-cafes-a-un-euro&q=prix_salle+%3D+%221%22++or+prix_terasse+%3D+%221%22&rows=200&facet=arrondissement",
             "service": INTERETS.CAFE,
             "color": UIColor.brown
         ],
         [
+            "type": "Sanisettes",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=sanisettesparis2011&rows=1000&facet=arrondissement&facet=horaires_ouverture",
             "service": INTERETS.SANISETTES,
             "color": UIColor.yellow
         ],
         [
+            "type": "Velib",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&rows=1300",
             "service": INTERETS.VELIB,
             "color": UIColor.lightGray
         ],
         [
+            "type": "AutoLib",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&rows=2000&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status",
             "service": INTERETS.AUTOLIB,
             "color": UIColor.darkGray
         ],
         [
+            "type": "Belibs",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&rows=150&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247",
             "service": INTERETS.BELIB,
             "color": UIColor.blue
         ],
         [
+            "type": "Taxis",
+            "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=paris_taxis_stations&rows=150&facet=zip_code&facet=city",
             "service": INTERETS.TAXIS,
             "color": UIColor.black
         ]
@@ -89,12 +97,7 @@ struct Constants {
                            "Belibs": "belibs", "Cafes": "cafes"] as [String: String]
     static let tabListServices = ["Velibs", "Autolibs", "Taxis", "Arbres remarquables", "Sanisettes", "Préservatifs", "Fontaines à boire", "Stations belib", "Cafés à 1 euro en terasse ou salle"]
     // MARK: detail service
-    static let listeTabDetail = [
-        tabDetailArbre, // 0
-        tabDetailCapote, // 1
-        tabDetailFontaine, // 2
-        tabDetailCafe // 3
-    ]
+    static let listeTabDetail = [tabDetailArbre, tabDetailCapote, tabDetailFontaine, tabDetailCafe]
     static let tabDetailFontaine = [
         [
             "title": "Localisation",

@@ -15,11 +15,9 @@ class ParseJson: NSObject {
         NSLog("parse file data %@", type)
         var fetchResult: NSArray?
         guard let idKey = Constants.STRUCTSERVICE[type]!["idKey"] as? String else {
-            print("erreur idKey") ; return
-        }
+            print("erreur idKey") ; return }
         guard let sort = Constants.STRUCTSERVICE[type]!["sort"] as? Bool else {
-            print("erreur sort") ; return
-        }
+            print("erreur sort") ; return }
         fetchResult = Constants.MANAGERDATA.resultFromSelectWithEntity(nomEntity: type as String, idKey: idKey, bSort: sort, bSave: false)
         do {
             let dicoJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]

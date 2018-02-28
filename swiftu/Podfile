@@ -7,6 +7,8 @@ target 'swiftu' do
   use_frameworks!
   pod 'Alamofire', '~> 4.5'
   pod 'SwiftLint'
+  pod 'RxSwift',    '~> 4.0'
+  pod 'RxCocoa',    '~> 4.0'
   # Pods for swiftu
 
   target 'swiftuTests' do
@@ -17,6 +19,8 @@ target 'swiftu' do
   target 'swiftuUITests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'RxBlocking', '~> 4.0'
+    pod 'RxTest',     '~> 4.0'
   end
 
 end

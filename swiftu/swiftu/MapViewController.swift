@@ -8,6 +8,8 @@
 
 import UIKit
 import MapKit
+import RxCocoa
+import RxSwift
 
 class MapViewController: UIViewController, UIGestureRecognizerDelegate,
                         CLLocationManagerDelegate,
@@ -26,35 +28,50 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     // <--
     // MARK: Properties
+    let disposeBag = DisposeBag()
     var tagAnno: Int?
     var tableau = [AnyObject]()
     var locationManager = CLLocationManager()
     var monDownloader = Downloader()
     var optionViewController: OptionsViewController?
-    var dynamicMessage: String?
-    var subtitleAnnotation: (Bool, String) -> (String) = { (finish, result) in
-        if finish {
-            return result
-        } else {
-            print("données non trouvées")
-            return result
-        }
-    }
+    // MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-
         laMap.delegate = self
         locationManager.delegate = self
         location(self)
-        self.monDownloader.dataFromUrl(url: Constants.urlVelib, type: "Velib")
-        self.monDownloader.dataFromUrl(url: Constants.urlArbres, type: "Arbres")
-        self.monDownloader.dataFromUrl(url: Constants.urlSanisettes, type: "Sanisettes")
-        self.monDownloader.dataFromUrl(url: Constants.urlCapotes, type: "Capotes")
-        self.monDownloader.dataFromUrl(url: Constants.urlFontaines, type: "Fontaines")
-        self.monDownloader.dataFromUrl(url: Constants.urlBelib, type: "Belibs")
-        self.monDownloader.dataFromUrl(url: Constants.urlCafe, type: "Cafes")
-        self.monDownloader.dataFromUrl(url: Constants.urlAutolib, type: "AutoLib")
-        self.monDownloader.dataFromUrl(url: Constants.urlTaxi, type: "Taxis")
+        for dico in Constants.SERVICES {
+            if let url: String = dico["url"] as? String, let type = dico["type"] as? String {
+                self.updateService(url: url, type: type)
+            }
+        }
+    }
+    // MARK: méthodes RXSWIFT
+    func updateService(url: String, type: String) {
+        self.monDownloader.rxDataFromUrl(url: url).subscribe { element in
+            switch element {
+            case .next(let value):
+                Constants.MANAGERDATA.parser?.parse(data: value, type: type)
+            case .error:
+                print("error : retrieving data from url")
+            case .completed:
+                print("completed")
+            }
+        }.disposed(by: disposeBag)
+    }
+    func dynamicUpdateService(url: String, type: String, result: @escaping (String) -> ()) {
+        self.monDownloader.rxDataFromUrl(url: url).subscribe { element in
+            switch element {
+            case .next(let value):
+                if let resultDynamicData = Constants.MANAGERDATA.parser?.dynamicParse(data: value, type: type) {
+                    result(resultDynamicData)
+                }
+            case .error:
+                print("error : retrieving data from url")
+            case .completed:
+                print("completed")
+            }
+            }.disposed(by: disposeBag)
     }
     // MARK: User Location
     @IBAction func location(_ sender: Any) {
@@ -145,18 +162,17 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             let idRecord: String = annotationCustom.idRecord!
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=recordid%3D%22"
             urlString = urlString.appending(idRecord).appending("%22")
-            self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Velib") { (finish, result) in
-                if finish { annotationCustom.subtitle = result
-                } else { annotationCustom.subtitle = "données non disponibles"}
+            dynamicUpdateService(url: urlString, type: "Velib") { (result) in
+                annotationCustom.subtitle = result
             }
         } else if lcTag == Constants.INTERETS.AUTOLIB {
             let idRecord: String = annotationCustom.idRecord!
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&q=id+%3D+"
             urlString = urlString.appending(idRecord).appending("&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status")
-            self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "AutoLib") { (finish, result) in
-                annotationCustom.subtitle = self.subtitleAnnotation(finish, result)
+            dynamicUpdateService(url: urlString, type: "AutoLib") { (result) in
+                annotationCustom.subtitle = result
             }
-//          --> SI JE VEUX UTILISER LE DETAILDISCLOSURE /
+//          --> POUR UTILISER LE DETAILDISCLOSURE /
 //        } else if lcTag == Constants.INTERETS.CAFE {
 //            let calloutButton: UIButton = UIButton(type: .detailDisclosure)
 //            view.rightCalloutAccessoryView = calloutButton
@@ -171,10 +187,9 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             view.isDraggable = false ; view.isHighlighted = false ; view.canShowCallout = true
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&q=recordid%3D"
             urlString = urlString.appending(idRecord).appending("&rows=1&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247")
-            self.monDownloader.dynamiciDataFromUrl(url: urlString, type: "Belibs") { (finish, result) in
-                if finish { annotationCustom.subtitle = result } else { annotationCustom.subtitle = "données non disponibles"}
+            dynamicUpdateService(url: urlString, type: "Belibs") { (result) in
+                annotationCustom.subtitle = result
             }
-           // annotationCustom.subtitle = self.dynamicMessage
         } else { // arbres, fontaines, preservatifs
             if let entity: String = Constants.SERVICES[lcTag]["entity"] as? String {
                 if let field: String = Constants.SERVICES[lcTag]["field"] as? String {
