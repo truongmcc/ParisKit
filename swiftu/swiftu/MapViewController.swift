@@ -20,7 +20,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     @IBOutlet weak var butTaxi: UIBarButtonItem!
     @IBOutlet var laMap: MKMapView!
     @IBOutlet weak var barItem: UIToolbar!
-    // --> ?
     @IBOutlet weak var trackingButton: MKUserTrackingBarButtonItem! {
         didSet {
             trackingButton.mapView = laMap
@@ -28,11 +27,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     // <--
     // MARK: Properties
-    let disposeBag = DisposeBag()
-    var tagAnno: Int?
-    var tableau = [AnyObject]()
+    let disposeBag = DisposeBag()//
+    var servicesManagerViewModel = ServicesManagerViewModel()
+    var tagAnno: Int?//
     var locationManager = CLLocationManager()
-    var monDownloader = Downloader()
     var optionViewController: OptionsViewController?
     // MARK: ViewDidLoad
     override func viewDidLoad() {
@@ -40,38 +38,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         laMap.delegate = self
         locationManager.delegate = self
         location(self)
-        for dico in Constants.SERVICES {
-            if let url: String = dico["url"] as? String, let type = dico["type"] as? String {
-                self.updateService(url: url, type: type)
-            }
-        }
-    }
-    // MARK: méthodes RXSWIFT
-    func updateService(url: String, type: String) {
-        self.monDownloader.rxDataFromUrl(url: url).subscribe { element in
-            switch element {
-            case .next(let value):
-                Constants.MANAGERDATA.parser?.parse(data: value, type: type)
-            case .error:
-                print("error : retrieving data from url")
-            case .completed:
-                print("completed")
-            }
-        }.disposed(by: disposeBag)
-    }
-    func dynamicUpdateService(url: String, type: String, result: @escaping (String) -> ()) {
-        self.monDownloader.rxDataFromUrl(url: url).subscribe { element in
-            switch element {
-            case .next(let value):
-                if let resultDynamicData = Constants.MANAGERDATA.parser?.dynamicParse(data: value, type: type) {
-                    result(resultDynamicData)
-                }
-            case .error:
-                print("error : retrieving data from url")
-            case .completed:
-                print("completed")
-            }
-            }.disposed(by: disposeBag)
+        servicesManagerViewModel.addServices()
     }
     // MARK: User Location
     @IBAction func location(_ sender: Any) {
@@ -104,7 +71,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         if let selectedButton: UIBarButtonItem = self.retournerBoutonService(sender: (sender as? UIBarButtonItem)!) {
             if selectedButton.tintColor == UIColor.black {
                 selectedButton.tintColor = UIColor.blue
-                MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau as [AnyObject], laMap: self.laMap)
+                MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
             } else {
                 selectedButton.tintColor = UIColor.black
             }
@@ -117,13 +84,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     func retournerBoutonService(sender: UIBarButtonItem) -> UIBarButtonItem? {
         if sender == butVelib {
             tagAnno = Constants.INTERETS.VELIB
-            tableau = Constants.MANAGERDATA.tableauVelib!
+            self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauVelib!
         } else if sender == butAutolib {
             tagAnno = Constants.INTERETS.AUTOLIB
-            tableau = Constants.MANAGERDATA.tableauAutolib!
+           self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauAutolib!
         } else if sender == butTaxi {
             tagAnno = Constants.INTERETS.TAXIS
-            tableau = Constants.MANAGERDATA.tableauTaxis!
+           self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauTaxis!
         }
         return sender
     }
@@ -131,7 +98,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         if annotation is MKUserLocation {
             return nil
         }
-        let annotationCustom: MyAnnotation = (annotation as? MyAnnotation)!
+        let annotationCustom: MyAnnotationServiceViewModel = (annotation as? MyAnnotationServiceViewModel)!
         let lcTag = annotationCustom.tag
         let pinIdentifier = "annotationId"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: pinIdentifier)
@@ -153,47 +120,41 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if view.annotation is MKUserLocation { return }
         // -> récupération du tag (utilisation du cast)
-        let annotationCustom: MyAnnotation! = view.annotation as? MyAnnotation
+        let annotationCustom: MyAnnotationServiceViewModel! = view.annotation as? MyAnnotationServiceViewModel
         annotationCustom?.prepareForInterfaceBuilder()
+        let idRecord: String = annotationCustom.idRecord!
         let lcTag: Int = annotationCustom.tag!
         var detailViewController: DetailViewController?
-       // let reuseId = "pin"
         if lcTag == Constants.INTERETS.VELIB {
-            let idRecord: String = annotationCustom.idRecord!
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=recordid%3D%22"
             urlString = urlString.appending(idRecord).appending("%22")
-            dynamicUpdateService(url: urlString, type: "Velib") { (result) in
+            servicesManagerViewModel.dynamicUpdateService(url: urlString, type: "Velib") { (result) in
                 annotationCustom.subtitle = result
             }
         } else if lcTag == Constants.INTERETS.AUTOLIB {
-            let idRecord: String = annotationCustom.idRecord!
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&q=id+%3D+"
             urlString = urlString.appending(idRecord).appending("&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status")
-            dynamicUpdateService(url: urlString, type: "AutoLib") { (result) in
+            servicesManagerViewModel.dynamicUpdateService(url: urlString, type: "AutoLib") { (result) in
                 annotationCustom.subtitle = result
             }
-//          --> POUR UTILISER LE DETAILDISCLOSURE /
-//        } else if lcTag == Constants.INTERETS.CAFE {
-//            let calloutButton: UIButton = UIButton(type: .detailDisclosure)
-//            view.rightCalloutAccessoryView = calloutButton
-//            view.isDraggable = false
-//            view.isHighlighted = false
-//            view.canShowCallout = true
-//         <--
         } else if lcTag == Constants.INTERETS.BELIB {
-            let idRecord: String = annotationCustom.idRecord!
-            let calloutButton: UIButton = UIButton(type: .detailDisclosure)
-            view.rightCalloutAccessoryView = calloutButton
-            view.isDraggable = false ; view.isHighlighted = false ; view.canShowCallout = true
             var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&q=recordid%3D"
             urlString = urlString.appending(idRecord).appending("&rows=1&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247")
-            dynamicUpdateService(url: urlString, type: "Belibs") { (result) in
+            servicesManagerViewModel.dynamicUpdateService(url: urlString, type: "Belibs") { (result) in
                 annotationCustom.subtitle = result
             }
+            //          --> POUR UTILISER LE DETAILDISCLOSURE /
+            //        } else if lcTag == Constants.INTERETS.CAFE {
+            //            let calloutButton: UIButton = UIButton(type: .detailDisclosure)
+            //            view.rightCalloutAccessoryView = calloutButton
+            //            view.isDraggable = false
+            //            view.isHighlighted = false
+            //            view.canShowCallout = true
+            //         <--
         } else { // arbres, fontaines, preservatifs
             if let entity: String = Constants.SERVICES[lcTag]["entity"] as? String {
                 if let field: String = Constants.SERVICES[lcTag]["field"] as? String {
-                    let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
+                    let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
                     let service: Services = (result.firstObject as? Services)!
                     detailViewController = self.createDetailViewController(service: service)
                     detailViewController?.tabService = Constants.listeTabDetail[lcTag] as [AnyObject]
@@ -216,12 +177,12 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     // delegate sur appui sur le bouton disclosure
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView,
                  calloutAccessoryControlTapped control: UIControl) {
-        let annotationCustom = view.annotation as? MyAnnotation
+        let annotationCustom = view.annotation as? MyAnnotationServiceViewModel
         if annotationCustom?.tag == Constants.INTERETS.CAFE {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = Constants.MANAGERDATA.selectRecordFromEntity(nomEntity: "Cafes", field: "recordid", value: (annotationCustom?.idRecord!)!)
+            let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: "Cafes", field: "recordid", value: (annotationCustom?.idRecord!)!)
             let  cafe: Cafes = (result.firstObject as? Cafes)!
             detailViewController.service = cafe
             detailViewController.adresse = cafe.adresse
@@ -269,7 +230,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     func afficherArbres() {
         tagAnno = Constants.INTERETS.ARBRE
-        tableau = Constants.MANAGERDATA.tableauArbres!
+        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauArbres!
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -277,11 +238,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
+        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
     }
     func afficherSanisettes() {
         tagAnno = Constants.INTERETS.SANISETTES
-        tableau = Constants.MANAGERDATA.tableauSanisettes!
+        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauSanisettes!
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -289,11 +250,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
+        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
     }
     func afficherCapotes() {
         tagAnno = Constants.INTERETS.CAPOTES
-        tableau = Constants.MANAGERDATA.tableauCapotes!
+        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauCapotes!
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -301,11 +262,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
+        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
     }
     func afficherFontaines() {
         tagAnno = Constants.INTERETS.FONTAINE
-        tableau = Constants.MANAGERDATA.tableauFontaines!
+        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauFontaines
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -313,11 +274,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
+        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
     }
     func afficherBelibs() {
         tagAnno = Constants.INTERETS.BELIB
-        tableau = Constants.MANAGERDATA.tableauBelibs!
+        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauBelibs!
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -325,11 +286,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
+        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
     }
     func afficherCafes() {
         tagAnno = Constants.INTERETS.CAFE
-        tableau = Constants.MANAGERDATA.tableauCafes!
+        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauCafes!
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
@@ -337,6 +298,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotation.addAnntotation(tag: tagAnno!, tableau: self.tableau, laMap: self.laMap)
+        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
     }
 }

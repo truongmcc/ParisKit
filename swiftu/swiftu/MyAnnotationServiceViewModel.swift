@@ -1,16 +1,14 @@
 //
-//  MyAnnotation.swift
+//  MyAnnotationServiceViewModel.swift
 //  swiftu
 //
-//  Created by picshertho on 06/11/2016.
-//  Copyright © 2016 tru. All rights reserved.
+//  Created by christophe on 28/02/2018.
+//  Copyright © 2018 tru. All rights reserved.
 //
 
-import Foundation
 import MapKit
-import CoreData
 
-class MyAnnotation: NSObject, MKAnnotation {
+class MyAnnotationServiceViewModel: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
     var title: String?
     var subtitle: String?
@@ -59,20 +57,19 @@ class MyAnnotation: NSObject, MKAnnotation {
         } else if let cafe = service as? Cafes {
             self.title = cafe.nom_du_cafe
             if let adresse = cafe.adresse {
-                self.subtitle = "\(adresse) \(cafe.arrondissement)" // String.init(format: "%@ %@", adresse, String(cafe.arrondissement))
+                self.subtitle = "\(adresse) \(cafe.arrondissement)"
             }
         }
         super.init()
     }
     class func addAnntotation(tag: Int, tableau: [AnyObject], laMap: MKMapView) {
-        var annotation: MyAnnotation
+        var annotation: MyAnnotationServiceViewModel
         for service in (tableau as? [Services])! {
             let coord: CLLocationCoordinate2D? = CLLocationCoordinate2DMake (CLLocationDegrees(service.coordinateX), CLLocationDegrees(service.coordinateY))
             if coord != nil {
-                annotation = MyAnnotation(typeService: tag, location: coord!, service: service)
+                annotation = MyAnnotationServiceViewModel(typeService: tag, location: coord!, service: service)
                 laMap.addAnnotation(annotation)
             }
         }
     }
-
 }

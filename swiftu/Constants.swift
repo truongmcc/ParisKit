@@ -11,8 +11,7 @@ import UIKit
 
 struct Constants {
 
-    // MARK: Singletons
-    static let MANAGERDATA = DataProvider()
+    // MARK: Singleton
     static let MANAGEDOBJECTCONTEXT = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     // MARK: Interets
     struct INTERETS {
