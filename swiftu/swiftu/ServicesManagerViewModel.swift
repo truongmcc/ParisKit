@@ -11,7 +11,8 @@ import RxSwift
 import CoreData
 
 class ServicesManagerViewModel: NSObject {
-    var servicesToDisplay: [AnyObject]? = []
+    let disposeBag = DisposeBag()
+    var monDownloader = Downloader()
     var tableauVelib: [AnyObject]? = []
     var tableauAutolib: [AnyObject]? = []
     var tableauTaxis: [AnyObject]? = []
@@ -21,9 +22,10 @@ class ServicesManagerViewModel: NSObject {
     var tableauFontaines: [AnyObject]? = []
     var tableauBelibs: [AnyObject]? = []
     var tableauCafes: [AnyObject]? = []
-    var tagAnno: Int?
-    let disposeBag = DisposeBag()
-    var monDownloader = Downloader()
+    // serviceToDisplay et selectedService pour l'affichage courrant dans la map
+    var serviceToDisplay: [AnyObject]? = []
+    var selectedService: Int?
+
     var typeMapKit: Int?
     func addServices() {
         for dico in Constants.SERVICES {
@@ -107,6 +109,54 @@ class ServicesManagerViewModel: NSObject {
         }
         return []
     }
+    func updateTabService(typeService: String) {
+        switch typeService {
+        case "Arbres":
+            self.tableauArbres = updateArrayEntity(nomEntity: typeService as String)
+        case "Velib":
+            self.tableauVelib = updateArrayEntity(nomEntity: typeService as String)
+        case "AutoLib":
+            self.tableauAutolib = updateArrayEntity(nomEntity: typeService as String)
+        case "Belibs":
+            self.tableauBelibs = updateArrayEntity(nomEntity: typeService as String)
+        case "Capotes":
+            self.tableauCapotes = updateArrayEntity(nomEntity: typeService as String)
+        case "Sanisettes":
+            self.tableauSanisettes = updateArrayEntity(nomEntity: typeService as String)
+        case "Cafes":
+            self.tableauCafes = updateArrayEntity(nomEntity: typeService as String)
+        case "Fontaines":
+            self.tableauFontaines = updateArrayEntity(nomEntity: typeService as String)
+        case "Taxis":
+            self.tableauTaxis = updateArrayEntity(nomEntity: typeService as String)
+        default:
+            return
+        }
+    }
+    func tabService(typeService: Int) -> [AnyObject] {
+        switch typeService {
+        case Constants.SERVICEORDER.VELIB:
+            return self.tableauVelib!
+        case Constants.SERVICEORDER.AUTOLIB:
+            return self.tableauAutolib!
+        case Constants.SERVICEORDER.TAXIS:
+            return self.tableauTaxis!
+        case Constants.SERVICEORDER.ARBRE:
+            return self.tableauArbres!
+        case Constants.SERVICEORDER.SANISETTES:
+            return self.tableauSanisettes!
+        case Constants.SERVICEORDER.CAPOTES:
+            return self.tableauCapotes!
+        case Constants.SERVICEORDER.FONTAINE:
+            return self.tableauFontaines!
+        case Constants.SERVICEORDER.BELIB:
+            return self.tableauBelibs!
+        case Constants.SERVICEORDER.CAFE:
+            return self.tableauCafes!
+        default:
+            return []
+        }
+    }
     // MARK: PARSING
     func parse(data: Data, type: String) {
         NSLog("parse file data %@", type)
@@ -120,17 +170,14 @@ class ServicesManagerViewModel: NSObject {
             let dicoJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]
             if let listeServices = dicoJson?["records"] as? [[String: AnyObject]] {
                 if (fetchResult?.count)! < listeServices.count {
-                        // --> suppression de la table s'il y a plus de data dans le json que dans la table
-
-                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: type)
-                        // Create Batch Delete Request
-                        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                        do {
-                            try Constants.MANAGEDOBJECTCONTEXT?.execute(batchDeleteRequest)
-                        } catch {
-                            NSLog("error batch delete request")
+                    let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: type as String)
+                     if let result = try? Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest) {
+                    // --> suppression de la table s'il y a plus de data dans le json que dans la table
+                        for object in result! {
+                            Constants.MANAGEDOBJECTCONTEXT?.delete((object as? NSManagedObject)!)
                         }
-                        addServices(typeService: type, listeServices: listeServices)
+                        self.addServices(typeService: type, listeServices: listeServices)
+                    }
                 }
             }
         } catch {
@@ -154,30 +201,6 @@ class ServicesManagerViewModel: NSObject {
                     fatalError("Failure to save context")
                 }
             }
-        }
-    }
-    func updateTabService(typeService: String) {
-        switch typeService {
-        case "Arbres":
-            self.tableauArbres = updateArrayEntity(nomEntity: typeService as String)
-        case "Velib":
-            self.tableauVelib = updateArrayEntity(nomEntity: typeService as String)
-        case "AutoLib":
-            self.tableauAutolib = updateArrayEntity(nomEntity: typeService as String)
-        case "Belibs":
-            self.tableauBelibs = updateArrayEntity(nomEntity: typeService as String)
-        case "Capotes":
-            self.tableauCapotes = updateArrayEntity(nomEntity: typeService as String)
-        case "Sanisettes":
-            self.tableauSanisettes = updateArrayEntity(nomEntity: typeService as String)
-        case "Cafes":
-            self.tableauCafes = updateArrayEntity(nomEntity: typeService as String)
-        case "Fontaines":
-            self.tableauFontaines = updateArrayEntity(nomEntity: typeService as String)
-        case "Taxis":
-            self.tableauTaxis = updateArrayEntity(nomEntity: typeService as String)
-        default:
-            return
         }
     }
     // createServiceFromJson va parser de manière générique chaque service en utilsant le KVC

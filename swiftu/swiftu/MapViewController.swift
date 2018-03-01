@@ -15,21 +15,17 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
                         CLLocationManagerDelegate,
                         MKMapViewDelegate, mapKitDelegate {
     // MARK: IBOutlet
+    @IBOutlet var laMap: MKMapView!
     @IBOutlet weak var butAutolib: UIBarButtonItem!
     @IBOutlet weak var butVelib: UIBarButtonItem!
     @IBOutlet weak var butTaxi: UIBarButtonItem!
-    @IBOutlet var laMap: MKMapView!
     @IBOutlet weak var barItem: UIToolbar!
     @IBOutlet weak var trackingButton: MKUserTrackingBarButtonItem! {
-        didSet {
-            trackingButton.mapView = laMap
-        }
+        didSet { trackingButton.mapView = laMap }
     }
     // <--
     // MARK: Properties
-    let disposeBag = DisposeBag()//
     var servicesManagerViewModel = ServicesManagerViewModel()
-    var tagAnno: Int?//
     var locationManager = CLLocationManager()
     var optionViewController: OptionsViewController?
     // MARK: ViewDidLoad
@@ -65,13 +61,11 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     // MARK: Affichage des services
     @IBAction func afficherService(_ sender: Any) {
-        for annotation in laMap.annotations {
-            laMap.removeAnnotation(annotation)
-        }
+        removeAnnotations()
         if let selectedButton: UIBarButtonItem = self.retournerBoutonService(sender: (sender as? UIBarButtonItem)!) {
             if selectedButton.tintColor == UIColor.black {
                 selectedButton.tintColor = UIColor.blue
-                MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
+                MyAnnotationServiceViewModel.addAnntotation(servicesManagerViewModel: self.servicesManagerViewModel, laMap: self.laMap)
             } else {
                 selectedButton.tintColor = UIColor.black
             }
@@ -83,14 +77,14 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     func retournerBoutonService(sender: UIBarButtonItem) -> UIBarButtonItem? {
         if sender == butVelib {
-            tagAnno = Constants.INTERETS.VELIB
-            self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauVelib!
+            self.servicesManagerViewModel.selectedService = Constants.INTERETS.VELIB
+            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.tableauVelib!
         } else if sender == butAutolib {
-            tagAnno = Constants.INTERETS.AUTOLIB
-           self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauAutolib!
+            self.servicesManagerViewModel.selectedService = Constants.INTERETS.AUTOLIB
+            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.tableauAutolib!
         } else if sender == butTaxi {
-            tagAnno = Constants.INTERETS.TAXIS
-           self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauTaxis!
+            self.servicesManagerViewModel.selectedService = Constants.INTERETS.TAXIS
+            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.tableauTaxis!
         }
         return sender
     }
@@ -182,7 +176,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: "Cafes", field: "recordid", value: (annotationCustom?.idRecord!)!)
+            let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: "Cafes", field: "recordid", value: (annotationCustom?.idRecord)!)
             let  cafe: Cafes = (result.firstObject as? Cafes)!
             detailViewController.service = cafe
             detailViewController.adresse = cafe.adresse
@@ -213,91 +207,48 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             laMap.mapType = .hybrid
         }
     }
-    func afficherTaxis() {
-        if butTaxi.tintColor == UIColor.black {
-            self.afficherService(butTaxi)
+    // UTILISER DELEGATE POUR MAJ COULEUR BOUTON
+//    func afficherTaxis() {
+//        if butTaxi.tintColor == UIColor.black {
+//            self.afficherService(butTaxi)
+//        }
+//    }
+//    func afficherVelib() {
+//        if butVelib.tintColor == UIColor.black {
+//            self.afficherService(butVelib)
+//        }
+//    }
+//    func afficherAutolib() {
+//        if butAutolib.tintColor == UIColor.black {
+//            self.afficherService(butAutolib)
+//        }
+//    }
+    func afficher(position: Int) {
+        self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.tabService(typeService: position)
+        for service in Constants.SERVICES {
+            if let pos: Int = service["order"] as? Int {
+                if position == pos {
+                    self.servicesManagerViewModel.selectedService = service["service"] as? Int
+                    break
+                }
+            }
         }
+        updateAnnotations()
     }
-    func afficherVelib() {
-        if butVelib.tintColor == UIColor.black {
-            self.afficherService(butVelib)
-        }
-    }
-    func afficherAutolib() {
-        if butAutolib.tintColor == UIColor.black {
-            self.afficherService(butAutolib)
-        }
-    }
-    func afficherArbres() {
-        tagAnno = Constants.INTERETS.ARBRE
-        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauArbres!
+    func removeAnnotations() {
         for annotation in laMap.annotations {
             laMap.removeAnnotation(annotation)
         }
+    }
+    func disableServiceButtons() {
         let allBarButtonItems = barItem.items
         for buttonItem in allBarButtonItems! {
             buttonItem.tintColor = UIColor.black
         }
-        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
     }
-    func afficherSanisettes() {
-        tagAnno = Constants.INTERETS.SANISETTES
-        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauSanisettes!
-        for annotation in laMap.annotations {
-            laMap.removeAnnotation(annotation)
-        }
-        let allBarButtonItems = barItem.items
-        for buttonItem in allBarButtonItems! {
-            buttonItem.tintColor = UIColor.black
-        }
-        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
-    }
-    func afficherCapotes() {
-        tagAnno = Constants.INTERETS.CAPOTES
-        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauCapotes!
-        for annotation in laMap.annotations {
-            laMap.removeAnnotation(annotation)
-        }
-        let allBarButtonItems = barItem.items
-        for buttonItem in allBarButtonItems! {
-            buttonItem.tintColor = UIColor.black
-        }
-        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
-    }
-    func afficherFontaines() {
-        tagAnno = Constants.INTERETS.FONTAINE
-        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauFontaines
-        for annotation in laMap.annotations {
-            laMap.removeAnnotation(annotation)
-        }
-        let allBarButtonItems = barItem.items
-        for buttonItem in allBarButtonItems! {
-            buttonItem.tintColor = UIColor.black
-        }
-        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
-    }
-    func afficherBelibs() {
-        tagAnno = Constants.INTERETS.BELIB
-        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauBelibs!
-        for annotation in laMap.annotations {
-            laMap.removeAnnotation(annotation)
-        }
-        let allBarButtonItems = barItem.items
-        for buttonItem in allBarButtonItems! {
-            buttonItem.tintColor = UIColor.black
-        }
-        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
-    }
-    func afficherCafes() {
-        tagAnno = Constants.INTERETS.CAFE
-        self.servicesManagerViewModel.servicesToDisplay = self.servicesManagerViewModel.tableauCafes!
-        for annotation in laMap.annotations {
-            laMap.removeAnnotation(annotation)
-        }
-        let allBarButtonItems = barItem.items
-        for buttonItem in allBarButtonItems! {
-            buttonItem.tintColor = UIColor.black
-        }
-        MyAnnotationServiceViewModel.addAnntotation(tag: tagAnno!, tableau: self.servicesManagerViewModel.servicesToDisplay!, laMap: self.laMap)
+    func updateAnnotations() {
+        removeAnnotations()
+        disableServiceButtons()
+        MyAnnotationServiceViewModel.addAnntotation(servicesManagerViewModel: self.servicesManagerViewModel, laMap: self.laMap)
     }
 }

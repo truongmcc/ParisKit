@@ -62,12 +62,12 @@ class MyAnnotationServiceViewModel: NSObject, MKAnnotation {
         }
         super.init()
     }
-    class func addAnntotation(tag: Int, tableau: [AnyObject], laMap: MKMapView) {
+    class func addAnntotation(servicesManagerViewModel: ServicesManagerViewModel, laMap: MKMapView) {
         var annotation: MyAnnotationServiceViewModel
-        for service in (tableau as? [Services])! {
+        for service in (servicesManagerViewModel.serviceToDisplay as? [Services])! {
             let coord: CLLocationCoordinate2D? = CLLocationCoordinate2DMake (CLLocationDegrees(service.coordinateX), CLLocationDegrees(service.coordinateY))
             if coord != nil {
-                annotation = MyAnnotationServiceViewModel(typeService: tag, location: coord!, service: service)
+                annotation = MyAnnotationServiceViewModel(typeService: servicesManagerViewModel.selectedService!, location: coord!, service: service)
                 laMap.addAnnotation(annotation)
             }
         }

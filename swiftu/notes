@@ -4,7 +4,7 @@ autolib : via api opendata ok
 
 crash sur selection du userlocation OK
 
-crash autolib https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreData/Concurrency.html !!! OK
+crash autolib : OK
 
 autolib : gestion dynamique sur disponibilités OK
 
@@ -12,11 +12,11 @@ factorisation du parsage des données en dynamique OK
 
 velib : virer le disclosure et suivre meme principe que pour autolib OK
 
-bug : disponibilités foireuses : pb dataTask pas synchrone => soluce : utilisation semaphore OK
+bug : utilisation semaphore OK
 
 creer une fonction updateAnnotationWithCoord OK
 
-crash sur click back button : crash sur parsing json arbres solution : faire un dismiss plutot qu'un push OK
+crash sur click back button : crash sur parsing json arbres solution OK
 
 arbres : ajouter le disclosure pour ajouter plus d'informations sur l'arbre OK
 
@@ -54,6 +54,8 @@ redeclarer proprement les singleton OK
 
 utiliser ALAMOFIRE OK
 
+intégrer SWIFTLINT OK
+
 refactoring parsing json OK
 
 integration RXSWIFT pour uploader les services en static et dynamic OK
@@ -64,7 +66,9 @@ refactorer la partie affichage des infos en dynamic via le dictionnaire des serv
 
 remplacer nsarray et nsdictionary par array et dictionary
 
-adopter MVVM
+adopter MVVM (en cours)
+
+créer fonction delegate pour changer la couleur des boutons sur la map via le servicemanagervm
 
 warning errors et violation
 

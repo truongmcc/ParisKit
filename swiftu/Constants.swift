@@ -25,6 +25,17 @@ struct Constants {
         static let BELIB = 7
         static let TAXIS = 8
     }
+    struct SERVICEORDER {
+        static let VELIB = 0
+        static let AUTOLIB = 1
+        static let TAXIS = 2
+        static let ARBRE = 3
+        static let SANISETTES  = 4
+        static let CAPOTES = 5
+        static let FONTAINE = 6
+        static let BELIB = 7
+        static let CAFE = 8
+    }
     static let SERVICES = [
         [
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=arbresremarquablesparis2011&rows=500&facet=genre&facet=espece",
@@ -33,6 +44,7 @@ struct Constants {
             "type": "Arbres",
             "entity": "Arbres",
             "field": "recordid",
+            "order": SERVICEORDER.ARBRE,
             "listeTabDetail": [Constants.tabListServices[INTERETS.ARBRE]]
         ],
         [
@@ -42,6 +54,7 @@ struct Constants {
             "type": "Capotes",
             "entity": "Capotes",
             "field": "recordid",
+            "order": SERVICEORDER.CAPOTES,
             "listeTabDetail": [Constants.tabListServices[INTERETS.CAPOTES]]
         ],
         [
@@ -51,42 +64,49 @@ struct Constants {
             "type": "Fontaines",
             "entity": "Fontaines",
             "field": "recordid",
+            "order": SERVICEORDER.FONTAINE,
             "listeTabDetail": [Constants.tabListServices[INTERETS.FONTAINE]]
         ],
         [
             "type": "Cafes",
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=liste-des-cafes-a-un-euro&q=prix_salle+%3D+%221%22++or+prix_terasse+%3D+%221%22&rows=200&facet=arrondissement",
             "service": INTERETS.CAFE,
+            "order": SERVICEORDER.CAFE,
             "color": UIColor.brown
         ],
         [
             "type": "Sanisettes",
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=sanisettesparis2011&rows=1000&facet=arrondissement&facet=horaires_ouverture",
             "service": INTERETS.SANISETTES,
+            "order": SERVICEORDER.SANISETTES,
             "color": UIColor.yellow
         ],
         [
             "type": "Velib",
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&rows=1300",
             "service": INTERETS.VELIB,
+            "order": SERVICEORDER.VELIB,
             "color": UIColor.lightGray
         ],
         [
             "type": "AutoLib",
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&rows=2000&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status",
             "service": INTERETS.AUTOLIB,
+            "order": SERVICEORDER.AUTOLIB,
             "color": UIColor.darkGray
         ],
         [
             "type": "Belibs",
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&rows=150&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247",
             "service": INTERETS.BELIB,
+            "order": SERVICEORDER.BELIB,
             "color": UIColor.blue
         ],
         [
             "type": "Taxis",
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=paris_taxis_stations&rows=150&facet=zip_code&facet=city",
             "service": INTERETS.TAXIS,
+            "order": SERVICEORDER.TAXIS,
             "color": UIColor.black
         ]
     ]
