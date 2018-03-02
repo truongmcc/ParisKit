@@ -62,9 +62,11 @@ integration RXSWIFT pour uploader les services en static et dynamic OK
 
 taxi en dynamic (virer la version static avec fichier embarqué) OK
 
-refactorer la partie affichage des infos en dynamic via le dictionnaire des services
+refactorer la partie affichage des infos en dynamic via le dictionnaire des services OK
 
 remplacer nsarray et nsdictionary par array et dictionary
+
+renommer fonctions
 
 adopter MVVM (en cours)
 

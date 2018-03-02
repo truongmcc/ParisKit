@@ -13,15 +13,17 @@ import CoreData
 class ServicesManagerViewModel: NSObject {
     let disposeBag = DisposeBag()
     var monDownloader = Downloader()
-    var tableauVelib: [AnyObject]? = []
-    var tableauAutolib: [AnyObject]? = []
-    var tableauTaxis: [AnyObject]? = []
-    var tableauArbres: [AnyObject]? = []
-    var tableauSanisettes: [AnyObject]? = []
-    var tableauCapotes: [AnyObject]? = []
-    var tableauFontaines: [AnyObject]? = []
-    var tableauBelibs: [AnyObject]? = []
-    var tableauCafes: [AnyObject]? = []
+    var dicoTabServices: [String: [AnyObject]] = [
+                            "Arbres": [AnyObject](),
+                           "Capotes": [AnyObject](),
+                           "Fontaines": [AnyObject](),
+                           "Cafes": [AnyObject](),
+                           "Sanisettes": [AnyObject](),
+                           "AutoLib": [AnyObject](),
+                           "Belibs": [AnyObject](),
+                           "Taxis": [AnyObject](),
+                           "Velib": [AnyObject]()
+                           ]
     // serviceToDisplay et selectedService pour l'affichage courrant dans la map
     var serviceToDisplay: [AnyObject]? = []
     var selectedService: Int?
@@ -99,63 +101,29 @@ class ServicesManagerViewModel: NSObject {
         }
         return NSArray()
     }
-    func updateArrayEntity(nomEntity: String) -> [AnyObject] {
+    func updateArrayEntity(nomEntity: String) -> [AnyObject]? {
+        var tabResult: Array? = [AnyObject]()
         let entity = NSFetchRequest<NSFetchRequestResult>(entityName: nomEntity)
         do {
             let myfetchResult = try Constants.MANAGEDOBJECTCONTEXT?.fetch(entity)
-            return myfetchResult! as [AnyObject]
+            tabResult = myfetchResult! as [AnyObject]
         } catch {
             fatalError("Failed to fetch \(nomEntity) : \(error)")
         }
-        return []
+        return tabResult
     }
-    func updateTabService(typeService: String) {
-        switch typeService {
-        case "Arbres":
-            self.tableauArbres = updateArrayEntity(nomEntity: typeService as String)
-        case "Velib":
-            self.tableauVelib = updateArrayEntity(nomEntity: typeService as String)
-        case "AutoLib":
-            self.tableauAutolib = updateArrayEntity(nomEntity: typeService as String)
-        case "Belibs":
-            self.tableauBelibs = updateArrayEntity(nomEntity: typeService as String)
-        case "Capotes":
-            self.tableauCapotes = updateArrayEntity(nomEntity: typeService as String)
-        case "Sanisettes":
-            self.tableauSanisettes = updateArrayEntity(nomEntity: typeService as String)
-        case "Cafes":
-            self.tableauCafes = updateArrayEntity(nomEntity: typeService as String)
-        case "Fontaines":
-            self.tableauFontaines = updateArrayEntity(nomEntity: typeService as String)
-        case "Taxis":
-            self.tableauTaxis = updateArrayEntity(nomEntity: typeService as String)
-        default:
-            return
+    func tabService(typeService: Int) -> [AnyObject]? {
+        var tabResult: Array? = [AnyObject]()
+        for service in Constants.SERVICES {
+            if let pos: Int = service["order"] as? Int {
+                if typeService == pos {
+                    if let serv = service["type"] as? String {
+                        tabResult = dicoTabServices[serv]
+                    }
+                }
+            }
         }
-    }
-    func tabService(typeService: Int) -> [AnyObject] {
-        switch typeService {
-        case Constants.SERVICEORDER.VELIB:
-            return self.tableauVelib!
-        case Constants.SERVICEORDER.AUTOLIB:
-            return self.tableauAutolib!
-        case Constants.SERVICEORDER.TAXIS:
-            return self.tableauTaxis!
-        case Constants.SERVICEORDER.ARBRE:
-            return self.tableauArbres!
-        case Constants.SERVICEORDER.SANISETTES:
-            return self.tableauSanisettes!
-        case Constants.SERVICEORDER.CAPOTES:
-            return self.tableauCapotes!
-        case Constants.SERVICEORDER.FONTAINE:
-            return self.tableauFontaines!
-        case Constants.SERVICEORDER.BELIB:
-            return self.tableauBelibs!
-        case Constants.SERVICEORDER.CAFE:
-            return self.tableauCafes!
-        default:
-            return []
-        }
+        return tabResult
     }
     // MARK: PARSING
     func parse(data: Data, type: String) {
@@ -171,13 +139,16 @@ class ServicesManagerViewModel: NSObject {
             if let listeServices = dicoJson?["records"] as? [[String: AnyObject]] {
                 if (fetchResult?.count)! < listeServices.count {
                     let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: type as String)
-                     if let result = try? Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest) {
-                    // --> suppression de la table s'il y a plus de data dans le json que dans la table
+                    if let result = try? Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest) {
+                        // --> suppression de la table s'il y a plus de data dans le json que dans la table
                         for object in result! {
                             Constants.MANAGEDOBJECTCONTEXT?.delete((object as? NSManagedObject)!)
                         }
-                        self.addServices(typeService: type, listeServices: listeServices)
+                        // <--
+                        addServices(typeService: type, listeServices: listeServices)
                     }
+                } else {
+                    updateTabService(typeService: type)
                 }
             }
         } catch {
@@ -202,6 +173,9 @@ class ServicesManagerViewModel: NSObject {
                 }
             }
         }
+    }
+    func updateTabService(typeService: String) {
+        self.dicoTabServices[typeService] = updateArrayEntity(nomEntity: typeService as String)
     }
     // createServiceFromJson va parser de manière générique chaque service en utilsant le KVC
     func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: NSDictionary) {

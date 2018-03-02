@@ -78,13 +78,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     func retournerBoutonService(sender: UIBarButtonItem) -> UIBarButtonItem? {
         if sender == butVelib {
             self.servicesManagerViewModel.selectedService = Constants.INTERETS.VELIB
-            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.tableauVelib!
+            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.dicoTabServices["Velib"]
         } else if sender == butAutolib {
             self.servicesManagerViewModel.selectedService = Constants.INTERETS.AUTOLIB
-            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.tableauAutolib!
+            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.dicoTabServices["AutoLib"]
         } else if sender == butTaxi {
             self.servicesManagerViewModel.selectedService = Constants.INTERETS.TAXIS
-            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.tableauTaxis!
+            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.dicoTabServices["Taxis"]
         }
         return sender
     }
