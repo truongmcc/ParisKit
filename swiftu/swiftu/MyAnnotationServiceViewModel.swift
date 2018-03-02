@@ -64,7 +64,7 @@ class MyAnnotationServiceViewModel: NSObject, MKAnnotation {
     }
     class func addAnntotation(servicesManagerViewModel: ServicesManagerViewModel, laMap: MKMapView) {
         var annotation: MyAnnotationServiceViewModel
-        for service in (servicesManagerViewModel.serviceToDisplay as? [Services])! {
+        for service in (servicesManagerViewModel.service as? [Services])! {
             let coord: CLLocationCoordinate2D? = CLLocationCoordinate2DMake (CLLocationDegrees(service.coordinateX), CLLocationDegrees(service.coordinateY))
             if coord != nil {
                 annotation = MyAnnotationServiceViewModel(typeService: servicesManagerViewModel.selectedService!, location: coord!, service: service)

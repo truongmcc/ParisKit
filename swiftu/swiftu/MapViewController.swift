@@ -63,6 +63,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     @IBAction func afficherService(_ sender: Any) {
         removeAnnotations()
         if let selectedButton: UIBarButtonItem = self.retournerBoutonService(sender: (sender as? UIBarButtonItem)!) {
+            self.servicesManagerViewModel.selectService(service: (sender as AnyObject).tag)
             if selectedButton.tintColor == UIColor.black {
                 selectedButton.tintColor = UIColor.blue
                 MyAnnotationServiceViewModel.addAnntotation(servicesManagerViewModel: self.servicesManagerViewModel, laMap: self.laMap)
@@ -76,16 +77,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         }
     }
     func retournerBoutonService(sender: UIBarButtonItem) -> UIBarButtonItem? {
-        if sender == butVelib {
-            self.servicesManagerViewModel.selectedService = Constants.INTERETS.VELIB
-            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.dicoTabServices["Velib"]
-        } else if sender == butAutolib {
-            self.servicesManagerViewModel.selectedService = Constants.INTERETS.AUTOLIB
-            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.dicoTabServices["AutoLib"]
-        } else if sender == butTaxi {
-            self.servicesManagerViewModel.selectedService = Constants.INTERETS.TAXIS
-            self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.dicoTabServices["Taxis"]
-        }
         return sender
     }
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -224,7 +215,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
 //        }
 //    }
     func afficher(position: Int) {
-        self.servicesManagerViewModel.serviceToDisplay = self.servicesManagerViewModel.tabService(typeService: position)
+        self.servicesManagerViewModel.service = self.servicesManagerViewModel.tabService(typeService: position)
         for service in Constants.SERVICES {
             if let pos: Int = service["order"] as? Int {
                 if position == pos {

@@ -13,7 +13,7 @@ import CoreData
 class ServicesManagerViewModel: NSObject {
     let disposeBag = DisposeBag()
     var monDownloader = Downloader()
-    var dicoTabServices: [String: [AnyObject]] = [
+    var dicoServices: [String: [AnyObject]] = [
                             "Arbres": [AnyObject](),
                            "Capotes": [AnyObject](),
                            "Fontaines": [AnyObject](),
@@ -24,16 +24,31 @@ class ServicesManagerViewModel: NSObject {
                            "Taxis": [AnyObject](),
                            "Velib": [AnyObject]()
                            ]
-    // serviceToDisplay et selectedService pour l'affichage courrant dans la map
-    var serviceToDisplay: [AnyObject]? = []
+    // service et selectedService pour l'affichage courrant dans la map
+    var service: [AnyObject]? = []
     var selectedService: Int?
-
-    var typeMapKit: Int?
     func addServices() {
         for dico in Constants.SERVICES {
             if let url: String = dico["url"] as? String, let type = dico["type"] as? String {
                 self.updateService(url: url, type: type)
             }
+        }
+    }
+    func selectService(service: Int) {
+        
+//        for service in Constants.SERVICES {
+//            if let pos: Int = service["order"] as? Int {
+//                if typeService == pos {
+//                    if let serv = service["type"] as? String {
+//                        tabResult = dicoServices[serv]
+//                    }
+//                }
+//            }
+//        }
+        
+        self.selectedService = service
+        if let serv = Constants.SERVICES[service]["type"] as? String {
+            self.service = self.dicoServices[serv]
         }
     }
     // MARK: RXSWIFT
@@ -118,7 +133,7 @@ class ServicesManagerViewModel: NSObject {
             if let pos: Int = service["order"] as? Int {
                 if typeService == pos {
                     if let serv = service["type"] as? String {
-                        tabResult = dicoTabServices[serv]
+                        tabResult = dicoServices[serv]
                     }
                 }
             }
@@ -175,7 +190,7 @@ class ServicesManagerViewModel: NSObject {
         }
     }
     func updateTabService(typeService: String) {
-        self.dicoTabServices[typeService] = updateArrayEntity(nomEntity: typeService as String)
+        self.dicoServices[typeService] = updateArrayEntity(nomEntity: typeService as String)
     }
     // createServiceFromJson va parser de manière générique chaque service en utilsant le KVC
     func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: NSDictionary) {
