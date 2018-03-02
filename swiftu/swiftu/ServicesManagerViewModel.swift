@@ -155,11 +155,9 @@ class ServicesManagerViewModel: NSObject {
                 if (fetchResult?.count)! < listeServices.count {
                     let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: type as String)
                     if let result = try? Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest) {
-                        // --> suppression de la table s'il y a plus de data dans le json que dans la table
                         for object in result! {
                             Constants.MANAGEDOBJECTCONTEXT?.delete((object as? NSManagedObject)!)
                         }
-                        // <--
                         addServices(typeService: type, listeServices: listeServices)
                     }
                 } else {

@@ -68,6 +68,8 @@ remplacer nsarray et nsdictionary par array et dictionary
 
 renommer fonctions
 
+optimiser la suppression des tables
+
 adopter MVVM (en cours)
 
 créer fonction delegate pour changer la couleur des boutons sur la map via le servicemanagervm
