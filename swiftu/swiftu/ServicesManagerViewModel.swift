@@ -24,22 +24,6 @@ class ServicesManagerViewModel: NSObject {
         "Taxis": [AnyObject](),
         "Velib": [AnyObject]()
     ]
-    // service et selectedService pour l'affichage courrant dans la map
-    var service: [AnyObject]? = []
-    var selectedService: Int?
-    func addServices() {
-        for dico in Constants.SERVICES {
-            if let url: String = dico["url"] as? String, let type = dico["type"] as? String {
-                self.updateService(url: url, type: type)
-            }
-        }
-    }
-    func selectService(service: Int) {
-        self.selectedService = service
-        if let serv = Constants.SERVICES[service]["type"] as? String {
-            self.service = self.dicoServices[serv]
-        }
-    }
     // MARK: RXSWIFT
     func updateService(url: String, type: String) {
         self.downloader.rxDataFromUrl(url: url).subscribe { element in
@@ -118,19 +102,6 @@ class ServicesManagerViewModel: NSObject {
         }
         return tabResult
     }
-    func tabService(typeService: Int) -> [AnyObject]? {
-        var tabResult: Array? = [AnyObject]()
-        for service in Constants.SERVICES {
-            if let pos: Int = service["order"] as? Int {
-                if typeService == pos {
-                    if let serv = service["type"] as? String {
-                        tabResult = dicoServices[serv]
-                    }
-                }
-            }
-        }
-        return tabResult
-    }
     func selectService(position: Int) {
         self.service = self.tabService(typeService: position)
         for service in Constants.SERVICES {
@@ -141,6 +112,9 @@ class ServicesManagerViewModel: NSObject {
                 }
             }
         }
+    }
+    func updateTabService(typeService: String) {
+        self.dicoServices[typeService] = updateArrayEntity(nomEntity: typeService as String)
     }
     // MARK: PARSING
     func parse(data: Data, type: String) {
@@ -188,9 +162,6 @@ class ServicesManagerViewModel: NSObject {
                 }
             }
         }
-    }
-    func updateTabService(typeService: String) {
-        self.dicoServices[typeService] = updateArrayEntity(nomEntity: typeService as String)
     }
     // createServiceFromJson : parse générique en utilsant le KVC
     func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: [String: AnyObject]) {
@@ -253,10 +224,39 @@ class ServicesManagerViewModel: NSObject {
         return message
     }
     // MARK: DISPLAYING
+    func tabService(typeService: Int) -> [AnyObject]? {
+        var tabResult: Array? = [AnyObject]()
+        for service in Constants.SERVICES {
+            if let pos: Int = service["order"] as? Int {
+                if typeService == pos {
+                    if let serv = service["type"] as? String {
+                        tabResult = dicoServices[serv]
+                    }
+                }
+            }
+        }
+        return tabResult
+    }
     func dynamicSubtitleService(service: Int, idRecord: String) -> String? {
         let startUrl = Constants.SERVICES[service]["dynamicUrlBegin"] as? String
         let endUrl = Constants.SERVICES[service]["dynamicUrlEnd"] as? String
         let stringResult = startUrl?.appending(idRecord).appending(endUrl!)
         return stringResult
+    }
+    // service et selectedService pour l'affichage courrant dans la map
+    var service: [AnyObject]? = []
+    var selectedService: Int?
+    func addServices() {
+        for dico in Constants.SERVICES {
+            if let url: String = dico["url"] as? String, let type = dico["type"] as? String {
+                self.updateService(url: url, type: type)
+            }
+        }
+    }
+    func selectService(service: Int) {
+        self.selectedService = service
+        if let serv = Constants.SERVICES[service]["type"] as? String {
+            self.service = self.dicoServices[serv]
+        }
     }
 }
