@@ -166,7 +166,7 @@ class ServicesManagerViewModel: NSObject {
             container?.performBackgroundTask { (context) in
                 for dic in listeServices {
                     if let myManagedObject: Services = NSEntityDescription.insertNewObject(forEntityName: typeService as String, into: context ) as? Services {
-                        self.createServiceFromJson(service: myManagedObject, structure: structService!, dic: dic as NSDictionary)
+                        self.createServiceFromJson(service: myManagedObject, structure: structService!, dic: dic as [String: AnyObject])
                     }
                 }
                 do {
@@ -182,7 +182,7 @@ class ServicesManagerViewModel: NSObject {
         self.dicoServices[typeService] = updateArrayEntity(nomEntity: typeService as String)
     }
     // createServiceFromJson : parse générique en utilsant le KVC
-    func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: NSDictionary) {
+    func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: [String: AnyObject]) {
         //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
         if let recordid = dic["recordid"] as? String {
             service.setValue(recordid, forKey: "recordid")
