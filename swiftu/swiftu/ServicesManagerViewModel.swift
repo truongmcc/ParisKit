@@ -35,17 +35,6 @@ class ServicesManagerViewModel: NSObject {
         }
     }
     func selectService(service: Int) {
-        
-//        for service in Constants.SERVICES {
-//            if let pos: Int = service["order"] as? Int {
-//                if typeService == pos {
-//                    if let serv = service["type"] as? String {
-//                        tabResult = dicoServices[serv]
-//                    }
-//                }
-//            }
-//        }
-        
         self.selectedService = service
         if let serv = Constants.SERVICES[service]["type"] as? String {
             self.service = self.dicoServices[serv]
@@ -190,7 +179,7 @@ class ServicesManagerViewModel: NSObject {
     func updateTabService(typeService: String) {
         self.dicoServices[typeService] = updateArrayEntity(nomEntity: typeService as String)
     }
-    // createServiceFromJson va parser de manière générique chaque service en utilsant le KVC
+    // createServiceFromJson : parse générique en utilsant le KVC
     func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: NSDictionary) {
         //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
         if let recordid = dic["recordid"] as? String {

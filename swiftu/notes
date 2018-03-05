@@ -58,11 +58,13 @@ intégrer SWIFTLINT OK
 
 refactoring parsing json OK
 
-integration RXSWIFT pour uploader les services en static et dynamic OK
+integration RXSWIFT OK
 
 taxi en dynamic (virer la version static avec fichier embarqué) OK
 
 refactorer la partie affichage des infos en dynamic via le dictionnaire des services OK
+
+créer fonction delegate pour changer la couleur des boutons sur la map OK
 
 remplacer nsarray et nsdictionary par array et dictionary
 
@@ -71,8 +73,6 @@ renommer fonctions
 optimiser la suppression des tables
 
 adopter MVVM (en cours)
-
-créer fonction delegate pour changer la couleur des boutons sur la map via le servicemanagervm
 
 warning errors et violation
 

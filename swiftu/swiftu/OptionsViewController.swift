@@ -33,6 +33,7 @@ class OptionsViewController: UIViewController, UITableViewDataSource, UITableVie
         optionsTableView.tableFooterView = UIView(frame: CGRect.zero)
         self.segmentedControl.selectedSegmentIndex = Int(self.mapType)
     }
+    // MARK: tableview Delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Constants.tabListServices.count
     }

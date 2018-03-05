@@ -225,6 +225,16 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             }
         }
         updateAnnotations()
+        updateSelectedButtonItems(position: position)
+    }
+    func updateSelectedButtonItems(position: Int) {
+        if position == Constants.SERVICEORDER.AUTOLIB {
+            butAutolib.tintColor = UIColor.blue
+        } else if position == Constants.SERVICEORDER.VELIB {
+            butVelib.tintColor = UIColor.blue
+        } else if position == Constants.SERVICEORDER.TAXIS {
+            butTaxi.tintColor = UIColor.blue
+        }
     }
     func removeAnnotations() {
         for annotation in laMap.annotations {
