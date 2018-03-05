@@ -68,7 +68,8 @@ class ServicesManagerViewModel: NSObject {
             }.disposed(by: disposeBag)
     }
     // MARK: CORE DATA
-    func resultFromSelectWithEntity (nomEntity: String, idKey: String, bSort: Bool, bSave: Bool) -> NSArray {
+    func resultFromSelectWithEntity (nomEntity: String, idKey: String, bSort: Bool, bSave: Bool) -> [AnyObject]? {
+        var objects = [AnyObject]()
         do {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: nomEntity)
             if bSort {
@@ -77,7 +78,7 @@ class ServicesManagerViewModel: NSObject {
                 fetchRequest.sortDescriptors = sortDescriptors
             }
             do {
-                let objects = try Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest)
+                objects = (try Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest))!
                 if bSave {
                     do {
                         try Constants.MANAGEDOBJECTCONTEXT?.save()
@@ -85,25 +86,26 @@ class ServicesManagerViewModel: NSObject {
                         fatalError("Failure to save context: \(error)")
                     }
                 }
-                return objects! as NSArray
+                return objects as [AnyObject]
             } catch {
                 fatalError("Failure to fetch request: \(error)")
             }
         }
-        return NSArray()
+        return objects
     }
-    func selectRecordFromEntity (nomEntity: String, field: String, value: String) -> NSArray {
+    func selectRecordFromEntity (nomEntity: String, field: String, value: String) -> [AnyObject]? {
+        var objects = [AnyObject]()
         do {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: nomEntity)
             fetchRequest.predicate = NSPredicate(format: "%K == %@", field, value)
             do {
-                let objects = try Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest)
-                return objects! as NSArray
+                objects = (try Constants.MANAGEDOBJECTCONTEXT?.fetch(fetchRequest))!
+                return objects
             } catch {
                 fatalError("Failure to fetch request: \(error)")
             }
         }
-        return NSArray()
+        return objects
     }
     func updateArrayEntity(nomEntity: String) -> [AnyObject]? {
         var tabResult: Array? = [AnyObject]()
@@ -132,7 +134,7 @@ class ServicesManagerViewModel: NSObject {
     // MARK: PARSING
     func parse(data: Data, type: String) {
         NSLog("parse file data %@", type)
-        var fetchResult: NSArray?
+        var fetchResult: Array<AnyObject>?
         guard let idKey = Constants.STRUCTSERVICE[type]!["idKey"] as? String else {
             print("erreur idKey") ; return }
         guard let sort = Constants.STRUCTSERVICE[type]!["sort"] as? Bool else {
@@ -184,12 +186,12 @@ class ServicesManagerViewModel: NSObject {
         //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
         if let recordid = dic["recordid"] as? String {
             service.setValue(recordid, forKey: "recordid")
-            var dicoField = dic["fields"] as? [String: Any]
+            var dicoField = dic["fields"] as? [String: AnyObject]
             for property in structure {
                 let field: String? = property["field"] as? String
                 let keyDico: String? = (property["key"]) as? String
                 if keyDico == "geoloc" || keyDico == "geolocation_coordinates" || keyDico == "geo_point_2d" || keyDico == "xy" || keyDico == "geom_x_y" || keyDico == "geo_point" || keyDico == "geo_coordinates" {
-                    guard let coordo = dicoField![keyDico!] as? NSArray else { return }
+                    guard let coordo = dicoField![keyDico!] as? [Float] else { return }
                     if field == "coordinateX" {
                         service.setValue(coordo[0], forKey: field!)
                     } else if field == "coordinateY" {

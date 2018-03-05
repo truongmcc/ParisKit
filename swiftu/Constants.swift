@@ -97,7 +97,7 @@ struct Constants {
             "order": SERVICEORDER.AUTOLIB,
             "color": UIColor.darkGray,
             "dynamicUrlBegin": "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&q=id+%3D+",
-            "dynamicUrlEnd":"&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status"
+            "dynamicUrlEnd": "&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status"
         ],
         [
             "type": "Belibs",

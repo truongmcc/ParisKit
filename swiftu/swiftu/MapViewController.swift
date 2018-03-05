@@ -117,7 +117,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             if let entity: String = Constants.SERVICES[annotationCustom.tag!]["entity"] as? String {
                 if let field: String = Constants.SERVICES[annotationCustom.tag!]["field"] as? String {
                     let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
-                    let service: Services = (result.firstObject as? Services)!
+                    let service: Services = (result?.first as? Services)!
                     detailViewController = self.createDetailViewController(service: service)
                     detailViewController?.tabService = Constants.listeTabDetail[annotationCustom.tag!] as [AnyObject]
                     self.addChildViewController(detailViewController!)
@@ -145,7 +145,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
             let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: "Cafes", field: "recordid", value: (annotationCustom?.idRecord)!)
-            let  cafe: Cafes = (result.firstObject as? Cafes)!
+            let  cafe: Cafes = (result?.first as? Cafes)!
             detailViewController.service = cafe
             detailViewController.adresse = cafe.adresse
             detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.CAFE] as [AnyObject]
