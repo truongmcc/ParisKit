@@ -86,21 +86,27 @@ struct Constants {
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&rows=1300",
             "service": INTERETS.VELIB,
             "order": SERVICEORDER.VELIB,
-            "color": UIColor.lightGray
+            "color": UIColor.lightGray,
+            "dynamicUrlBegin": "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=recordid%3D%22",
+            "dynamicUrlEnd": "%22"
         ],
         [
             "type": "AutoLib",
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&rows=2000&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status",
             "service": INTERETS.AUTOLIB,
             "order": SERVICEORDER.AUTOLIB,
-            "color": UIColor.darkGray
+            "color": UIColor.darkGray,
+            "dynamicUrlBegin": "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&q=id+%3D+",
+            "dynamicUrlEnd":"&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status"
         ],
         [
             "type": "Belibs",
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&rows=150&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247",
             "service": INTERETS.BELIB,
             "order": SERVICEORDER.BELIB,
-            "color": UIColor.blue
+            "color": UIColor.blue,
+            "dynamicUrlBegin": "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&q=recordid%3D",
+            "dynamicUrlEnd": "&rows=1&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247"
         ],
         [
             "type": "Taxis",

@@ -107,42 +107,19 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         // -> récupération du tag (utilisation du cast)
         let annotationCustom: MyAnnotationServiceViewModel! = view.annotation as? MyAnnotationServiceViewModel
         annotationCustom?.prepareForInterfaceBuilder()
-        let idRecord: String = annotationCustom.idRecord!
-        let lcTag: Int = annotationCustom.tag!
         var detailViewController: DetailViewController?
-        if lcTag == Constants.INTERETS.VELIB {
-            var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=recordid%3D%22"
-            urlString = urlString.appending(idRecord).appending("%22")
-            servicesManagerViewModel.dynamicUpdateService(url: urlString, type: "Velib") { (result) in
+        if let urlString = servicesManagerViewModel.dynamicSubtitleService(service: annotationCustom.tag!, idRecord: annotationCustom.idRecord!) {
+            let type: String? = Constants.SERVICES[annotationCustom.tag!]["type"] as? String
+            servicesManagerViewModel.dynamicUpdateService(url: urlString, type: type!) { (result) in
                 annotationCustom.subtitle = result
             }
-        } else if lcTag == Constants.INTERETS.AUTOLIB {
-            var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=autolib-disponibilite-temps-reel&q=id+%3D+"
-            urlString = urlString.appending(idRecord).appending("&facet=charging_status&facet=kind&facet=postal_code&facet=slots&facet=status&facet=subscription_status")
-            servicesManagerViewModel.dynamicUpdateService(url: urlString, type: "AutoLib") { (result) in
-                annotationCustom.subtitle = result
-            }
-        } else if lcTag == Constants.INTERETS.BELIB {
-            var urlString = "https://opendata.paris.fr/api/records/1.0/search/?dataset=station-belib&q=recordid%3D"
-            urlString = urlString.appending(idRecord).appending("&rows=1&facet=geolocation_city&facet=geolocation_locationtype&facet=status_available&facet=static_accessibility_type&facet=static_brand&facet=static_opening_247")
-            servicesManagerViewModel.dynamicUpdateService(url: urlString, type: "Belibs") { (result) in
-                annotationCustom.subtitle = result
-            }
-            //          --> POUR UTILISER LE DETAILDISCLOSURE /
-            //        } else if lcTag == Constants.INTERETS.CAFE {
-            //            let calloutButton: UIButton = UIButton(type: .detailDisclosure)
-            //            view.rightCalloutAccessoryView = calloutButton
-            //            view.isDraggable = false
-            //            view.isHighlighted = false
-            //            view.canShowCallout = true
-            //         <--
-        } else { // arbres, fontaines, preservatifs
-            if let entity: String = Constants.SERVICES[lcTag]["entity"] as? String {
-                if let field: String = Constants.SERVICES[lcTag]["field"] as? String {
+        } else {
+            if let entity: String = Constants.SERVICES[annotationCustom.tag!]["entity"] as? String {
+                if let field: String = Constants.SERVICES[annotationCustom.tag!]["field"] as? String {
                     let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
                     let service: Services = (result.firstObject as? Services)!
                     detailViewController = self.createDetailViewController(service: service)
-                    detailViewController?.tabService = Constants.listeTabDetail[lcTag] as [AnyObject]
+                    detailViewController?.tabService = Constants.listeTabDetail[annotationCustom.tag!] as [AnyObject]
                     self.addChildViewController(detailViewController!)
                     detailViewController?.view.frame = self.view.frame
                     self.view.addSubview((detailViewController?.view)!)
@@ -198,22 +175,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             laMap.mapType = .hybrid
         }
     }
-    // UTILISER DELEGATE POUR MAJ COULEUR BOUTON
-//    func afficherTaxis() {
-//        if butTaxi.tintColor == UIColor.black {
-//            self.afficherService(butTaxi)
-//        }
-//    }
-//    func afficherVelib() {
-//        if butVelib.tintColor == UIColor.black {
-//            self.afficherService(butVelib)
-//        }
-//    }
-//    func afficherAutolib() {
-//        if butAutolib.tintColor == UIColor.black {
-//            self.afficherService(butAutolib)
-//        }
-//    }
+    // MARK: affichage
     func afficher(position: Int) {
         self.servicesManagerViewModel.service = self.servicesManagerViewModel.tabService(typeService: position)
         for service in Constants.SERVICES {

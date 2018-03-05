@@ -239,4 +239,11 @@ class ServicesManagerViewModel: NSObject {
         }
         return message
     }
+    // MARK: DISPLAYING
+    func dynamicSubtitleService(service: Int, idRecord: String) -> String? {
+        let startUrl = Constants.SERVICES[service]["dynamicUrlBegin"] as? String
+        let endUrl = Constants.SERVICES[service]["dynamicUrlEnd"] as? String
+        let stringResult = startUrl?.appending(idRecord).appending(endUrl!)
+        return stringResult
+    }
 }
