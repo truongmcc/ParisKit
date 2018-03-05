@@ -8,8 +8,6 @@
 
 import UIKit
 import MapKit
-import RxCocoa
-import RxSwift
 
 class MapViewController: UIViewController, UIGestureRecognizerDelegate,
                         CLLocationManagerDelegate,
@@ -177,15 +175,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     // MARK: affichage
     func afficher(position: Int) {
-        self.servicesManagerViewModel.service = self.servicesManagerViewModel.tabService(typeService: position)
-        for service in Constants.SERVICES {
-            if let pos: Int = service["order"] as? Int {
-                if position == pos {
-                    self.servicesManagerViewModel.selectedService = service["service"] as? Int
-                    break
-                }
-            }
-        }
+        self.servicesManagerViewModel.selectService(position: position)
         updateAnnotations()
         updateSelectedButtonItems(position: position)
     }

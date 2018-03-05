@@ -12,18 +12,18 @@ import CoreData
 
 class ServicesManagerViewModel: NSObject {
     let disposeBag = DisposeBag()
-    var monDownloader = Downloader()
+    var downloader = Downloader()
     var dicoServices: [String: [AnyObject]] = [
-                            "Arbres": [AnyObject](),
-                           "Capotes": [AnyObject](),
-                           "Fontaines": [AnyObject](),
-                           "Cafes": [AnyObject](),
-                           "Sanisettes": [AnyObject](),
-                           "AutoLib": [AnyObject](),
-                           "Belibs": [AnyObject](),
-                           "Taxis": [AnyObject](),
-                           "Velib": [AnyObject]()
-                           ]
+        "Arbres": [AnyObject](),
+        "Capotes": [AnyObject](),
+        "Fontaines": [AnyObject](),
+        "Cafes": [AnyObject](),
+        "Sanisettes": [AnyObject](),
+        "AutoLib": [AnyObject](),
+        "Belibs": [AnyObject](),
+        "Taxis": [AnyObject](),
+        "Velib": [AnyObject]()
+    ]
     // service et selectedService pour l'affichage courrant dans la map
     var service: [AnyObject]? = []
     var selectedService: Int?
@@ -42,7 +42,7 @@ class ServicesManagerViewModel: NSObject {
     }
     // MARK: RXSWIFT
     func updateService(url: String, type: String) {
-        self.monDownloader.rxDataFromUrl(url: url).subscribe { element in
+        self.downloader.rxDataFromUrl(url: url).subscribe { element in
             switch element {
             case .next(let value):
                 self.parse(data: value, type: type)
@@ -54,7 +54,7 @@ class ServicesManagerViewModel: NSObject {
             }.disposed(by: disposeBag)
     }
     func dynamicUpdateService(url: String, type: String, result: @escaping (String) -> Void) {
-        self.monDownloader.rxDataFromUrl(url: url).subscribe { element in
+        self.downloader.rxDataFromUrl(url: url).subscribe { element in
             switch element {
             case .next(let value):
                 if let resultDynamicData = self.dynamicParse(data: value, type: type) {
@@ -131,10 +131,21 @@ class ServicesManagerViewModel: NSObject {
         }
         return tabResult
     }
+    func selectService(position: Int) {
+        self.service = self.tabService(typeService: position)
+        for service in Constants.SERVICES {
+            if let pos: Int = service["order"] as? Int {
+                if position == pos {
+                    self.selectedService = service["service"] as? Int
+                    break
+                }
+            }
+        }
+    }
     // MARK: PARSING
     func parse(data: Data, type: String) {
         NSLog("parse file data %@", type)
-        var fetchResult: Array<AnyObject>?
+        var fetchResult: [AnyObject]?
         guard let idKey = Constants.STRUCTSERVICE[type]!["idKey"] as? String else {
             print("erreur idKey") ; return }
         guard let sort = Constants.STRUCTSERVICE[type]!["sort"] as? Bool else {
@@ -149,7 +160,7 @@ class ServicesManagerViewModel: NSObject {
                         for object in result! {
                             Constants.MANAGEDOBJECTCONTEXT?.delete((object as? NSManagedObject)!)
                         }
-                        addServices(typeService: type, listeServices: listeServices)
+                        addNewServices(typeService: type, listeServices: listeServices)
                     }
                 } else {
                     updateTabService(typeService: type)
@@ -159,7 +170,7 @@ class ServicesManagerViewModel: NSObject {
             print("Error")
         }
     }
-    func addServices(typeService: String, listeServices: [[String: AnyObject]]) {
+    func addNewServices(typeService: String, listeServices: [[String: AnyObject]]) {
         DispatchQueue.main.async {
             let structService = Constants.STRUCTSERVICE[typeService]?["fieldAndKeyStruct"] as? [[String: AnyObject]]
             let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
