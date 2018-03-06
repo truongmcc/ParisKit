@@ -23,7 +23,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     // <--
     // MARK: Properties
-    var servicesManagerViewModel = ServicesManagerViewModel()
+    var servicesViewModel = ServicesViewModel()
     var locationManager = CLLocationManager()
     var optionViewController: OptionsViewController?
     // MARK: ViewDidLoad
@@ -32,7 +32,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         laMap.delegate = self
         locationManager.delegate = self
         location(self)
-        servicesManagerViewModel.addServices()
+        servicesViewModel.addServices()
     }
     // MARK: User Location
     @IBAction func location(_ sender: Any) {
@@ -61,10 +61,10 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     @IBAction func afficherService(_ sender: Any) {
         removeAnnotations()
         if let selectedButton: UIBarButtonItem = self.retournerBoutonService(sender: (sender as? UIBarButtonItem)!) {
-            self.servicesManagerViewModel.selectService(service: (sender as AnyObject).tag)
+            self.servicesViewModel.selectService(service: (sender as AnyObject).tag)
             if selectedButton.tintColor == UIColor.black {
                 selectedButton.tintColor = UIColor.blue
-                MyAnnotationServiceViewModel.addAnntotation(servicesManagerViewModel: self.servicesManagerViewModel, laMap: self.laMap)
+                MyAnnotationServiceViewModel.addAnntotation(servicesViewModel: self.servicesViewModel, laMap: self.laMap)
             } else {
                 selectedButton.tintColor = UIColor.black
             }
@@ -106,15 +106,15 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         let annotationCustom: MyAnnotationServiceViewModel! = view.annotation as? MyAnnotationServiceViewModel
         annotationCustom?.prepareForInterfaceBuilder()
         var detailViewController: DetailViewController?
-        if let urlString = servicesManagerViewModel.dynamicSubtitleService(service: annotationCustom.tag!, idRecord: annotationCustom.idRecord!) {
+        if let urlString = servicesViewModel.dynamicSubtitleService(service: annotationCustom.tag!, idRecord: annotationCustom.idRecord!) {
             let type: String? = Constants.SERVICES[annotationCustom.tag!]["type"] as? String
-            servicesManagerViewModel.dynamicUpdateService(url: urlString, type: type!) { (result) in
+            servicesViewModel.dynamicUpdateService(url: urlString, type: type!) { (result) in
                 annotationCustom.subtitle = result
             }
         } else {
             if let entity: String = Constants.SERVICES[annotationCustom.tag!]["entity"] as? String {
                 if let field: String = Constants.SERVICES[annotationCustom.tag!]["field"] as? String {
-                    let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
+                    let result = servicesViewModel.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
                     let service: Services = (result?.first as? Services)!
                     detailViewController = self.createDetailViewController(service: service)
                     detailViewController?.tabService = Constants.listeTabDetail[annotationCustom.tag!] as [AnyObject]
@@ -142,7 +142,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: "Cafes", field: "recordid", value: (annotationCustom?.idRecord)!)
+            let result = servicesViewModel.selectRecordFromEntity(nomEntity: "Cafes", field: "recordid", value: (annotationCustom?.idRecord)!)
             let  cafe: Cafes = (result?.first as? Cafes)!
             detailViewController.service = cafe
             detailViewController.adresse = cafe.adresse
@@ -175,7 +175,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     // MARK: affichage
     func afficher(position: Int) {
-        self.servicesManagerViewModel.selectService(position: position)
+        self.servicesViewModel.selectServiceFromMenu(position: position)
         updateAnnotations()
         updateSelectedButtonItems(position: position)
     }
@@ -202,6 +202,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     func updateAnnotations() {
         removeAnnotations()
         disableServiceButtons()
-        MyAnnotationServiceViewModel.addAnntotation(servicesManagerViewModel: self.servicesManagerViewModel, laMap: self.laMap)
+        MyAnnotationServiceViewModel.addAnntotation(servicesViewModel: self.servicesViewModel, laMap: self.laMap)
     }
 }

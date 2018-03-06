@@ -18,11 +18,7 @@ creer une fonction updateAnnotationWithCoord OK
 
 crash sur click back button : crash sur parsing json arbres solution OK
 
-arbres : ajouter le disclosure pour ajouter plus d'informations sur l'arbre OK
-
-arbre : ne plus afficher l'alerte avec les infos de l'arbre sur la carte mais directement afficher toutes les infos sur fond transparent OK
-
-transformer le detailarbreviewcontroller en detailviewcontroller global OK
+arbre : afficher toutes les infos sur fond transparent OK
 
 ajout fontaines potables OK
 
@@ -68,32 +64,14 @@ créer fonction delegate pour changer la couleur des boutons sur la map OK
 
 remplacer nsarray et nsdictionary par array et dictionary OK
 
-renommer fonctions
-
-optimiser la suppression des tables
+renommer fonctions OK
 
 adopter MVVM (en cours)
 
-warning errors et violation
+optimiser la suppression des tables
 
-revoir la méthode de suppression des tables
+gestion des cellules hidden dans detailViewController
 
-gerer les cellules hidden dans detailViewController...
+icones menu, appIcon...
 
-icone menu
-
-icone appli : tour eiffel minimaliste ?
-
-ajout spot wifi paris
-
-les marchés...
-
-
-
-
-
-
-
-
-
-
+ajout spot wifi, marchés, ...
