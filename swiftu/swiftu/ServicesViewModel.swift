@@ -72,7 +72,7 @@ class ServicesViewModel: NSObject, ServicesUpdateProtocol {
         }
     }
     // MARK: SERVICESUPDATEPROTOCOL functions
-    // MARK: RXSWIFT
+    // MARK: - RXSwift
     func updateService(url: String, type: String) {
         self.downloader.rxDataFromUrl(url: url).subscribe { element in
             switch element {
@@ -99,7 +99,7 @@ class ServicesViewModel: NSObject, ServicesUpdateProtocol {
             }
             }.disposed(by: disposeBag)
     }
-    // MARK: CORE DATA
+    // MARK: - Core Data
     func resultFromSelectWithEntity (nomEntity: String, idKey: String, bSort: Bool, bSave: Bool) -> [AnyObject]? {
         var objects = [AnyObject]()
         do {
@@ -153,7 +153,7 @@ class ServicesViewModel: NSObject, ServicesUpdateProtocol {
     func updateTabServiceViewModel(typeService: String) {
         self.dicoServices[typeService] = updateViewModedlFromEntity(nomEntity: typeService as String)
     }
-    // MARK: PARSING
+    // MARK: Parsing
     func parse(data: Data, type: String) {
         NSLog("parse file data %@", type)
         var fetchResult: [AnyObject]?

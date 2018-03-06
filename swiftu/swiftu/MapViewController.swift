@@ -45,7 +45,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     }
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.denied {
-            // The user denied authorization
+        // The user denied authorization
         } else if status == CLAuthorizationStatus.authorizedWhenInUse {
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
@@ -85,7 +85,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         let lcTag = annotationCustom.tag
         let pinIdentifier = "annotationId"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: pinIdentifier)
-
         if annotationView == nil {
             annotationView = MKPinAnnotationView.init(annotation: annotation, reuseIdentifier: pinIdentifier)
         } else {
@@ -117,7 +116,8 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
                     let result = servicesViewModel.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
                     let service: Services = (result?.first as? Services)!
                     detailViewController = self.createDetailViewController(service: service)
-                    detailViewController?.tabService = Constants.listeTabDetail[annotationCustom.tag!] as [AnyObject]
+                    detailViewController?.detailViewModel.tabService = Constants.listeTabDetail[annotationCustom.tag!] as [AnyObject]
+                    detailViewController?.detailViewModel.service = service
                     self.addChildViewController(detailViewController!)
                     detailViewController?.view.frame = self.view.frame
                     self.view.addSubview((detailViewController?.view)!)
@@ -127,12 +127,20 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             }
         }
     }
-    func createDetailViewController(service: AnyObject) -> DetailViewController? {
+    func createDetailViewController(service: Services) -> DetailViewController? {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
         detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-        detailViewController?.service = service
+        detailViewController?.detailViewModel.service = service
         return detailViewController
+    }
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "mapIdentifier" {
+            let optionViewController: OptionsViewController? = segue.destination as? OptionsViewController
+            optionViewController?.delegate = self
+            optionViewController?.mapType = self.laMap.mapType.rawValue
+        }
     }
     // delegate sur appui sur le bouton disclosure
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView,
@@ -144,22 +152,14 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
             let result = servicesViewModel.selectRecordFromEntity(nomEntity: "Cafes", field: "recordid", value: (annotationCustom?.idRecord)!)
             let  cafe: Cafes = (result?.first as? Cafes)!
-            detailViewController.service = cafe
-            detailViewController.adresse = cafe.adresse
-            detailViewController.tabService = Constants.listeTabDetail[Constants.INTERETS.CAFE] as [AnyObject]
+            detailViewController.detailViewModel.service = cafe
+            detailViewController.detailViewModel.adresse = cafe.adresse
+            detailViewController.detailViewModel.tabService = Constants.listeTabDetail[Constants.INTERETS.CAFE] as [AnyObject]
             self.addChildViewController(detailViewController)
             detailViewController.view.frame = self.view.frame
             self.view.addSubview(detailViewController.view)
             detailViewController.didMove(toParentViewController: self)
             mapView.deselectAnnotation(annotationCustom, animated: true)
-        }
-    }
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "mapIdentifier" {
-            let optionViewController: OptionsViewController? = segue.destination as? OptionsViewController
-            optionViewController?.delegate = self
-            optionViewController?.mapType = self.laMap.mapType.rawValue
         }
     }
     // MARK: mapKitDelegate

@@ -11,6 +11,7 @@
 		27C2AE26D6831AB719ADA26F /* Pods_swiftuUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4D41A954B6447B5F745A4B5 /* Pods_swiftuUITests.framework */; };
 		54B5E8AC5543674A9B352336 /* Pods_swiftuTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C5724C3D7B11E626887A271 /* Pods_swiftuTests.framework */; };
 		D94B96FE204EAE6A00E0C10F /* ServicesUpdateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94B96FD204EAE6A00E0C10F /* ServicesUpdateProtocol.swift */; };
+		D94B9700204ECFEE00E0C10F /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94B96FF204ECFEE00E0C10F /* DetailViewModel.swift */; };
 		D980D1A72046AEC300D61428 /* oldDownloader in Resources */ = {isa = PBXBuildFile; fileRef = D980D1A62046AEC300D61428 /* oldDownloader */; };
 		D980D1B92046C21800D61428 /* ServicesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D980D1B82046C21800D61428 /* ServicesViewModel.swift */; };
 		D980D1BB2046C23400D61428 /* MyAnnotationServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D980D1BA2046C23400D61428 /* MyAnnotationServiceViewModel.swift */; };
@@ -57,6 +58,7 @@
 		BB6D11B62866F1DB1B161E66 /* Pods-swiftuUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swiftuUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-swiftuUITests/Pods-swiftuUITests.release.xcconfig"; sourceTree = "<group>"; };
 		D4D41A954B6447B5F745A4B5 /* Pods_swiftuUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_swiftuUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D94B96FD204EAE6A00E0C10F /* ServicesUpdateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesUpdateProtocol.swift; sourceTree = "<group>"; };
+		D94B96FF204ECFEE00E0C10F /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		D980D1A62046AEC300D61428 /* oldDownloader */ = {isa = PBXFileReference; lastKnownFileType = text; path = oldDownloader; sourceTree = "<group>"; };
 		D980D1B82046C21800D61428 /* ServicesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesViewModel.swift; sourceTree = "<group>"; };
 		D980D1BA2046C23400D61428 /* MyAnnotationServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAnnotationServiceViewModel.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 			children = (
 				D94B96FD204EAE6A00E0C10F /* ServicesUpdateProtocol.swift */,
 				D980D1B82046C21800D61428 /* ServicesViewModel.swift */,
+				D94B96FF204ECFEE00E0C10F /* DetailViewModel.swift */,
 				D980D1BA2046C23400D61428 /* MyAnnotationServiceViewModel.swift */,
 			);
 			name = VueModel;
@@ -572,6 +575,7 @@
 				EB43BBE71D9FA41500B0E7DE /* AppDelegate.swift in Sources */,
 				D980D1B92046C21800D61428 /* ServicesViewModel.swift in Sources */,
 				EB43BC1C1D9FDA0200B0E7DE /* Constants.swift in Sources */,
+				D94B9700204ECFEE00E0C10F /* DetailViewModel.swift in Sources */,
 				D980D1BB2046C23400D61428 /* MyAnnotationServiceViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
