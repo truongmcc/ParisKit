@@ -1,26 +1,32 @@
 //
-//  MyAnnotationServiceViewModel.swift
+//  ServiceViewModel.swift
 //  swiftu
 //
-//  Created by christophe on 28/02/2018.
+//  Created by christophe on 07/03/2018.
 //  Copyright © 2018 tru. All rights reserved.
 //
 
-import MapKit
+import UIKit
 
-class MyAnnotationServiceViewModel: NSObject, MKAnnotation {
-    var coordinate: CLLocationCoordinate2D
+struct LocationCoordinate2D {
+    var latitude: Double
+    var longitude: Double
+    init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+}
+class ServiceViewModel: NSObject {
+    var coordinate: LocationCoordinate2D?
     var title: String?
     var subtitle: String?
     var number: String?
     var tag: Int?
     var idRecord: String?
-    init(location coord: CLLocationCoordinate2D) {
+    init(location coord: LocationCoordinate2D) {
         self.coordinate = coord
-        super.init()
     }
-    // MARK: Constructeurs
-    init(typeService: Int, location coord: CLLocationCoordinate2D, service: Services) {
+    init(typeService: Int, location coord: LocationCoordinate2D, service: Services) {
         self.coordinate = coord
         self.tag = typeService
         if let optionalIdRecord = service.recordid {
@@ -57,17 +63,6 @@ class MyAnnotationServiceViewModel: NSObject, MKAnnotation {
                 if let adresse = cafe.adresse {
                     self.subtitle = "\(adresse) \(cafe.arrondissement)"
                 }
-            }
-        }
-        super.init()
-    }
-    class func addAnntotation(servicesViewModel: ServicesViewModel, laMap: MKMapView) {
-        var annotation: MyAnnotationServiceViewModel
-        for service in (servicesViewModel.service as? [Services])! {
-            let coord: CLLocationCoordinate2D? = CLLocationCoordinate2DMake (CLLocationDegrees(service.coordinateX), CLLocationDegrees(service.coordinateY))
-            if coord != nil {
-                annotation = MyAnnotationServiceViewModel(typeService: servicesViewModel.selectedService!, location: coord!, service: service)
-                laMap.addAnnotation(annotation)
             }
         }
     }

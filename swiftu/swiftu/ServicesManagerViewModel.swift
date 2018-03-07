@@ -1,5 +1,5 @@
 //
-//  ServicesViewModel.swift
+//  ServicesManagerViewModel.swift
 //  swiftu
 //
 //  Created by christophe on 28/02/2018.
@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 import CoreData
 
-class ServicesViewModel: NSObject, ServicesUpdateProtocol {
+class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
     let disposeBag = DisposeBag()
     var downloader = Downloader()
     var dicoServices: [String: [AnyObject]] = [
@@ -150,7 +150,7 @@ class ServicesViewModel: NSObject, ServicesUpdateProtocol {
         }
         return tabResult
     }
-    func updateTabServiceViewModel(typeService: String) {
+    func updateTabServiceManagerViewModel(typeService: String) {
         self.dicoServices[typeService] = updateViewModedlFromEntity(nomEntity: typeService as String)
     }
     // MARK: Parsing
@@ -174,7 +174,7 @@ class ServicesViewModel: NSObject, ServicesUpdateProtocol {
                         addNewServices(typeService: type, listeServices: listeServices)
                     }
                 } else {
-                    updateTabServiceViewModel(typeService: type)
+                    updateTabServiceManagerViewModel(typeService: type)
                 }
             }
         } catch {
@@ -193,7 +193,7 @@ class ServicesViewModel: NSObject, ServicesUpdateProtocol {
                 }
                 do {
                     try context.save()
-                    self.updateTabServiceViewModel(typeService: typeService)
+                    self.updateTabServiceManagerViewModel(typeService: typeService)
                 } catch _ {
                     fatalError("Failure to save context")
                 }
