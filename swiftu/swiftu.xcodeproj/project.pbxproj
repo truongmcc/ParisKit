@@ -17,6 +17,28 @@
 		D980D1B92046C21800D61428 /* ServicesManagerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D980D1B82046C21800D61428 /* ServicesManagerViewModel.swift */; };
 		D980D1BB2046C23400D61428 /* MyAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D980D1BA2046C23400D61428 /* MyAnnotation.swift */; };
 		D9ED00582024B83F00E8E36C /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = D9ED00572024B83F00E8E36C /* .swiftlint.yml */; };
+		D9F3C48320514773009F1DD7 /* Sanisettes+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C46D20514770009F1DD7 /* Sanisettes+CoreDataProperties.swift */; };
+		D9F3C48420514773009F1DD7 /* AutoLib+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C46E20514770009F1DD7 /* AutoLib+CoreDataClass.swift */; };
+		D9F3C48520514773009F1DD7 /* AutoLib+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C46F20514771009F1DD7 /* AutoLib+CoreDataProperties.swift */; };
+		D9F3C48620514773009F1DD7 /* Cafes+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47020514771009F1DD7 /* Cafes+CoreDataClass.swift */; };
+		D9F3C48720514773009F1DD7 /* Preservatifs+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47120514771009F1DD7 /* Preservatifs+CoreDataClass.swift */; };
+		D9F3C48820514773009F1DD7 /* Arbres+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47220514771009F1DD7 /* Arbres+CoreDataProperties.swift */; };
+		D9F3C48920514773009F1DD7 /* Preservatifs+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47320514771009F1DD7 /* Preservatifs+CoreDataProperties.swift */; };
+		D9F3C48A20514773009F1DD7 /* Velib+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47420514771009F1DD7 /* Velib+CoreDataClass.swift */; };
+		D9F3C48B20514773009F1DD7 /* Belibs+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47520514771009F1DD7 /* Belibs+CoreDataClass.swift */; };
+		D9F3C48C20514773009F1DD7 /* Fontaines+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47620514771009F1DD7 /* Fontaines+CoreDataClass.swift */; };
+		D9F3C48D20514773009F1DD7 /* StaticBelibs+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47720514771009F1DD7 /* StaticBelibs+CoreDataProperties.swift */; };
+		D9F3C48E20514773009F1DD7 /* Taxis+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47820514771009F1DD7 /* Taxis+CoreDataProperties.swift */; };
+		D9F3C48F20514773009F1DD7 /* Services+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47920514772009F1DD7 /* Services+CoreDataProperties.swift */; };
+		D9F3C49020514773009F1DD7 /* Belibs+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47A20514772009F1DD7 /* Belibs+CoreDataProperties.swift */; };
+		D9F3C49120514773009F1DD7 /* Arbres+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47B20514772009F1DD7 /* Arbres+CoreDataClass.swift */; };
+		D9F3C49220514773009F1DD7 /* Fontaines+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47C20514772009F1DD7 /* Fontaines+CoreDataProperties.swift */; };
+		D9F3C49320514773009F1DD7 /* Cafes+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47D20514772009F1DD7 /* Cafes+CoreDataProperties.swift */; };
+		D9F3C49420514773009F1DD7 /* Sanisettes+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47E20514772009F1DD7 /* Sanisettes+CoreDataClass.swift */; };
+		D9F3C49520514773009F1DD7 /* Taxis+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C47F20514772009F1DD7 /* Taxis+CoreDataClass.swift */; };
+		D9F3C49620514773009F1DD7 /* StaticBelibs+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C48020514773009F1DD7 /* StaticBelibs+CoreDataClass.swift */; };
+		D9F3C49720514773009F1DD7 /* Velib+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C48120514773009F1DD7 /* Velib+CoreDataProperties.swift */; };
+		D9F3C49820514773009F1DD7 /* Services+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F3C48220514773009F1DD7 /* Services+CoreDataClass.swift */; };
 		EB0D0AFB1F2140AA001FF869 /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0D0AFA1F2140AA001FF869 /* OptionsViewController.swift */; };
 		EB0D0AFD1F2C8C9B001FF869 /* notes in Resources */ = {isa = PBXBuildFile; fileRef = EB0D0AFC1F2C8C9B001FF869 /* notes */; };
 		EB43BBE71D9FA41500B0E7DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB43BBE61D9FA41500B0E7DE /* AppDelegate.swift */; };
@@ -65,6 +87,28 @@
 		D980D1B82046C21800D61428 /* ServicesManagerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesManagerViewModel.swift; sourceTree = "<group>"; };
 		D980D1BA2046C23400D61428 /* MyAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAnnotation.swift; sourceTree = "<group>"; };
 		D9ED00572024B83F00E8E36C /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
+		D9F3C46D20514770009F1DD7 /* Sanisettes+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sanisettes+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D9F3C46E20514770009F1DD7 /* AutoLib+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "AutoLib+CoreDataClass.swift"; path = "modele/AutoLib+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D9F3C46F20514771009F1DD7 /* AutoLib+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "AutoLib+CoreDataProperties.swift"; path = "modele/AutoLib+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D9F3C47020514771009F1DD7 /* Cafes+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Cafes+CoreDataClass.swift"; path = "modele/Cafes+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D9F3C47120514771009F1DD7 /* Preservatifs+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Preservatifs+CoreDataClass.swift"; path = "modele/Preservatifs+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D9F3C47220514771009F1DD7 /* Arbres+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Arbres+CoreDataProperties.swift"; path = "modele/Arbres+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D9F3C47320514771009F1DD7 /* Preservatifs+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Preservatifs+CoreDataProperties.swift"; path = "modele/Preservatifs+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D9F3C47420514771009F1DD7 /* Velib+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Velib+CoreDataClass.swift"; path = "modele/Velib+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D9F3C47520514771009F1DD7 /* Belibs+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Belibs+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D9F3C47620514771009F1DD7 /* Fontaines+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Fontaines+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D9F3C47720514771009F1DD7 /* StaticBelibs+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "StaticBelibs+CoreDataProperties.swift"; path = "modele/StaticBelibs+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D9F3C47820514771009F1DD7 /* Taxis+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Taxis+CoreDataProperties.swift"; path = "modele/Taxis+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D9F3C47920514772009F1DD7 /* Services+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Services+CoreDataProperties.swift"; path = "modele/Services+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D9F3C47A20514772009F1DD7 /* Belibs+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Belibs+CoreDataProperties.swift"; path = "modele/Belibs+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D9F3C47B20514772009F1DD7 /* Arbres+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Arbres+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D9F3C47C20514772009F1DD7 /* Fontaines+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Fontaines+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D9F3C47D20514772009F1DD7 /* Cafes+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Cafes+CoreDataProperties.swift"; path = "modele/Cafes+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D9F3C47E20514772009F1DD7 /* Sanisettes+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Sanisettes+CoreDataClass.swift"; path = "modele/Sanisettes+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D9F3C47F20514772009F1DD7 /* Taxis+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Taxis+CoreDataClass.swift"; path = "modele/Taxis+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D9F3C48020514773009F1DD7 /* StaticBelibs+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "StaticBelibs+CoreDataClass.swift"; path = "modele/StaticBelibs+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D9F3C48120514773009F1DD7 /* Velib+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Velib+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D9F3C48220514773009F1DD7 /* Services+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Services+CoreDataClass.swift"; path = "modele/Services+CoreDataClass.swift"; sourceTree = "<group>"; };
 		E6F23420FEB4ADD87B0B986A /* Pods-swiftu.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-swiftu.debug.xcconfig"; path = "Pods/Target Support Files/Pods-swiftu/Pods-swiftu.debug.xcconfig"; sourceTree = "<group>"; };
 		EB0D0AFA1F2140AA001FF869 /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		EB0D0AFC1F2C8C9B001FF869 /* notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = notes; sourceTree = "<group>"; };
@@ -153,8 +197,38 @@
 			isa = PBXGroup;
 			children = (
 				EB43BBED1D9FA41500B0E7DE /* swiftu.xcdatamodeld */,
+				D9F3C49920514B0A009F1DD7 /* Managed Objects */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		D9F3C49920514B0A009F1DD7 /* Managed Objects */ = {
+			isa = PBXGroup;
+			children = (
+				D9F3C47B20514772009F1DD7 /* Arbres+CoreDataClass.swift */,
+				D9F3C47220514771009F1DD7 /* Arbres+CoreDataProperties.swift */,
+				D9F3C46E20514770009F1DD7 /* AutoLib+CoreDataClass.swift */,
+				D9F3C46F20514771009F1DD7 /* AutoLib+CoreDataProperties.swift */,
+				D9F3C47520514771009F1DD7 /* Belibs+CoreDataClass.swift */,
+				D9F3C47A20514772009F1DD7 /* Belibs+CoreDataProperties.swift */,
+				D9F3C47020514771009F1DD7 /* Cafes+CoreDataClass.swift */,
+				D9F3C47D20514772009F1DD7 /* Cafes+CoreDataProperties.swift */,
+				D9F3C47620514771009F1DD7 /* Fontaines+CoreDataClass.swift */,
+				D9F3C47C20514772009F1DD7 /* Fontaines+CoreDataProperties.swift */,
+				D9F3C47120514771009F1DD7 /* Preservatifs+CoreDataClass.swift */,
+				D9F3C47320514771009F1DD7 /* Preservatifs+CoreDataProperties.swift */,
+				D9F3C47E20514772009F1DD7 /* Sanisettes+CoreDataClass.swift */,
+				D9F3C46D20514770009F1DD7 /* Sanisettes+CoreDataProperties.swift */,
+				D9F3C48220514773009F1DD7 /* Services+CoreDataClass.swift */,
+				D9F3C47920514772009F1DD7 /* Services+CoreDataProperties.swift */,
+				D9F3C48020514773009F1DD7 /* StaticBelibs+CoreDataClass.swift */,
+				D9F3C47720514771009F1DD7 /* StaticBelibs+CoreDataProperties.swift */,
+				D9F3C47F20514772009F1DD7 /* Taxis+CoreDataClass.swift */,
+				D9F3C47820514771009F1DD7 /* Taxis+CoreDataProperties.swift */,
+				D9F3C47420514771009F1DD7 /* Velib+CoreDataClass.swift */,
+				D9F3C48120514773009F1DD7 /* Velib+CoreDataProperties.swift */,
+			);
+			name = "Managed Objects";
 			sourceTree = "<group>";
 		};
 		EB43BBDA1D9FA41100B0E7DE = {
@@ -570,14 +644,36 @@
 			buildActionMask = 2147483647;
 			files = (
 				D94B96FE204EAE6A00E0C10F /* ServicesUpdateProtocol.swift in Sources */,
+				D9F3C48C20514773009F1DD7 /* Fontaines+CoreDataClass.swift in Sources */,
 				EB8E78261F3B898200699899 /* DetailViewController.swift in Sources */,
+				D9F3C48A20514773009F1DD7 /* Velib+CoreDataClass.swift in Sources */,
+				D9F3C48B20514773009F1DD7 /* Belibs+CoreDataClass.swift in Sources */,
+				D9F3C48420514773009F1DD7 /* AutoLib+CoreDataClass.swift in Sources */,
 				EB0D0AFB1F2140AA001FF869 /* OptionsViewController.swift in Sources */,
+				D9F3C49220514773009F1DD7 /* Fontaines+CoreDataProperties.swift in Sources */,
+				D9F3C48320514773009F1DD7 /* Sanisettes+CoreDataProperties.swift in Sources */,
+				D9F3C49320514773009F1DD7 /* Cafes+CoreDataProperties.swift in Sources */,
+				D9F3C48D20514773009F1DD7 /* StaticBelibs+CoreDataProperties.swift in Sources */,
+				D9F3C48720514773009F1DD7 /* Preservatifs+CoreDataClass.swift in Sources */,
+				D9F3C48820514773009F1DD7 /* Arbres+CoreDataProperties.swift in Sources */,
 				EB43BC201DA00A1F00B0E7DE /* Downloader.swift in Sources */,
+				D9F3C48920514773009F1DD7 /* Preservatifs+CoreDataProperties.swift in Sources */,
+				D9F3C48E20514773009F1DD7 /* Taxis+CoreDataProperties.swift in Sources */,
+				D9F3C49620514773009F1DD7 /* StaticBelibs+CoreDataClass.swift in Sources */,
+				D9F3C49420514773009F1DD7 /* Sanisettes+CoreDataClass.swift in Sources */,
 				EB43BBEF1D9FA41500B0E7DE /* swiftu.xcdatamodeld in Sources */,
+				D9F3C48F20514773009F1DD7 /* Services+CoreDataProperties.swift in Sources */,
+				D9F3C49020514773009F1DD7 /* Belibs+CoreDataProperties.swift in Sources */,
 				EB43BBE91D9FA41500B0E7DE /* MapViewController.swift in Sources */,
 				EB43BBE71D9FA41500B0E7DE /* AppDelegate.swift in Sources */,
+				D9F3C49520514773009F1DD7 /* Taxis+CoreDataClass.swift in Sources */,
+				D9F3C49120514773009F1DD7 /* Arbres+CoreDataClass.swift in Sources */,
+				D9F3C49820514773009F1DD7 /* Services+CoreDataClass.swift in Sources */,
 				D980D1B92046C21800D61428 /* ServicesManagerViewModel.swift in Sources */,
+				D9F3C48620514773009F1DD7 /* Cafes+CoreDataClass.swift in Sources */,
+				D9F3C49720514773009F1DD7 /* Velib+CoreDataProperties.swift in Sources */,
 				EB43BC1C1D9FDA0200B0E7DE /* Constants.swift in Sources */,
+				D9F3C48520514773009F1DD7 /* AutoLib+CoreDataProperties.swift in Sources */,
 				D94B9700204ECFEE00E0C10F /* DetailViewModel.swift in Sources */,
 				D9349FB0204FE9FE00BCE236 /* ServiceViewModel.swift in Sources */,
 				D980D1BB2046C23400D61428 /* MyAnnotation.swift in Sources */,

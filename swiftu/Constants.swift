@@ -138,11 +138,11 @@ struct Constants {
             ],
         [
             "title": "En service",
-            "property": "en_service"
+            "property": "enService"
             ],
         [
             "title": "Ouvert l'hiver",
-            "property": "ouv_hiver"
+            "property": "ouvHiver"
             ]
     ]
     static let  tabDetailArbre = [
@@ -202,15 +202,15 @@ struct Constants {
     static let tabDetailCafe = [
         [
             "title": "Prix en terasse",
-            "property": "prix_terasse"
+            "property": "prixTerasse"
             ],
         [
             "title": "Prix en salle",
-            "property": "prix_salle"
+            "property": "prixSalle"
             ],
         [
             "title": "Prix au comptoir",
-            "property": "prix_comptoir"
+            "property": "prixComptoir"
             ]
     ]
 
@@ -220,19 +220,19 @@ struct Constants {
             "key": "arrondissement"
         ],
         [
-            "field": "prix_terasse",
+            "field": "prixTerasse",
             "key": "prix_terasse"
         ],
         [
-            "field": "prix_comptoir",
+            "field": "prixComptoir",
             "key": "prix_comptoir"
         ],
         [
-            "field": "prix_salle",
+            "field": "prixSalle",
             "key": "prix_salle"
         ],
         [
-            "field": "nom_du_cafe",
+            "field": "nomDuCafe",
             "key": "nom_du_cafe"
         ],
         [
@@ -250,35 +250,35 @@ struct Constants {
     ]
     static let belibFieldsAndKeys = [
         [
-            "field": "aggregated_nbplugs",
+            "field": "aggregatedNbplugs",
             "key": "aggregated_nbplugs"
         ],
         [
-            "field": "geolocation_postalcode",
+            "field": "geolocationPostalcode",
             "key": "geolocation_postalcode"
         ],
         [
-            "field": "geolocation_route",
+            "field": "geolocationRoute",
             "key": "geolocation_route"
         ],
         [
-            "field": "geolocation_streetnumber",
+            "field": "geolocationStreetnumber",
             "key": "geolocation_streetnumber"
         ],
         [
-            "field": "static_nbparkingspots",
+            "field": "staticNbparkingspots",
             "key": "static_nbparkingspots"
         ],
         [
-            "field": "static_nbstations",
+            "field": "staticNbstations",
             "key": "static_nbstations"
         ],
         [
-            "field": "static_opening_247",
+            "field": "staticOpening247",
             "key": "static_opening_247"
         ],
         [
-            "field": "status_available",
+            "field": "statusAvailable",
             "key": "status_available"
         ],
         [
@@ -300,7 +300,7 @@ struct Constants {
             "key": "classee"
         ],
         [
-            "field": "en_service",
+            "field": "enService",
             "key": "en_service"
         ],
         [
@@ -312,7 +312,7 @@ struct Constants {
             "key": "modele"
         ],
         [
-            "field": "ouv_hiver",
+            "field": "ouvHiver",
             "key": "ouv_hiver"
         ],
         [
@@ -364,15 +364,15 @@ struct Constants {
             "key": "arrondissement"
         ],
         [
-            "field": "horaires_ouverture",
+            "field": "horairesOuverture",
             "key": "horaires_ouverture"
         ],
         [
-            "field": "nom_voie",
+            "field": "nomVoie",
             "key": "nom_voie"
         ],
         [
-            "field": "numero_voie",
+            "field": "numeroVoie",
             "key": "numero_voie"
         ],
         [
@@ -422,7 +422,7 @@ struct Constants {
             "key": "hauteurenm"
         ],
         [
-            "field": "nom_ev",
+            "field": "nomEv",
             "key": "nom_env"
         ],
         [
@@ -448,11 +448,11 @@ struct Constants {
             "key": "address"
         ],
         [
-            "field": "postal_code",
+            "field": "postalCode",
             "key": "postal_code"
         ],
         [
-            "field": "public_name",
+            "field": "publicName",
             "key": "public_name"
         ],
         [
@@ -470,11 +470,11 @@ struct Constants {
             "key": "address"
         ],
         [
-            "field": "station_name",
+            "field": "stationName",
             "key": "station_name"
         ],
         [
-            "field": "zip_code",
+            "field": "zipCode",
             "key": "zip_code"
         ],
         [
@@ -543,7 +543,7 @@ struct Constants {
         ],
         "Taxis": [
             "fieldAndKeyStruct": taxiFieldsAndKeys,
-            "idKey": "zip_code",
+            "idKey": "zipCode",
             "sort": true
         ]
     ]
