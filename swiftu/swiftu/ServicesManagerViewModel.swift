@@ -268,14 +268,4 @@ class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
         detailViewController?.detailViewModel.service = service
         return detailViewController
     }
-//    func serviceFromAnnotation(annotationCustom: MyAnnotation) -> Services? {
-//        var service: Services?
-//        if let entity: String = Constants.SERVICES[annotationCustom.tag!]["entity"] as? String {
-//            if let field: String = Constants.SERVICES[annotationCustom.tag!]["field"] as? String {
-//                let result = self.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
-//                service = (result?.first as? Services)!
-//            }
-//        }
-//        return service
-//    }
 }

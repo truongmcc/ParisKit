@@ -104,7 +104,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         // -> récupération du tag (utilisation du cast)
         let annotationCustom: MyAnnotation! = view.annotation as? MyAnnotation
         annotationCustom?.prepareForInterfaceBuilder()
-        var detailViewController: DetailViewController?
         if let urlString = servicesManagerViewModel.dynamicSubtitleService(service: annotationCustom.tag!, idRecord: annotationCustom.idRecord!) {
             let type: String? = Constants.SERVICES[annotationCustom.tag!]["type"] as? String
             servicesManagerViewModel.dynamicUpdateService(url: urlString, type: type!) { (result) in
@@ -115,6 +114,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
                 if let field: String = Constants.SERVICES[annotationCustom.tag!]["field"] as? String {
                     let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
                     let service: Services = (result?.first as? Services)!
+                    var detailViewController: DetailViewController?
                     detailViewController = self.createDetailViewController(service: service)
                     detailViewController?.detailViewModel.tabService = Constants.listeTabDetail[annotationCustom.tag!] as [AnyObject]
                     detailViewController?.detailViewModel.service = service
