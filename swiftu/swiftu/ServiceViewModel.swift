@@ -26,9 +26,7 @@ class ServiceViewModel: NSObject {
     init(location coord: LocationCoordinate2D) {
         self.coordinate = coord
     }
-    init(typeService: Int, location coord: LocationCoordinate2D, service: Services) {
-        self.coordinate = coord
-        self.tag = typeService
+    func updateInfoService( service: Services) {
         if let optionalIdRecord = service.recordid {
             self.idRecord = optionalIdRecord
             self.title = " "
@@ -65,5 +63,11 @@ class ServiceViewModel: NSObject {
                 }
             }
         }
+    }
+    init(typeService: Int, location coord: LocationCoordinate2D, service: Services) {
+        super.init()
+        self.coordinate = coord
+        self.tag = typeService
+        updateInfoService(service: service)
     }
 }
