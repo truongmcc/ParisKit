@@ -200,7 +200,7 @@ class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
             }
         }
     }
-    // createServiceFromJson : parse générique en utilsant le KVC
+    // KVC
     func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: [String: AnyObject]) {
         //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
         if let recordid = dic["recordid"] as? String {
@@ -260,4 +260,22 @@ class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
         }
         return message
     }
+    // DetailViewController
+    func createDetailViewController(service: Services) -> DetailViewController? {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
+        detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
+        detailViewController?.detailViewModel.service = service
+        return detailViewController
+    }
+//    func serviceFromAnnotation(annotationCustom: MyAnnotation) -> Services? {
+//        var service: Services?
+//        if let entity: String = Constants.SERVICES[annotationCustom.tag!]["entity"] as? String {
+//            if let field: String = Constants.SERVICES[annotationCustom.tag!]["field"] as? String {
+//                let result = self.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
+//                service = (result?.first as? Services)!
+//            }
+//        }
+//        return service
+//    }
 }
