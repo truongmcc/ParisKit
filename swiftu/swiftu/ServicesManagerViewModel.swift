@@ -13,9 +13,12 @@ import CoreData
 class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
     let disposeBag = DisposeBag()
     var downloader = Downloader()
+    // service et selectedService pour l'affichage courrant dans la map
+    var service: [AnyObject]? = []
+    var selectedService: Int?
     var dicoServices: [String: [AnyObject]] = [
         "Arbres": [AnyObject](),
-        "Capotes": [AnyObject](),
+        "Preservatifs": [AnyObject](),
         "Fontaines": [AnyObject](),
         "Cafes": [AnyObject](),
         "Sanisettes": [AnyObject](),
@@ -44,9 +47,6 @@ class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
         let stringResult = startUrl?.appending(idRecord).appending(endUrl!)
         return stringResult
     }
-    // service et selectedService pour l'affichage courrant dans la map
-    var service: [AnyObject]? = []
-    var selectedService: Int?
     func addServices() {
         for dico in Constants.SERVICES {
             if let url: String = dico["url"] as? String, let type = dico["type"] as? String {

@@ -20,7 +20,6 @@ class MyAnnotation: NSObject, MKAnnotation {
         self.coordinate = CLLocationCoordinate2D(latitude: (self.serviceViewModel?.coordinate?.latitude)!,
                                                  longitude: (self.serviceViewModel?.coordinate?.longitude)!)
     }
-    // MARK: Constructeurs
     init(serviceViewModel: ServiceViewModel) {
         self.coordinate = CLLocationCoordinate2D(latitude: (serviceViewModel.coordinate!.latitude), longitude: (serviceViewModel.coordinate!.longitude))
         self.tag = serviceViewModel.tag
@@ -28,15 +27,5 @@ class MyAnnotation: NSObject, MKAnnotation {
         self.subtitle = serviceViewModel.subtitle
         self.number = serviceViewModel.number
         self.idRecord = serviceViewModel.idRecord
-    }
-    class func addAnntotation(servicesManagerViewModel: ServicesManagerViewModel, laMap: MKMapView) {
-        for service in (servicesManagerViewModel.service as? [Services])! {
-            var myAnnotation: MyAnnotation
-            if let coord: LocationCoordinate2D = LocationCoordinate2D(latitude: Double(service.coordinateX), longitude: Double(service.coordinateY)) {
-                let serviceViewModel = ServiceViewModel(typeService: servicesManagerViewModel.selectedService!, location: coord, service: service)
-                myAnnotation = MyAnnotation(serviceViewModel: serviceViewModel)
-                laMap.addAnnotation(myAnnotation)
-            }
-        }
     }
 }

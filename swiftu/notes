@@ -16,7 +16,7 @@ bug : utilisation semaphore OK
 
 creer une fonction updateAnnotationWithCoord OK
 
-crash sur click back button : crash sur parsing json arbres solution OK
+crash click back button OK
 
 arbre : afficher toutes les infos sur fond transparent OK
 
@@ -30,11 +30,11 @@ bouton back de optionViewController : "retour" OK
 
 ajout belib OK
 
-virer arbre et sanisettes de la tabar OK
+retirer arbre et sanisettes de la tabar OK
 
 ajout café à 1 euro OK
 
-factoriser le code... !!! 
+refactoring OK
 
 faire un git du projet OK
 
@@ -54,7 +54,7 @@ intégrer SWIFTLINT OK
 
 refactoring parsing json OK
 
-integration RXSWIFT OK
+integration RXSWIFT + utilisation pour récupérer les services OK
 
 taxi en dynamic (virer la version static avec fichier embarqué) OK
 
@@ -67,7 +67,8 @@ remplacer nsarray et nsdictionary par array et dictionary OK
 renommer fonctions OK
 
 adopter MVVM OK
-myannotationserviceviewmodel foireux
+
+RXSWIFT : geston tableView
 
 optimiser la suppression des tables
 

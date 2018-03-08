@@ -21,8 +21,8 @@ class DetailViewModel: NSObject {
             self.adresse = fontaine.adresse
         } else if let arbre = service as? Arbres {
             self.adresse = arbre.adresse
-        } else if let capote = service as? Capotes {
-            if let adress = capote.adresse {
+        } else if let preservatif = service as? Preservatifs {
+            if let adress = preservatif.adresse {
                 self.adresse = adress
             }
         }
@@ -30,7 +30,7 @@ class DetailViewModel: NSObject {
     func serviceColor() -> UIColor {
         if service is Arbres? {
             return UIColor.green
-        } else if service is Capotes? {
+        } else if service is Preservatifs? {
             return UIColor.red
         } else if service is Fontaines? {
             return UIColor.cyan

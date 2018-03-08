@@ -64,7 +64,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             self.servicesManagerViewModel.selectService(service: (sender as AnyObject).tag)
             if selectedButton.tintColor == UIColor.black {
                 selectedButton.tintColor = UIColor.blue
-                MyAnnotation.addAnntotation(servicesManagerViewModel: self.servicesManagerViewModel, laMap: self.laMap)
+                self.addAnntotation()
             } else {
                 selectedButton.tintColor = UIColor.black
             }
@@ -127,13 +127,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             }
         }
     }
-    func createDetailViewController(service: Services) -> DetailViewController? {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
-        detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-        detailViewController?.detailViewModel.service = service
-        return detailViewController
-    }
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "mapIdentifier" {
@@ -174,6 +167,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         }
     }
     // MARK: affichage
+    func createDetailViewController(service: Services) -> DetailViewController? {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
+        detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
+        detailViewController?.detailViewModel.service = service
+        return detailViewController
+    }
     func afficher(position: Int) {
         self.servicesManagerViewModel.selectServiceFromMenu(position: position)
         updateAnnotations()
@@ -202,6 +202,17 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
     func updateAnnotations() {
         removeAnnotations()
         disableServiceButtons()
-        MyAnnotation.addAnntotation(servicesManagerViewModel: self.servicesManagerViewModel, laMap: self.laMap)
+        self.addAnntotation()
+    }
+    func addAnntotation() {
+        for service in (self.servicesManagerViewModel.service as? [Services])! {
+            var myAnnotation: MyAnnotation
+            let coord: LocationCoordinate2D? = LocationCoordinate2D(latitude: service.coordinateX, longitude: service.coordinateY)
+            if coord != nil {
+                let serviceViewModel = ServiceViewModel(typeService: servicesManagerViewModel.selectedService!, location: coord!, service: service)
+                myAnnotation = MyAnnotation(serviceViewModel: serviceViewModel)
+                laMap.addAnnotation(myAnnotation)
+            }
+        }
     }
 }

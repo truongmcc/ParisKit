@@ -16,7 +16,7 @@ struct Constants {
     // MARK: Interets
     struct INTERETS {
         static let ARBRE = 0
-        static let CAPOTES = 1
+        static let PRESERVATIF = 1
         static let FONTAINE = 2
         static let CAFE = 3
         static let SANISETTES = 4
@@ -31,7 +31,7 @@ struct Constants {
         static let TAXIS = 2
         static let ARBRE = 3
         static let SANISETTES  = 4
-        static let CAPOTES = 5
+        static let PRESERVATIF = 5
         static let FONTAINE = 6
         static let BELIB = 7
         static let CAFE = 8
@@ -49,13 +49,13 @@ struct Constants {
         ],
         [
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=distributeurspreservatifsmasculinsparis2012&rows=100&facet=annee_installation&facet=arrond&facet=acces",
-            "service": INTERETS.CAPOTES,
+            "service": INTERETS.PRESERVATIF,
             "color": UIColor.red,
-            "type": "Capotes",
-            "entity": "Capotes",
+            "type": "Preservatifs",
+            "entity": "Preservatifs",
             "field": "recordid",
-            "order": SERVICEORDER.CAPOTES,
-            "listeTabDetail": [Constants.tabListServices[INTERETS.CAPOTES]]
+            "order": SERVICEORDER.PRESERVATIF,
+            "listeTabDetail": [Constants.tabListServices[INTERETS.PRESERVATIF]]
         ],
         [
             "url": "https://opendata.paris.fr/api/records/1.0/search/?dataset=fontaines-a-boire&q=a_boire+%3D+1&rows=915&facet=arro&facet=modele&facet=a_boire",
@@ -118,11 +118,11 @@ struct Constants {
     ]
     static let dicoType = ["Velib": "velib", "AutoLib": "autolib", "Taxis": "taxi",
                            "Arbres": "arbres", "Sanisettes": "sanisettes",
-                           "Capotes": "capotes", "Fontaines": "fontaines",
+                           "Preservatifs": "préservatifs", "Fontaines": "fontaines",
                            "Belibs": "belibs", "Cafes": "cafes"] as [String: String]
     static let tabListServices = ["Velibs", "Autolibs", "Taxis", "Arbres remarquables", "Sanisettes", "Préservatifs", "Fontaines à boire", "Stations belib", "Cafés à 1 euro en terasse ou salle"]
     // MARK: detail service
-    static let listeTabDetail = [tabDetailArbre, tabDetailCapote, tabDetailFontaine, tabDetailCafe]
+    static let listeTabDetail = [tabDetailArbre, tabDetailPreservatif, tabDetailFontaine, tabDetailCafe]
     static let tabDetailFontaine = [
         [
             "title": "Localisation",
@@ -177,7 +177,7 @@ struct Constants {
             "property": "domanialite"
             ]
         ]
-    static let tabDetailCapote = [
+    static let tabDetailPreservatif = [
         [
             "title": "Site",
             "property": "site"
@@ -324,7 +324,7 @@ struct Constants {
             "key": "geo_point_2d"
         ]
     ]
-    static let capoteFieldsAndKeys = [
+    static let preservatifFieldsAndKeys = [
         [
             "field": "acces",
             "key": "acces"
@@ -506,8 +506,8 @@ struct Constants {
             "idKey": "objectid",
             "sort": true
         ],
-        "Capotes": [
-            "fieldAndKeyStruct": capoteFieldsAndKeys,
+        "Preservatifs": [
+            "fieldAndKeyStruct": preservatifFieldsAndKeys,
             "idKey": "site",
             "sort": false
         ],
