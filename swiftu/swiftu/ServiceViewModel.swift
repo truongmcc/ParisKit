@@ -35,7 +35,7 @@ class ServiceViewModel: NSObject {
             if let velib = service as? Velib {
                 self.title = velib.name
             } else if let autolib = service as? AutoLib {
-                if let address: String = autolib.address, let codePostal =  autolib.postal_code {
+                if let address: String = autolib.address, let codePostal = autolib.postal_code {
                     self.title = address + " " + codePostal
                 }
             } else if let taxi = service as? Taxis {
