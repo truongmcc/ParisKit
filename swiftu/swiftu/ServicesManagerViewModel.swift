@@ -182,7 +182,7 @@ class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
         }
     }
     func addNewServices(typeService: String, listeServices: [[String: AnyObject]]) {
-        DispatchQueue.main.async {
+        DispatchQueue.global().async {
             let structService = Constants.STRUCTSERVICE[typeService]?["fieldAndKeyStruct"] as? [[String: AnyObject]]
             let container = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
             container?.performBackgroundTask { (context) in
