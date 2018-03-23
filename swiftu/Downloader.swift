@@ -32,7 +32,6 @@ class Downloader {
                     observer.onCompleted()
                 }
             })
-            //task.resume()
             //Return an AnonymousDisposable
             return Disposables.create(with: {
                 //Cancel the connection if disposed

@@ -196,4 +196,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             laMap.removeAnnotation(annotation)
         }
     }
+    override func didReceiveMemoryWarning() {
+        NSLog("hello baby")
+    }
 }

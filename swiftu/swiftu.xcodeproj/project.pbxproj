@@ -259,14 +259,14 @@
 		EB43BBE51D9FA41500B0E7DE /* swiftu */ = {
 			isa = PBXGroup;
 			children = (
+				EB43BBF51D9FA41500B0E7DE /* Info.plist */,
 				EB43BBE61D9FA41500B0E7DE /* AppDelegate.swift */,
 				D94B96FD204EAE6A00E0C10F /* ServicesUpdateProtocol.swift */,
+				EB43BC1F1DA00A1F00B0E7DE /* Downloader.swift */,
+				EB43BC1B1D9FDA0200B0E7DE /* Constants.swift */,
 				D980D1AD2046B93200D61428 /* Model */,
 				D980D1AC2046B91E00D61428 /* VueModel */,
 				D980D1AB2046B91200D61428 /* Vue */,
-				EB43BC1F1DA00A1F00B0E7DE /* Downloader.swift */,
-				EB43BC1B1D9FDA0200B0E7DE /* Constants.swift */,
-				EB43BBF51D9FA41500B0E7DE /* Info.plist */,
 				D980D1A82046AECC00D61428 /* oldVersion */,
 			);
 			path = swiftu;
@@ -525,12 +525,14 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-swiftu/Pods-swiftu-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxMKMapView/RxMKMapView.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxMKMapView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
