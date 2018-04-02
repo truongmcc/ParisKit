@@ -87,8 +87,10 @@ struct Constants {
             "service": INTERETS.VELIB,
             "order": SERVICEORDER.VELIB,
             "color": UIColor.lightGray,
-            "dynamicUrlBegin": "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=recordid%3D%22",
+            "dynamicUrlBegin": "https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=recordid",
             "dynamicUrlEnd": "%22"
+            
+            //https://opendata.paris.fr/api/records/1.0/search/?dataset=velib-disponibilite-en-temps-reel&q=recordid+%3D+%22e9a4f7a8874ba8dd9b3d004640d99759b3683005%22
         ],
         [
             "type": "AutoLib",

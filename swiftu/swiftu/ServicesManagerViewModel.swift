@@ -200,7 +200,7 @@ class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
             }
         }
     }
-    // createServiceFromJson : parse générique en utilsant le KVC
+    // KVC
     func createServiceFromJson(service: Services, structure: [[String: AnyObject]], dic: [String: AnyObject]) {
         //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
         if let recordid = dic["recordid"] as? String {
@@ -233,31 +233,44 @@ class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
             guard let listeDisponibilites = json["records"] as? [[String: AnyObject]] else {
                 return "Aucune infos disponibles"
             }
-            if type == "Velib" {
-                let dicoFields = listeDisponibilites[0]
-                let fields = dicoFields["fields"]
-                let attachesDispos = (fields?["numdocksavailable"] as? Int16?)!
-                let velibsDispos = (fields?["numbikesavailable"] as? Int16?)!
-                message = "Attaches disponibles: \(attachesDispos!) velibs disponibles: \(velibsDispos!)"
-            } else if type == "AutoLib" {
-                let dicoFields = listeDisponibilites[0]
-                let fields = dicoFields["fields"]
-                let slots = (fields?["slots"] as? Int16?)!
-                let cars = (fields?["cars"] as? Int16?)!
-                message = "\(cars!) voiture(s) restante(s) et \(slots!) place(s) libre(s)"
-            } else if type == "Belibs" {
-                let dicoFields = listeDisponibilites[0]
-                let fields = dicoFields["fields"]
-                let status = (fields?["status_available"] as? String?)!
-                if status == "0" {
-                    message = "indisponible"
-                } else {
-                    message = "disponible"
+            if listeDisponibilites.count == 1 {
+                if type == "Velib" {
+                    let dicoFields = listeDisponibilites[0]
+                    let fields = dicoFields["fields"]
+                    let attachesDispos = (fields?["numdocksavailable"] as? Int16?)!
+                    let velibsDispos = (fields?["numbikesavailable"] as? Int16?)!
+                    message = "Attaches disponibles: \(attachesDispos!) velibs disponibles: \(velibsDispos!)"
+                } else if type == "AutoLib" {
+                    let dicoFields = listeDisponibilites[0]
+                    let fields = dicoFields["fields"]
+                    let slots = (fields?["slots"] as? Int16?)!
+                    let cars = (fields?["cars"] as? Int16?)!
+                    message = "\(cars!) voiture(s) restante(s) et \(slots!) place(s) libre(s)"
+                } else if type == "Belibs" {
+                    let dicoFields = listeDisponibilites[0]
+                    let fields = dicoFields["fields"]
+                    let status = (fields?["status_available"] as? String?)!
+                    if status == "0" {
+                        message = "indisponible"
+                    } else {
+                        message = "disponible"
+                    }
                 }
+            } else {
+                return "infos non disponibles pour le moment"
             }
+
         } catch {
             return "error trying to convert data to JSON"
         }
         return message
+    }
+    // DetailViewController
+    func createDetailViewController(service: Services) -> DetailViewController? {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
+        detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
+        detailViewController?.detailViewModel.service = service
+        return detailViewController
     }
 }

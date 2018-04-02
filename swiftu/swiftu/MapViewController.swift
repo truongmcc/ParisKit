@@ -104,7 +104,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         // -> récupération du tag (utilisation du cast)
         let annotationCustom: MyAnnotation! = view.annotation as? MyAnnotation
         annotationCustom?.prepareForInterfaceBuilder()
-        var detailViewController: DetailViewController?
         if let urlString = servicesManagerViewModel.dynamicSubtitleService(service: annotationCustom.tag!, idRecord: annotationCustom.idRecord!) {
             let type: String? = Constants.SERVICES[annotationCustom.tag!]["type"] as? String
             servicesManagerViewModel.dynamicUpdateService(url: urlString, type: type!) { (result) in
@@ -115,6 +114,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
                 if let field: String = Constants.SERVICES[annotationCustom.tag!]["field"] as? String {
                     let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: entity, field: field, value: annotationCustom.idRecord!)
                     let service: Services = (result?.first as? Services)!
+                    var detailViewController: DetailViewController?
                     detailViewController = self.createDetailViewController(service: service)
                     detailViewController?.detailViewModel.tabService = Constants.listeTabDetail[annotationCustom.tag!] as [AnyObject]
                     detailViewController?.detailViewModel.service = service
@@ -135,27 +135,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             optionViewController?.mapType = self.laMap.mapType.rawValue
         }
     }
-    // delegate sur appui sur le bouton disclosure
-    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView,
-                 calloutAccessoryControlTapped control: UIControl) {
-        let annotationCustom = view.annotation as? MyAnnotation
-        if annotationCustom?.tag == Constants.INTERETS.CAFE {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let detailViewController: DetailViewController! = storyboard.instantiateViewController(withIdentifier: "detailViewController") as? DetailViewController
-            detailViewController.preferredContentSize = CGSize(width: 300.0, height: 500.0)
-            let result = servicesManagerViewModel.selectRecordFromEntity(nomEntity: "Cafes", field: "recordid", value: (annotationCustom?.idRecord)!)
-            let  cafe: Cafes = (result?.first as? Cafes)!
-            detailViewController.detailViewModel.service = cafe
-            detailViewController.detailViewModel.adresse = cafe.adresse
-            detailViewController.detailViewModel.tabService = Constants.listeTabDetail[Constants.INTERETS.CAFE] as [AnyObject]
-            self.addChildViewController(detailViewController)
-            detailViewController.view.frame = self.view.frame
-            self.view.addSubview(detailViewController.view)
-            detailViewController.didMove(toParentViewController: self)
-            mapView.deselectAnnotation(annotationCustom, animated: true)
-        }
-    }
-    // MARK: mapKitDelegate
+    // MARK: Delegate function
     func changerTypeMap(type: Int) {
         switch type {
         case 0:
@@ -164,6 +144,22 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
             laMap.mapType = .satellite
         default:
             laMap.mapType = .hybrid
+        }
+    }
+    // MARK: Buttons
+    func updateSelectedButtonItems(position: Int) {
+        if position == Constants.SERVICEORDER.AUTOLIB {
+            butAutolib.tintColor = UIColor.blue
+        } else if position == Constants.SERVICEORDER.VELIB {
+            butVelib.tintColor = UIColor.blue
+        } else if position == Constants.SERVICEORDER.TAXIS {
+            butTaxi.tintColor = UIColor.blue
+        }
+    }
+    func disableServiceButtons() {
+        let allBarButtonItems = barItem.items
+        for buttonItem in allBarButtonItems! {
+            buttonItem.tintColor = UIColor.black
         }
     }
     // MARK: affichage
@@ -179,31 +175,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
         updateAnnotations()
         updateSelectedButtonItems(position: position)
     }
-    func updateSelectedButtonItems(position: Int) {
-        if position == Constants.SERVICEORDER.AUTOLIB {
-            butAutolib.tintColor = UIColor.blue
-        } else if position == Constants.SERVICEORDER.VELIB {
-            butVelib.tintColor = UIColor.blue
-        } else if position == Constants.SERVICEORDER.TAXIS {
-            butTaxi.tintColor = UIColor.blue
-        }
-    }
-    func removeAnnotations() {
-        for annotation in laMap.annotations {
-            laMap.removeAnnotation(annotation)
-        }
-    }
-    func disableServiceButtons() {
-        let allBarButtonItems = barItem.items
-        for buttonItem in allBarButtonItems! {
-            buttonItem.tintColor = UIColor.black
-        }
-    }
-    func updateAnnotations() {
-        removeAnnotations()
-        disableServiceButtons()
-        self.addAnntotation()
-    }
     func addAnntotation() {
         for service in (self.servicesManagerViewModel.service as? [Services])! {
             var myAnnotation: MyAnnotation
@@ -214,5 +185,18 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate,
                 laMap.addAnnotation(myAnnotation)
             }
         }
+    }
+    func updateAnnotations() {
+        removeAnnotations()
+        disableServiceButtons()
+        self.addAnntotation()
+    }
+    func removeAnnotations() {
+        for annotation in laMap.annotations {
+            laMap.removeAnnotation(annotation)
+        }
+    }
+    override func didReceiveMemoryWarning() {
+        NSLog("hello baby")
     }
 }
