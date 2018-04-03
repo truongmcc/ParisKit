@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,19 +28,19 @@
                                     <constraint firstAttribute="height" constant="44" id="8bi-ja-fDK"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem title="Velibs" id="qeo-ob-3NB">
+                                    <barButtonItem tag="5" title="Velibs" id="qeo-ob-3NB">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="afficherService:" destination="BYZ-38-t0r" id="rT8-7F-EkX"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Autolibs" id="VEt-S6-Yoi">
+                                    <barButtonItem tag="6" title="Autolibs" id="VEt-S6-Yoi">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="afficherService:" destination="BYZ-38-t0r" id="oiT-WS-YkA"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Taxis" id="ORJ-Qi-kNB">
+                                    <barButtonItem tag="8" title="Taxis" id="ORJ-Qi-kNB">
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <action selector="afficherService:" destination="BYZ-38-t0r" id="4vV-WK-TNX"/>
@@ -107,13 +106,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qhI-mF-iUK">
-                                <rect key="frame" x="26" y="35" width="323" height="597"/>
+                                <rect key="frame" x="26" y="55" width="323" height="577"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F0K-We-BDa">
-                                        <rect key="frame" x="0.0" y="0.0" width="323" height="597"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="323" height="577"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="63" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="R60-63-NNK">
-                                                <rect key="frame" x="0.0" y="155" width="323" height="392"/>
+                                                <rect key="frame" x="0.0" y="135" width="323" height="392"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="392" id="S7B-Cd-oxl"/>
@@ -153,7 +152,7 @@
                                                 </connections>
                                             </tableView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Adresse" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5N-J6-0a9">
-                                                <rect key="frame" x="0.0" y="0.0" width="323" height="155"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="323" height="135"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 <color key="textColor" red="0.35290279299999999" green="0.93475413600000001" blue="0.54825055499999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
