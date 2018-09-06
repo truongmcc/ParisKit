@@ -11,7 +11,7 @@ import UIKit
 class DetailViewModel: NSObject {
     var service: AnyObject?
     var tabService: [AnyObject]?
-    var adresse: String? 
+    var adresse: String?
     override init() {
         super.init()
         self.recupAdresse()
