@@ -18,7 +18,7 @@ class Downloader {
     // ALAMOFIRE & RXSWIFT version
     func rxDataFromUrl(url: String) -> Observable<Data> {
         return Observable<Data>.create({ (observer) -> Disposable in
-            Alamofire.request(url).responseData(completionHandler: { (response) in
+            AF.request(url).responseData(completionHandler: { (response) in
                 if let err = response.error {
                     // If there's an error, send an Error event and finish the sequence
                     observer.onError(err)

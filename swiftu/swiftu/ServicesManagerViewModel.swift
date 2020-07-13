@@ -123,7 +123,6 @@ class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
                 fatalError("Failure to fetch request: \(error)")
             }
         }
-        return objects
     }
     func selectRecordFromEntity (nomEntity: String, field: String, value: String) -> [AnyObject]? {
         var objects = [AnyObject]()
@@ -137,8 +136,8 @@ class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
                 fatalError("Failure to fetch request: \(error)")
             }
         }
-        return objects
     }
+
     func updateViewModedlFromEntity(nomEntity: String) -> [AnyObject]? {
         var tabResult: Array? = [AnyObject]()
         let entity = NSFetchRequest<NSFetchRequestResult>(entityName: nomEntity)
@@ -205,7 +204,7 @@ class ServicesManagerViewModel: NSObject, ServicesUpdateProtocol {
         //https://robots.thoughtbot.com/efficient-json-in-swift-with-functional-concepts-and-generics
         if let recordid = dic["recordid"] as? String {
             service.setValue(recordid, forKey: "recordid")
-            var dicoField = dic["fields"] as? [String: AnyObject]
+            let dicoField = dic["fields"] as? [String: AnyObject]
             for property in structure {
                 let field: String? = property["field"] as? String
                 let keyDico: String? = (property["key"]) as? String

@@ -53,6 +53,7 @@
 		EB43BC201DA00A1F00B0E7DE /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB43BC1F1DA00A1F00B0E7DE /* Downloader.swift */; };
 		EB664D611F1696590001D5BC /* MapViewControllerUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB664D601F1696590001D5BC /* MapViewControllerUITest.swift */; };
 		EB8E78261F3B898200699899 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8E78251F3B898200699899 /* DetailViewController.swift */; };
+		EBD704DF24BCABAD00E4F3B4 /* swiftu.app in Resources */ = {isa = PBXBuildFile; fileRef = EB43BBE31D9FA41500B0E7DE /* swiftu.app */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -325,7 +326,6 @@
 				EB43BBE01D9FA41100B0E7DE /* Frameworks */,
 				EB43BBE11D9FA41100B0E7DE /* Resources */,
 				84BC89D3C68E69F723618239 /* [CP] Embed Pods Frameworks */,
-				5CBA8380890682EC940884F9 /* [CP] Copy Pods Resources */,
 				D93C26E52017A445005E933A /* ShellScript */,
 			);
 			buildRules = (
@@ -345,8 +345,6 @@
 				EB43BBF61D9FA41500B0E7DE /* Sources */,
 				EB43BBF71D9FA41500B0E7DE /* Frameworks */,
 				EB43BBF81D9FA41500B0E7DE /* Resources */,
-				B7B6A3EE7582198A8566522F /* [CP] Embed Pods Frameworks */,
-				E1E4C7B89A267526F5639B78 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -367,7 +365,6 @@
 				EB43BC021D9FA41500B0E7DE /* Frameworks */,
 				EB43BC031D9FA41500B0E7DE /* Resources */,
 				E24BC09E3EAE3724BD36DAB4 /* [CP] Embed Pods Frameworks */,
-				8B0976FCC6E1DF150B6BA426 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -391,7 +388,7 @@
 				TargetAttributes = {
 					EB43BBE21D9FA41100B0E7DE = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 8Y8B6GPYMV;
+						DevelopmentTeam = PVN8KMR8MY;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -402,12 +399,14 @@
 					};
 					EB43BBF91D9FA41500B0E7DE = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = PVN8KMR8MY;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 						TestTargetID = EB43BBE21D9FA41100B0E7DE;
 					};
 					EB43BC041D9FA41500B0E7DE = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = PVN8KMR8MY;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 						TestTargetID = EB43BBE21D9FA41100B0E7DE;
@@ -419,6 +418,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -444,6 +444,7 @@
 				EB0D0AFD1F2C8C9B001FF869 /* notes in Resources */,
 				D980D1A72046AEC300D61428 /* oldDownloader in Resources */,
 				D9ED00582024B83F00E8E36C /* .swiftlint.yml in Resources */,
+				EBD704DF24BCABAD00E4F3B4 /* swiftu.app in Resources */,
 				EB43BBEC1D9FA41500B0E7DE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -501,31 +502,17 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5CBA8380890682EC940884F9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-swiftu/Pods-swiftu-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		84BC89D3C68E69F723618239 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-swiftu/Pods-swiftu-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-swiftu/Pods-swiftu-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxMKMapView/RxMKMapView.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -533,26 +520,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxMKMapView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-swiftu/Pods-swiftu-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8B0976FCC6E1DF150B6BA426 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-swiftuUITests/Pods-swiftuUITests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-swiftu/Pods-swiftu-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B2A8FFB94F9A2B3958B59150 /* [CP] Check Pods Manifest.lock */ = {
@@ -573,21 +546,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B7B6A3EE7582198A8566522F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-swiftuTests/Pods-swiftuTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		D93C26E52017A445005E933A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -601,43 +559,26 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"";
 		};
-		E1E4C7B89A267526F5639B78 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-swiftuTests/Pods-swiftuTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		E24BC09E3EAE3724BD36DAB4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-swiftuUITests/Pods-swiftuUITests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-swiftuUITests/Pods-swiftuUITests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
 				"${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxBlocking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTest.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-swiftuUITests/Pods-swiftuUITests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-swiftuUITests/Pods-swiftuUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -783,7 +724,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -834,7 +775,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -851,7 +792,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8Y8B6GPYMV;
+				DEVELOPMENT_TEAM = PVN8KMR8MY;
 				GCC_PREFIX_HEADER = "MapKitParis-Prefix.pch";
 				INFOPLIST_FILE = swiftu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -872,7 +813,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8Y8B6GPYMV;
+				DEVELOPMENT_TEAM = PVN8KMR8MY;
 				GCC_PREFIX_HEADER = "MapKitParis-Prefix.pch";
 				INFOPLIST_FILE = swiftu/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -891,7 +832,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = PVN8KMR8MY;
 				INFOPLIST_FILE = swiftuTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tru.swiftuTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -907,7 +850,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = PVN8KMR8MY;
 				INFOPLIST_FILE = swiftuTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tru.swiftuTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -923,8 +868,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				DEVELOPMENT_TEAM = PVN8KMR8MY;
 				INFOPLIST_FILE = swiftuUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tru.swiftuUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -941,8 +888,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				DEVELOPMENT_TEAM = PVN8KMR8MY;
 				INFOPLIST_FILE = swiftuUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tru.swiftuUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
